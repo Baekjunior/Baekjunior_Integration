@@ -1,0 +1,198 @@
+@charset "UTF-8";
+*{
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+	font-family:sans-serif;
+	font-size:1.03em;
+}
+
+body{
+	background:white;
+	min-height:200vh;
+	background:url(img/paper_bg.jpeg);
+}
+
+header{
+	position:fixed; 
+	top:0;
+	left:0;
+	width:100%;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	transition:0.6s;
+	padding:40px 100px;
+	z-index:100000;
+	background:white;
+	border-bottom:thick double black;
+}
+
+header.sticky{
+	padding:5px 100px;
+	/* background:orange; */
+}
+
+header .logo, banner .logo{
+	position:relative;
+	font-weight:700;
+	color:black;
+	text-decoration:none;
+	font-size:2em;
+	text-transform:uppercase;
+	letter-spacing:2px;
+	transition:0.6s;
+}
+
+header ul{
+	position:relative;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+header ul li{
+	position:relative;
+	list-style:none;
+}
+
+header ul li a{
+	position:relative;
+	margin:0 15px;
+	text-decoration:none;
+	color:black;
+	letter-spacing:2px;
+	font-weight:500px;
+	transition:0.6s;
+}
+
+header [class ^= "main_menu_"] > a:hover, 
+header [class ^= "main_menu_"] > ul > li:hover{
+	letter-spacing:3px;
+	font-weight:bold;
+	transition:0.3s;
+}
+
+header [class ^= "main_menu_"] ul{
+	display:none;
+}
+
+header [class ^= "main_menu_"]:hover ul{
+	display:block;
+}
+
+header [class ^= "main_menu_"] ul{
+	position:absolute;
+	top:27px;    /* 2차 메뉴를 1차 메뉴의 왼쪽 벽에 붙인다 */
+	right:0;
+	text-align:center;
+	background:white;
+	border:3px solid black;
+	z-index:100;
+}
+
+header [class ^= "main_menu_"] > ul > li{
+	font-size:15px;
+	padding:5px;
+}
+
+header [class ^= "main_menu_"] > ul > li:hover{
+	background:#ebebeb;
+}
+
+.banner{
+	position:relative;
+	width:100%;
+	background-size:cover;
+	padding:75px 100px;
+}
+
+.contents {
+	display: flex;
+}
+.menu {
+	flex: 2;
+    height: 600px;
+    border: 2px solid darkgray;
+    margin: 40px;
+}
+.menu_box {
+	margin: 30px;
+    line-height: 40px;
+} 
+.menu_box > ul {
+	list-style: none;
+} 
+.menu_box > ul > li > a{
+	text-decoration: none;
+	color: black;
+}
+.inner_contents {
+	flex: 8;
+	margin-top: 40px;
+    margin-right: 200px;
+    margin-left: 100px;
+}
+.select_div {
+	display: flex;
+}
+.select_div > Button {
+	flex: 1;
+    margin: 0 40px;
+    height: 150px;
+    border-radius: 30px;
+    border: none;
+}
+Button:hover {
+      background-color:#D2F3F8;
+      transition: 0.7s;
+      cursor: pointer;
+  }
+Button > div {
+	margin-bottom: 10px;
+}
+Button > div > h3 {
+	text-align: left;
+    padding-left: 40px;
+    margin-bottom: 20px;
+}
+Button > div > p {
+	display: inline;
+	margin: 0 50px;
+}
+table {
+	width: 100%;
+}
+.calender {
+	border: 1px solid black;
+	margin: 0 40px;
+	margin-top: 50px;
+	padding: 30px;
+	border-radius: 30px;
+}
+.calender_box > h2 {
+	margin-bottom : 30px;
+}
+td {
+	width: 100px;
+	height: 50px;
+}
+td > div {
+    margin: 20px;
+    width: 50px;
+    padding-left: 22px;
+}
+td > div > p {
+	display: inline;
+	font-size: 14px;
+}
+td > div > p:nth-child(2){
+	display: inline-table;
+    width: 45px;
+    height: 45px;
+    border: 1.3px solid black;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 2.3;
+    font-size: medium;
+}

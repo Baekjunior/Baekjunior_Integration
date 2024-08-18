@@ -1,0 +1,278 @@
+@charset "UTF-8";
+header {
+	height: 70px;
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+}
+header > i {
+	position: absolute;
+	top: 35px;
+	right: 35px;
+}
+#x {
+	display: none;
+}
+ul, li {
+	list-style-type: none;
+	margin: 0 auto;
+	padding: 0;
+}
+.menu {
+	width: 300px;
+	position: fixed;
+	right: 0px;
+	top: 80px;
+	border-left: ridge;
+	display: none;
+	z-index: 2;
+}
+a {
+	text-decoration: none;
+	color: black;
+}
+a:hover {
+	color: #5a9cf2;
+}
+
+.menu_box {
+	height: 1000px;
+	line-height: 40px;
+	margin: 0 80px;
+	padding: 10px;
+}
+.menu_box > ul li {
+	font-size: 12px;
+	font-weight: bold;
+}
+/*header menu 끝*/
+.first {
+	height: 1000px;
+	position: relative;
+	margin: 0 auto;
+	width: 850px;
+}
+.first img{
+	transition: transform 2s ease-in-out;
+}
+.first:hover .pink{
+	transform: translate(305px, 0px);
+}
+.first:hover .white{
+	transform: translate(165px, 0px);
+}
+.first:hover .white2{
+	transform: translate(-160px, 0px);
+}
+.first:hover .green{
+	transform: translate(-300px, 0px);
+}
+.pink {
+	height:200px;
+	z-index: -1;
+	position: absolute;
+	top: 36%;
+	left: 30px;
+}
+.white {
+	height: 200px;
+	z-index: -2;
+	position: absolute;
+	top: 36%;
+	left: 170px;
+}
+.black {
+	height: 280px;
+	z-index: -3;
+	position: absolute;
+	top: 32%;
+	left: 290px;
+}
+.white2 {
+	height: 200px;
+	z-index: -4;
+	position: absolute;
+	top: 36%;
+	left: 495px;
+}
+.green {
+	height: 200px;
+	z-index: -5;
+	position: absolute;
+	top: 36%;
+	left: 635px;
+}
+.first > h1 {
+	height: 250px;
+	position: absolute;
+	top: 35%;
+}
+.second {
+	height: 1000px;
+	overflow: hidden;
+	text-align: center;
+	line-height: 11.5;
+	position: relative;
+	margin: 0 auto;
+	width: 1000px;
+}
+.second > img {
+	height: 350px;
+	position: absolute;
+	transition: transform 1.5s ease-in-out;
+}
+.second:hover .code1, .second:hover .code2, .second:hover .code3, .second:hover .code4{
+	transform: translate(0px, 500px);
+} 
+.second:hover .code5, .second:hover .code6, .second:hover .code7, .second:hover .code8{
+	transform: translate(0px, -500px);
+} 
+.code1, .code2, .code3, .code4 {
+	left: 142px;
+	z-index: -1;
+}
+.code1 {
+	top: -50%;
+}
+.code2{
+	top: -10%;
+}
+.code3 {
+	top: 30%;
+}
+.code4{
+	top: 70%;
+}
+.code5 {
+	top: 0%;
+}
+.code6{
+	top: 40%;
+}
+.code7{
+	top: 80%;
+}
+.code8{
+	top: 120%;
+}
+.code5, .code6, .code7, .code8 {
+	z-index: -1;
+	left: 545px;
+}
+.second > h1 {
+	position: relative;
+	top: 300px;
+}
+.third_wrapper {
+	width: 100%;
+	height: 2000px;
+}
+.fixx {
+	height: 1000px;
+	width: 100%;
+}
+.third {
+	height: 1000px;
+	overflow: hidden;
+	text-align: center;
+	line-height: 11.5;
+	position: relative;
+}
+.third > h1 {
+	position: relative;
+	top: 300px;
+	
+}
+.circle {
+	width: 700px;
+	position: absolute;
+	left: -350px;
+	top: -580px;
+}
+
+.join_us {
+	height: 350px;
+	background: black;
+	position: relative;
+}
+.join {
+	position: relative;
+	margin: auto;
+	text-align: center;
+	margin: auto;
+	top:110px;
+}
+.join > p {
+	color: white;
+	line-height: 30px;
+}
+.join > button {
+	border: 1px solid white;
+    border-radius: 30px;
+    width: 188px;
+    height: 50px;
+    background-color: black;
+}
+.join > button > a {
+	text-decoration: none;
+    color: white;
+    font-size: initial;
+}
+.introduce_back {
+	height: 1000px;
+	background: #5a9cf2;
+	text-align: center;
+	line-height: 11.5;
+	position: relative;
+}
+.introduce {
+	height: 1000px;
+	text-align: center;
+	line-height: 11.5;
+	position: relative;
+	margin: 0 auto;
+	width: 1500px;
+}
+.intro1, .intro2, .intro3 {
+	height: 500px;
+	position: absolute;
+	top: 250px;
+}
+.intro1 {
+	left: 230px;
+}
+.intro2 {
+	left: 600px;
+}
+.intro3{
+	left: 970px;
+}
+.introduce > h3 {
+	display: inline;
+	position: absolute;
+	top: 310px;
+	font-size: xx-large;
+}
+.name1 {
+	left: 260px;
+}
+.name2 {
+	left: 635px;
+}
+.name3 {
+	left: 1005px;
+}
+.cat, .pome, .teddy {
+	width: 200px;
+	position: absolute;
+	top: 290px;
+}
+.cat {
+	left: 286px;
+}
+.pome {
+	left: 656px;
+}
+.teddy {
+	left: 1028px;
+} 
