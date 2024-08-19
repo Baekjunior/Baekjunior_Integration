@@ -99,7 +99,7 @@
                <label for="id">ID</label>
                <br>
                <input type="text" id="id" name="id" oninput="resetIdCheck()">
-               <input type="button" id="checkid" name="checkid" value="중복확인" onclick="checkID()">
+               <input type="button" id="checkid" name="checkid" value="Duplicate check" onclick="checkID()">
             </div>
             <div>
                <label for="pw">PASSWORD</label>
