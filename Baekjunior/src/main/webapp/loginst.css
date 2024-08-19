@@ -10,6 +10,9 @@ header > i {
 	top: 35px;
 	right: 35px;
 }
+header > i:hover {
+	cursor:pointer;
+}
 body {
 	background:url(img/paper_bg.jpeg);
 }
@@ -114,4 +117,10 @@ input[type="submit"]:hover {
 	left: 190px;
 	top: 420px;
 	text-align : center;
+}
+.tosign:hover{
+	letter-spacing:0.3px;
+   	font-weight:bold;
+  	transition:0.3s;
+  	cursor:pointer;
 }

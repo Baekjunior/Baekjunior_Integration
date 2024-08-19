@@ -10,6 +10,9 @@ header > i {
    top: 35px;
    right: 35px;
 }
+header > i:hover {
+	cursor:pointer;
+}
 body {
 	background:url(img/paper_bg.jpeg);
 }
@@ -34,9 +37,7 @@ a {
    text-decoration: none;
    color: black;
 }
-a:hover {
-   color: #5a9cf2;
-}
+
 
 .menu_box {
    height: 1000px;
@@ -61,7 +62,14 @@ a:hover {
    position: absolute;
    top: 100px;
    left: 420px;
-   display: none;
+   z-index: 2;
+}
+a:hover {
+	letter-spacing:3px;
+   	font-weight:bold;
+  	transition:0.3s;
+  	cursor:pointer;
+  	text-align : center;
 }
 .logbox {
    width: 600px;
@@ -70,7 +78,7 @@ a:hover {
     border-bottom: 3px solid black;
     padding: 25px;
     position: absolute;
-    top: 180px;
+    top: 240px;
     left: 200px;
     padding-top: 40px;
 }
@@ -97,11 +105,12 @@ input[type="text"], input[type="password"], input[type="email"] {
     height: 50px;
     border-radius: 10px;
     margin: 20px 0;
-    width: 130px;
+    width: 140px;
     font-size: inherit;
     background:#5a9cf2;
     color: white;
     margin-left: 5px;
+    font-weight: bold;
 }
 input[type="submit"] {
    width: 170px;
@@ -114,6 +123,18 @@ input[type="submit"] {
    color: white;
    font-weight: bold;
    margin: 0 120px;
+}
+input[type="submit"]:hover {
+	letter-spacing:3px;
+   	font-weight:bold;
+  	transition:0.3s;
+  	cursor:pointer;
+}
+input[type="button"]:hover {
+	letter-spacing:0.3px;
+   	font-weight:bold;
+  	transition:0.3s;
+  	cursor:pointer;
 }
 .tosign {
    position: absolute;
