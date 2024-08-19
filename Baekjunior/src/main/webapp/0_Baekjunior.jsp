@@ -27,6 +27,7 @@ if(session != null) {
 						<li><a href="#">storage2</a></li>
 						<li><a href="#">storage3</a></li>
 						<li><a href="#">storage4</a></li>
+						<li><a href="#">storage5</a></li>
 					</ul>
 				</li>				
 				<li class="main_menu_Friend"><a href="#">Friend</a>
