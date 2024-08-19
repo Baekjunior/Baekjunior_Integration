@@ -7,11 +7,6 @@
 <title>Baekjunior</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
 
-<script>
-	
-</script>
-
-<!-- hhhhhh -->
 </head>
 <%
 request.setCharacterEncoding("utf-8");
