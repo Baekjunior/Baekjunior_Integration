@@ -10,6 +10,9 @@ header > i {
 	top: 35px;
 	right: 35px;
 }
+header > i:hover {
+	cursor:pointer;
+}
 #x {
 	display: none;
 }
@@ -32,7 +35,11 @@ a {
 	color: black;
 }
 a:hover {
-	color: #5a9cf2;
+	letter-spacing:3px;
+   	font-weight:bold;
+  	transition:0.3s;
+  	cursor:pointer;
+  	text-align : center;
 }
 
 .menu_box {
@@ -44,6 +51,13 @@ a:hover {
 .menu_box > ul li {
 	font-size: 12px;
 	font-weight: bold;
+}
+.menu_box > ul > li > a:hover {
+	letter-spacing:3px;
+   	font-weight:bold;
+  	transition:0.3s;
+  	cursor:pointer;
+  	text-align : center;
 }
 /*header menu 끝*/
 .first {
@@ -212,6 +226,14 @@ a:hover {
     width: 188px;
     height: 50px;
     background-color: black;
+}
+.join > button:hover {
+  	cursor:pointer;
+}
+.join > button > a:hover {
+	letter-spacing:3px;
+   	font-weight:bold;
+  	transition:0.3s;
 }
 .join > button > a {
 	text-decoration: none;

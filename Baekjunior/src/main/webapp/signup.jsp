@@ -91,7 +91,7 @@
       </div>
    </div>
    <div class="login_pg">
-      <img src="images/blue.png" class="blue" alt="blue">
+      <img src="images/baeddy1.png" class="blue" alt="teddy">
       <div class="logbox">
          <form action="signup_do.jsp" method="POST" name="signupf" onsubmit="return fnCheck()">
          <input type="hidden" name="idDuplication" id="idDuplication" value="0">
