@@ -52,7 +52,7 @@
       </div>
    </div>
    <div class="login_pg">
-      <img src="images/blue.png" class="blue" alt="blue">
+      <img src="images/baeddy1.png" class="blue" alt="blue">
       <div class="logbox">
          <form name="loginf" action="login_do.jsp" method="POST" onsubmit="return fnCheck()">
             <div>
