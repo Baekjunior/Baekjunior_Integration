@@ -10,7 +10,7 @@ public class ProblemInfoDB {
 	private ResultSet rs;
 	
 	public ProblemInfoDB() throws NamingException, SQLException {
-		con = DsCon.getConnetion();
+		con = DsCon.getConnection();
 	}
 	
 	// 
@@ -48,7 +48,16 @@ public class ProblemInfoDB {
 		if(rs.next()) {
 			pi.setProblem_idx(rs.getInt(1));
 		}
+	}
+	
+	public void insertMemoTitle(int problem_idx, String problem_title) throws SQLException {
+		String sql = "UPDATE problems SET memo_title=? WHERE problem_idx=?";
 		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, problem_title + " (" + problem_idx + ")" );
+		pstmt.setInt(2, problem_idx);
+		
+		pstmt.executeUpdate();
 	}
 	
 	public void close() throws SQLException {

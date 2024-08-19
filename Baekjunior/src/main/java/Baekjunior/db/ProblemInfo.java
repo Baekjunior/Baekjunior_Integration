@@ -6,6 +6,7 @@ public class ProblemInfo {
 	private int problem_id;
 	private String problem_title;
 	private String problem_url;
+	private String memo_title;
 	private String tier_name;
 	private int tier_num;
 	private int level;
@@ -45,6 +46,12 @@ public class ProblemInfo {
 	}
 	public void setProblem_url(String problem_url) {
 		this.problem_url = problem_url;
+	}
+	public String getMemo_title() {
+		return memo_title;
+	}
+	public void setMemo_title(String memo_title) {
+		this.memo_title = memo_title;
 	}
 	public String getTier_name() {
 		return tier_name;

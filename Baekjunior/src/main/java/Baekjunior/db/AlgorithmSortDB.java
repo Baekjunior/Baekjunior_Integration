@@ -10,7 +10,7 @@ public class AlgorithmSortDB {
 	private ResultSet rs;
 	
 	public AlgorithmSortDB() throws NamingException, SQLException {
-		con = DsCon.getConnetion();
+		con = DsCon.getConnection();
 	}
 	public void insertAlgorithmSort(String userId, int problemIdx, String[] algorithms) throws SQLException {
         String sql = "INSERT INTO algorithm_sort (user_id, problem_idx, sort) VALUES (?, ?, ?)";

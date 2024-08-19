@@ -10,7 +10,7 @@ public class UserInfoDB {
 	private ResultSet rs;
 	
 	public UserInfoDB() throws NamingException, SQLException {
-		con = DsCon.getConnetion();
+		con = DsCon.getConnection();
 	}
 	
 	// 신규 유저 등록시, 이미 db상에 존재하는 아이디인지 체크하는 함수

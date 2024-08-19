@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	import="java.sql.*, javax.naming.*, Baekjunior.db.*" session="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +8,14 @@
 <script src="https://kit.fontawesome.com/c9057320ee.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="MyPagest.css?v=1.2">
 </head>
+<%
+request.setCharacterEncoding("utf-8");
+String userId = "none";
+HttpSession session = request.getSession(false);
+if(session != null && session.getAttribute("login.id") != null) {
+	userId = (String) session.getAttribute("login.id");
+}
+%>
 <body>
 	<header>
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
@@ -53,7 +61,7 @@
 		</div>
 		<ul>
 			<li><img src="img/user.png" style="width:30px;"></li>
-			<li><a href="#">User</a></li>
+			<li><a href="#"><%=userId %></a></li>
 		</ul>
 	</header>
 	

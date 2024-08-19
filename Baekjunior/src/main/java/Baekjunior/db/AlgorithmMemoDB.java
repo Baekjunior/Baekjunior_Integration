@@ -10,7 +10,7 @@ public class AlgorithmMemoDB {
 	private ResultSet rs;
 	
 	public AlgorithmMemoDB() throws NamingException, SQLException {
-		con = DsCon.getConnetion();
+		con = DsCon.getConnection();
 	}
 	
 	public int algorithmExistCheck(String algorithm_name) throws SQLException {

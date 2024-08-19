@@ -39,6 +39,7 @@
 			// 필기할 문제 등록
 			ProblemInfoDB pdb = new ProblemInfoDB();
 			pdb.insertProblem(pi);
+			pdb.insertMemoTitle(pi.getProblem_idx(), problemTitle);
 			pdb.close();
 			
 			// 해당 필기의 알고리즘 분류 저장
