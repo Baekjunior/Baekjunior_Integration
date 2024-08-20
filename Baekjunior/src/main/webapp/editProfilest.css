@@ -127,73 +127,22 @@ header [class ^= "main_menu_"] > ul > li:hover{
 	text-decoration: none;
 	color: black;
 }
+
+
 .inner_contents {
 	flex: 8;
 	margin-top: 40px;
     margin-right: 200px;
     margin-left: 100px;
 }
-.select_div {
-	display: flex;
+.profileimg{
+	width: 200px;
+} 
+a {
+	text-decoration: none;
+    color: black;
 }
-.select_div > Button {
-	flex: 1;
-    margin: 0 40px;
-    height: 150px;
-    border-radius: 30px;
-    border: 3px solid black;
-}
-Button:hover {
-    letter-spacing:3px;
-	font-weight:bold;
-	transition:0.3s;
-    cursor: pointer;
-  }
-Button > div {
-	margin-bottom: 10px;
-}
-Button > div > h3 {
-	text-align: left;
-    padding-left: 40px;
-    margin-bottom: 20px;
-}
-Button > div > p {
-	display: inline;
-	margin: 0 50px;
-}
-table {
-	width: 100%;
-}
-.calender {
-	 border: 3px solid black;
-	margin: 0 40px;
-	margin-top: 50px;
-	padding: 30px;
-	border-radius: 30px;
-}
-.calender_box > h2 {
-	margin-bottom : 30px;
-}
-td {
-	width: 100px;
-	height: 50px;
-}
-td > div {
-    margin: 20px;
-    width: 50px;
-    padding-left: 22px;
-}
-td > div > p {
-	display: inline;
-	font-size: 14px;
-}
-td > div > p:nth-child(2){
-	display: inline-table;
-    width: 45px;
-    height: 45px;
-    border: 1.3px solid black;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 2.3;
-    font-size: medium;
+table, tr, td {
+	border: 3px solid black;
+	border-collapse: collapse;
 }
