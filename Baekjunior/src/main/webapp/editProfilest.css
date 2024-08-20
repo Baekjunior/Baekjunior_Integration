@@ -136,7 +136,7 @@ header [class ^= "main_menu_"] > ul > li:hover{
     margin-left: 100px;
 }
 .profileimg{
-	width: 200px;
+	width: 150px;
 } 
 a {
 	text-decoration: none;
@@ -145,4 +145,42 @@ a {
 table, tr, td {
 	border: 3px solid black;
 	border-collapse: collapse;
+}
+table {
+	width: 100%;
+	margin-top: 55px;
+}
+td {
+	height: 65px;
+	padding-left: 20px; 
+}
+.myinfo {
+	display: flex;
+}
+.img_box {
+	display: inline-grid;
+	flex:1.5;
+}
+.info_box {
+	display: inline-block;
+	flex: 8.5;	
+	position: relative;
+    top: 30px;
+    margin: 0 60px;
+}
+.info_box > h1 {
+	font-size: xx-large;
+	font-weight: 400;
+}
+form {
+	display: flex;
+}
+textarea {
+	flex: 8;
+	height: 75px;
+}
+input[type="submit"]{
+	flex: 2;
+	height: 75px;
+	margin-left: 10px;
 }
