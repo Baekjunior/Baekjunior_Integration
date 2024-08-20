@@ -154,7 +154,7 @@ ResultSet rs = null;
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
 	    			<li><a href="#">Unpin / Pin to top</a></li>
-	    			<li><a href="#">Split screen</a></li>
+	    			<li><a href="splitscreen1.jsp">Split screen</a></li>
 	    			<li><a href="#">Setting</a></li>
 	    			<li><a href="#">Delete</a></li>
 	    		</ul>
@@ -163,21 +163,23 @@ ResultSet rs = null;
  			</li>
  		<%
  			if(userId != "none"){
+ 				int cnt = 0;
 	 			try {
 					String sql = "SELECT * FROM problems WHERE user_id=?";
 	 				pstmt = con.prepareStatement(sql);
 	 				pstmt.setString(1, userId);
 	 				rs = pstmt.executeQuery();
 	 				while(rs.next()){
+	 					++cnt;
  		%>
  			<li class="item">
- 				<div class="content_number"><a href="note_detail.jsp"><%=rs.getInt("problem_idx") %># <%=rs.getInt("problem_id") %></a></div>
+ 				<div class="content_number"><a href="note_detail.jsp"><%=cnt %># <%=rs.getInt("problem_id") %></a></div>
  				<div class="content_set">
 	    		<img class="content_set_a" src="img/pin.png">
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
 	    			<li><a href="#">Unpin / Pin to top</a></li>
-	    			<li><a href="#">Split screen</a></li>
+	    			<li><a href="splitscreen.jsp">Split screen</a></li>
 	    			<li><a href="#">Setting</a></li>
 	    			<li><a href="#">Delete</a></li>
 	    		</ul>

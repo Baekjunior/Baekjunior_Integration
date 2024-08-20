@@ -42,7 +42,7 @@ if(session != null && session.getAttribute("login.id") != null) {
 						<li><a href="#">group2</a></li>
 					</ul>
 				</li>
-				<li class="main_menu_MyPage"><a href="#">MyPage</a>
+				<li class="main_menu_MyPage"><a href="MyPage.jsp">MyPage</a>
 					<ul>
 						<li><a href="#">mypage1</a></li>
 						<li><a href="#">mypage2</a></li>

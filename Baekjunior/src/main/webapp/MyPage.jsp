@@ -80,7 +80,7 @@ if(session != null && session.getAttribute("login.id") != null) {
 			<div class="menu_box">
 				<ul>
 					<li><a href="#">내 활동</a></li>
-					<li><a href="#">프로필 수정</a></li>
+					<li><a href="editProfile.jsp">프로필 수정</a></li>
 				</ul>
 			</div>
 		</div>
