@@ -39,6 +39,43 @@ public class UserInfoDB {
 		pstmt.executeUpdate();
 	}
 	
+	// 기존의 프로필 사진이 존재하는지 확인하는 함수
+	public String imageExistCheck(String id) throws SQLException {
+		String sql = "SELECT * FROM users WHERE user_id=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, id);
+		rs = pstmt.executeQuery();
+		rs.next();
+		if(rs.getString("savedFileName") != null) {
+			return rs.getString("savedFileName");
+		}
+		return "";
+	}
+	
+	// 회원 정보에 프로필 사진을 추가하는 함수
+	public void updateProfileImage(String id, String origin, String save) throws SQLException {
+		String sql = "UPDATE users SET originalFileName=?, savedFileName=? WHERE user_id=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1,origin);
+		pstmt.setString(2, save);
+		pstmt.setString(3, id);
+		
+		pstmt.executeUpdate();
+	}
+	
+	// 한줄소개 업데이트 하는 함수
+	public void updateIntro(String id, String text) throws SQLException {
+		String sql = "UPDATE users SET intro=? WHERE user_id=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, text);
+		pstmt.setString(2, id);
+		
+		pstmt.executeUpdate();
+	}
+	
 	// db 상에 해당 id와 password를 가진 유저가 존재하는지 확인하는 함수
 	public int userExistCheck(String id, String pwd) throws SQLException {
 		String sql = "SELECT * FROM users WHERE user_id=? AND password=?";

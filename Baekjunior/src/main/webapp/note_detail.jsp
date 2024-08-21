@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	import="java.sql.*, javax.naming.*, Baekjunior.db.*" session="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,19 @@
 <title>create_note</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
 </head>
+<%
+request.setCharacterEncoding("utf-8");
+String userId = "none";
+HttpSession session = request.getSession(false);
+if(session != null && session.getAttribute("login.id") != null) {
+	userId = (String) session.getAttribute("login.id");
+}
+int problemIdx = Integer.parseInt(request.getParameter("problem_idx"));
 
+Connection con = DsCon.getConnection();
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+%>
 <body>	
 	<header>
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
@@ -53,17 +65,26 @@
 		</div>
 		<ul>
 			<li><img src="img/user.png" style="width:30px;"></li>
-			<li><a href="#">User</a></li>
+			<li><a href="MyPage.jsp"><%=userId %></a></li>
 		</ul>
 	</header>
-	
+
 	<script type="text/javascript">
 		window.addEventListener("scroll", function(){
 			var header= document.querySelector("header");
 			header.classList.toggle("sticky", window.scrollY > 0);
 		});
 	</script>
-	
+	<%
+		try {
+			String sql = "SELECT * FROM problems WHERE problem_idx=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, problemIdx);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				
+	%>
 	<section class="banner">
 		<a href="#" class="logo"></a>
 	</section>
@@ -73,17 +94,17 @@
 			<div>
 				<div>
 					<div style="display:inline; width:80%; font-size:25px; font-weight:bold;">
-						#<span>15654</span> : <span>N과 M (5)</span> <span><img src="img/star_on.png" style="width:18px;"></span>
+						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> <span><img src="img/star_on.png" style="width:18px;"></span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
-						Submit Date : <span>2024-07-16</span>
+						Submit Date : <span><%=rs.getDate("submitDate") %></span>
 					</div>
 				</div>
 				
 				<div style="font-weight:bold; font-size:20px; margin-top:15px; margin-left:30px;">
 					<div style="display:inline; width:80%;">
 						<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;">DFS</span>
-						<span style="margin-right:50px;">C++</span>
+						<span style="margin-right:50px;"><%=rs.getString("language") %></span>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dodam</span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dam</span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
@@ -107,48 +128,8 @@
             <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
                 <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="text-align:center; padding-bottom:0px;" readonly></textarea>
                 <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly>
-// https://www.acmicpc.net/problem/5525
-// 5525번
-// IOIOI
-// Silver 1
-// 2024-08-03
-
-#include <iostream>
-#include <string>
-
-using namespace std;
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-    int n, m;
-    cin >> n >> m;
-
-    string s;
-    cin >> s;
-
-    int ans = 0;
-    for (int i = 0; i < m; i++) {
-        int k = 0;
-        if (s[i] == 'O') { continue; }
-
-        else {
-            while (s[i + 1] == 'O' && s[i + 2] == 'I') {
-                k++;
-                if (k == n) {
-                    k--;
-                    ans++;
-                }
-                i += 2;
-            }
-            k = 0;
-        }
-    }
-    cout << ans;
-}
-                </textarea>
+<%=rs.getString("code") %>
+				</textarea>
             </div>
         </div>
         
@@ -159,61 +140,70 @@ int main() {
             </div>
         </div>
     	</div>
+		<%
+			}
+			con.close();
+			pstmt.close();
+			rs.close();
+		} catch(SQLException e) {
+ 			out.print(e);
+ 			return;
+ 		}
+		%>
 		
-		
-			<script>
-        const textarea = document.getElementById('cppCode');
-        const lineNumbers = document.getElementById('lineNumbers');
-        const noteDetail = document.getElementById('note_detail');
-				
-        function updateLineNumbers() {
-            const numberOfLines = textarea.value.split('\n').length;
-            let lineNumberString = '';
-            let noteDetailString = '';
-
-            for (let i = 1; i <= numberOfLines; i++) {
-                lineNumberString += i + '\n';
-                noteDetailString += "_" + '\n';
-            }
-
-            lineNumbers.value = lineNumberString;
-            noteDetail.value = noteDetailString;
-        }
-
-        function adjustHeight(element) {
-            element.style.height = 'auto'; // Reset height to auto to measure scrollHeight
-            element.style.height = element.scrollHeight + 'px'; // Adjust height to fit content
-        }
-
-        // Function to sync heights between textareas
-        function syncHeights() {
-            const maxScrollHeight = Math.max(textarea.scrollHeight, lineNumbers.scrollHeight, noteDetail.scrollHeight);
-            textarea.style.height = maxScrollHeight + 'px';
-            lineNumbers.style.height = maxScrollHeight + 'px';
-            noteDetail.style.height = maxScrollHeight + 'px';
-        }
-
-        // 초기 라인 번호 및 높이 업데이트
-        updateLineNumbers();
-        syncHeights();
-
-        // 사용자가 텍스트를 입력하거나 줄을 변경할 때 라인 번호 및 높이 업데이트
-        textarea.addEventListener('input', () => {
-            updateLineNumbers();
-            syncHeights();
-        });
-
-        // Scroll the line numbers to match the code textarea
-        textarea.addEventListener('scroll', () => {
-            lineNumbers.scrollTop = textarea.scrollTop;
-        });
-
-        function submitCppCode() {
-            const code = textarea.value;
-            console.log("Submitted C++ Code:", code);
-
-            // 서버에 코드를 전송하거나 WebAssembly로 처리하는 로직을 여기에 추가합니다.
-        }
+		<script>
+	        const textarea = document.getElementById('cppCode');
+	        const lineNumbers = document.getElementById('lineNumbers');
+	        const noteDetail = document.getElementById('note_detail');
+					
+	        function updateLineNumbers() {
+	            const numberOfLines = textarea.value.split('\n').length;
+	            let lineNumberString = '';
+	            let noteDetailString = '';
+	
+	            for (let i = 1; i <= numberOfLines; i++) {
+	                lineNumberString += i + '\n';
+	                noteDetailString += "_" + '\n';
+	            }
+	
+	            lineNumbers.value = lineNumberString;
+	            noteDetail.value = noteDetailString;
+	        }
+	
+	        function adjustHeight(element) {
+	            element.style.height = 'auto'; // Reset height to auto to measure scrollHeight
+	            element.style.height = element.scrollHeight + 'px'; // Adjust height to fit content
+	        }
+	
+	        // Function to sync heights between textareas
+	        function syncHeights() {
+	            const maxScrollHeight = Math.max(textarea.scrollHeight, lineNumbers.scrollHeight, noteDetail.scrollHeight);
+	            textarea.style.height = maxScrollHeight + 'px';
+	            lineNumbers.style.height = maxScrollHeight + 'px';
+	            noteDetail.style.height = maxScrollHeight + 'px';
+	        }
+	
+	        // 초기 라인 번호 및 높이 업데이트
+	        updateLineNumbers();
+	        syncHeights();
+	
+	        // 사용자가 텍스트를 입력하거나 줄을 변경할 때 라인 번호 및 높이 업데이트
+	        textarea.addEventListener('input', () => {
+	            updateLineNumbers();
+	            syncHeights();
+	        });
+	
+	        // Scroll the line numbers to match the code textarea
+	        textarea.addEventListener('scroll', () => {
+	            lineNumbers.scrollTop = textarea.scrollTop;
+	        });
+	
+	        function submitCppCode() {
+	            const code = textarea.value;
+	            console.log("Submitted C++ Code:", code);
+	
+	            // 서버에 코드를 전송하거나 WebAssembly로 처리하는 로직을 여기에 추가합니다.
+	        }
     	</script>
 		</div>
 			

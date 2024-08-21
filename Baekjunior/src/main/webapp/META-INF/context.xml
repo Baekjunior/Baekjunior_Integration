@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <Context useNaming="true">
+ <Context allowCasualMultipartParsing="true" swallowAbortedUploads="false" useNaming="true">
  <Resource description="DB Connection"
 	auth="Container"
 	driverClassName="org.mariadb.jdbc.Driver"

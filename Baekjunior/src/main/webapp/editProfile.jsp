@@ -15,6 +15,18 @@ HttpSession session = request.getSession(false);
 if(session != null && session.getAttribute("login.id") != null) {
 	userId = (String) session.getAttribute("login.id");
 }
+
+Connection con = DsCon.getConnection();
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+try {
+	if(userId != "none") {
+		String sql = "SELECT * FROM users WHERE user_id=?";
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, userId);
+		rs = pstmt.executeQuery();
+		rs.next();
+	}
 %>
 <body>
 	<header>
@@ -86,14 +98,17 @@ if(session != null && session.getAttribute("login.id") != null) {
 		</div>
 		<div class="inner_contents">
 			<div class="myinfo">
+				<form action="modify_profileImage.jsp?user_id=<%=userId %>" method="POST" enctype="multipart/form-data">
 				<div class="img_box">
-					<img src="images/white.png" class="profileimg" alt="profileimg">
-					<button class="imgUpload" onclick="location.href='#'">사진 업로드</button>
+					<img src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg">
+					<input type="file" accept="image/jpg,image/gif" name="fileName" class="imgUpload">사진 업로드	
+					<button type="submit" class="imgUpload">사진 업로드</button>
 				</div>
+				</form>
 				<div class="info_box">
 					<h1>Yuminmi</h1>
-					<form name="mytext" action="modify_text.jsp" method="POST">
-						<textarea></textarea>
+					<form name="mytext" action="modify_intro.jsp?user_id=<%=userId %>" method="POST">
+						<textarea name="intro"><%=Util.nullChk(rs.getString("intro"), "") %></textarea>
 						<input type="submit">
 					</form>
 				</div>
@@ -114,11 +129,16 @@ if(session != null && session.getAttribute("login.id") != null) {
 					</tr>
 				</table>
 			</div>
-			
-			
 		</div>
 	</div>
-	
-	
 </body>
 </html>
+<%
+	con.close();
+	pstmt.close();
+	rs.close();
+} catch (SQLException e){
+	out.print(e);
+	return;
+}
+%>

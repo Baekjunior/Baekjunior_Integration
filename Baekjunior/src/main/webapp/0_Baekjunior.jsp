@@ -148,7 +148,7 @@ ResultSet rs = null;
 		<div id="list_group">
 		<ul class="list">
  			<li class="item">
- 				<div class="content_number"><a href="note_detail.jsp">1# 2557</a></div>
+ 				<div class="content_number"><a href="note_detail.jsp">2557</a></div>
  				<div class="content_set">
 	    		<img class="content_set_a" src="img/pin.png">
 	    		<button class="content_set_b"><img src="img/....png"></button>
@@ -163,17 +163,15 @@ ResultSet rs = null;
  			</li>
  		<%
  			if(userId != "none"){
- 				int cnt = 0;
 	 			try {
 					String sql = "SELECT * FROM problems WHERE user_id=?";
 	 				pstmt = con.prepareStatement(sql);
 	 				pstmt.setString(1, userId);
 	 				rs = pstmt.executeQuery();
 	 				while(rs.next()){
-	 					++cnt;
  		%>
  			<li class="item">
- 				<div class="content_number"><a href="note_detail.jsp"><%=cnt %># <%=rs.getInt("problem_id") %></a></div>
+ 				<div class="content_number"><a href="note_detail.jsp"># <%=rs.getInt("problem_id") %></a></div>
  				<div class="content_set">
 	    		<img class="content_set_a" src="img/pin.png">
 	    		<button class="content_set_b"><img src="img/....png"></button>
@@ -184,7 +182,7 @@ ResultSet rs = null;
 	    			<li><a href="#">Delete</a></li>
 	    		</ul>
 	    	</div>
- 				<div class="content_title"><a href="note_detail.jsp"><%=rs.getString("memo_title") %></a></div>
+ 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>"><%=rs.getString("memo_title") %></a></div>
  			</li>
  		<%
  					con.close();
