@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	import="java.sql.*, javax.naming.*, Baekjunior.db.*" session="false"%>
+	import="java.sql.*, java.util.*, java.io.*, javax.naming.*, Baekjunior.db.*, Baekjunior.multipart.*" session="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,6 +28,17 @@ try {
 		rs.next();
 	}
 %>
+
+<script type="text/javascript">
+    function confirmDeletion(userId) {
+        var result = confirm("정말 탈퇴하시겠습니까?");
+        if (result) {
+            window.location.href = "user_delete_do.jsp?user_id=" + userId;
+        } else {
+            return false;
+        }
+    }
+</script>
 <body>
 	<header>
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
@@ -106,7 +117,7 @@ try {
 				</div>
 				</form>
 				<div class="info_box">
-					<h1>Yuminmi</h1>
+					<h1><%=rs.getString("user_id") %></h1>
 					<form name="mytext" action="modify_intro.jsp?user_id=<%=userId %>" method="POST">
 						<textarea name="intro"><%=Util.nullChk(rs.getString("intro"), "") %></textarea>
 						<input type="submit">
@@ -125,7 +136,7 @@ try {
 						<td><a href="information.jsp">로그아웃 ></a></td>
 					</tr>
 					<tr>
-						<td><a href="">회원 탈퇴 ></a></td>
+						<td><a href="#" onclick="confirmDeletion('<%=userId %>')">회원 탈퇴 ></a></td>
 					</tr>
 				</table>
 			</div>

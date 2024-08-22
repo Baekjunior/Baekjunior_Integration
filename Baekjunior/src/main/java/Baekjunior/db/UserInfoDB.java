@@ -90,6 +90,34 @@ public class UserInfoDB {
 		return 0;
 	}
 	
+	// 회원 탈퇴 함수. 해당 회원이 등록했던 problems, algorithm_sort, algorithm_memo 정보도 같이 삭제
+	public void deleteUser(String id) throws SQLException {
+		String sql = "DELETE FROM users	WHERE user_id=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
+		pstmt.close();
+		
+		sql = "DELETE FROM problems WHERE user_id=?";
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
+		pstmt.close();
+		
+		sql = "DELETE FROM algorithm_sort WHERE user_id=?";
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
+		pstmt.close();
+		
+		sql = "DELETE FROM algorithm_memo WHERE user_id=?";
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, id);
+		pstmt.executeUpdate();
+		pstmt.close();
+	}
+	
 	public void close() throws SQLException	{
 		if(rs != null) rs.close();
 		if(pstmt != null) pstmt.close();
