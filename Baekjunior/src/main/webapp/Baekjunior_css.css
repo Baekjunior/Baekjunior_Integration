@@ -451,8 +451,8 @@ input[type='radio']:checked{
 }
 
 textarea {
-		overflow-x:scroll;
-		overflow-y:hidden;
+	overflow-x:scroll;
+	overflow-y:hidden;
     border: none;
     outline: none;
     resize: none;
@@ -464,3 +464,23 @@ textarea {
 }
 
 
+
+
+/* note_detail_edit.jsp */
+.sub_note a{
+	float:right;
+	font-size:15px;
+	font-weight:bold;
+	text-decoration:none;
+	color:black;
+	background:none;
+	margin-top:5px;
+	padding:0 5px;
+	border:none;
+}
+
+.sub_note a hover{
+	letter-spacing:3px;
+	font-weight:bold;
+	transition:0.3s;
+}

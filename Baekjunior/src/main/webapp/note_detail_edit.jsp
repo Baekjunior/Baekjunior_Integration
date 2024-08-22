@@ -84,7 +84,7 @@
 				<div style="font-weight:bold; font-size:20px; margin-top:15px; margin-left:30px;">
 					<div style="display:inline; width:80%;">
 						<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:60px;">DFS</span>
-						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dodam</span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dam</span>
+						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dodam</a></span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dam</a></span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
 						<a href="#" style="color:black;">Delete</a>
@@ -92,23 +92,71 @@
 				</div>
 			</div>	
 			
-			<div style="font-weight:bold; font-size:20px; border:3px solid black; background:#5F99EB; padding:30px; margin-top:50px; vertical-align:middle; ">
-				<div style="padding:5px;">
-					<img src="img/star_red.png" style="width:13px;"> <span>재귀함수를 통해 문제를 풀이한다.</span> <a href="#" style="float:right; font-size:15px; font-weight:bold; text-decoration:none; color:black;">X</a>
-				</div>
-				<div style="padding:5px;">
-					<img src="img/star_red.png" style="width:13px;"> <span>그리고 안러 ㅣㄴㅇ러 ㅣ나얼 ㅣㅓ리아ㅓ라ㅣㅇ  ㅣ아러ㅣ얼</span> <a href="#" style="float:right; font-size:15px; font-weight:bold; text-decoration:none; color:black;">X</a>
-				</div>
-				<div>
-					<a href="#" style="text-decoration:none; color:black;">+</a>
-				</div>
+			<script>
+			document.addEventListener('DOMContentLoaded', function() {
+			    const addButton = document.getElementById('add_btn');
+			    const container = document.getElementById('container');
+
+			    addButton.addEventListener('click', function(event) {
+			        event.preventDefault(); // 링크 기본 동작 방지
+			        
+			        // 새로운 div 요소 생성
+			        const newDiv = document.createElement('div');
+			        newDiv.className = 'container_div'; // CSS 클래스 추가
+			        newDiv.style.padding = '5px';
+
+			        // div 내부 HTML 설정
+			        newDiv.innerHTML = `
+			            <span><img src="img/star_red.png" style="width:13px;"></span>
+			            <input type="text" style="width:90%; background-color:transparent; padding:5px; font-size:15px;" value="">
+			            <a class="delete_btn" href="#">X</a>
+			        `;
+
+			        // X 버튼 클릭 이벤트 리스너 추가
+			        newDiv.querySelector('.delete_btn').addEventListener('click', function(event) {
+			            event.preventDefault(); // 링크 기본 동작 방지
+			            container.removeChild(newDiv); // div 제거
+			        });
+
+			        // 컨테이너에 새로운 div 추가
+			        container.appendChild(newDiv);
+			    });
+
+			    // 기존의 X 버튼 클릭 이벤트 리스너 추가
+			    container.addEventListener('click', function(event) {
+			        if (event.target.classList.contains('delete_btn')) {
+			            event.preventDefault(); // 링크 기본 동작 방지
+			            const divToRemove = event.target.closest('.container_div'); // 클릭한 X 버튼이 포함된 div 찾기
+			            container.removeChild(divToRemove); // div 제거
+			        }
+			    });
+			});
+			</script>
+			
+			<div class="sub_note" style="font-weight:bold; font-size:20px; border:3px solid black; background:#5F99EB; padding:30px; margin-top:50px; vertical-align:middle; ">
+				<div id="container">
+					<div class="container_div" style="padding:5px;">
+		                <span><img src="img/star_red.png" style="width:13px;"></span>
+		                <input type="text" style="width:90%; background-color:transparent; padding:5px; font-size:15px;" value="재귀함수를 통해 문제를 풀이한다.">
+		                <a class="delete_btn" href="#">X</a>
+		            </div>
+		            <div class="container_div" style="padding:5px;">
+		                <span><img src="img/star_red.png" style="width:13px;"></span>
+		                <input type="text" style="width:90%; background-color:transparent; padding:5px; font-size:15px;" value="그리고 안러 ㅣㄴㅇ러 ㅣ나얼 ㅣㅓ리아ㅓ라ㅣㅇ  ㅣ아러ㅣ얼">
+		                <a class="delete_btn" href="#">X</a>
+		            </div>
+		        </div>
+		        
+		        <div style="padding:5px; margin-bottom:20px;">
+		            <a id="add_btn" href="#">+</a>
+		        </div>
 			</div>
 			
-			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px; font-size: 20px;">
-        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
-            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
-                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="text-align:center; padding-bottom:0px;" readonly></textarea>
-                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;">
+			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px;">
+		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
+		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
+		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="font-size:15px; overflow:auto; text-align:center; padding-bottom:0px;" readonly></textarea>
+		                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;">
 // https://www.acmicpc.net/problem/5525
 // 5525번
 // IOIOI
@@ -157,7 +205,7 @@ int main() {
 
         <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
             <div id="code-editor" style="border: none;">
-                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;"></textarea>
+                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;"></textarea>
             </div>
         </div>
     	</div>

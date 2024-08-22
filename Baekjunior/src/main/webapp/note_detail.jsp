@@ -123,20 +123,20 @@ ResultSet rs = null;
 				</div>
 			</div>
 			
-			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px; font-size: 20px;">
-        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
-            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
-                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="text-align:center; padding-bottom:0px;" readonly></textarea>
-                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly>
+			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px;">
+		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
+		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
+		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="font-size:15px; overflow:auto; text-align:center; padding-bottom:0px;" readonly></textarea>
+		                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly>
 <%=rs.getString("code") %>
-				</textarea>
-            </div>
-        </div>
+						</textarea>
+		            </div>
+		        </div>
         
 
         <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
             <div id="code-editor" style="border: none;">
-                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly></textarea>
+                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly></textarea>
             </div>
         </div>
     	</div>
