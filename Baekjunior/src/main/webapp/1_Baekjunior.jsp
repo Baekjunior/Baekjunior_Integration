@@ -7,11 +7,18 @@
 <title>Baekjunior</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
 
-<script>
-	
-</script>
-
 </head>
+<%
+request.setCharacterEncoding("utf-8");
+String userId = "none";
+HttpSession session = request.getSession(false);
+if(session != null && session.getAttribute("login.id") != null) {
+	userId = (String) session.getAttribute("login.id");
+}
+Connection con = DsCon.getConnection();
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+%>
 <body>	
 	<header>
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
@@ -23,6 +30,7 @@
 						<li><a href="#">storage2</a></li>
 						<li><a href="#">storage3</a></li>
 						<li><a href="#">storage4</a></li>
+						<li><a href="#">storage5</a></li>
 					</ul>
 				</li>				
 				<li class="main_menu_Friend"><a href="#">Friend</a>
@@ -38,7 +46,7 @@
 						<li><a href="#">group2</a></li>
 					</ul>
 				</li>
-				<li class="main_menu_MyPage"><a href="#">MyPage</a>
+				<li class="main_menu_MyPage"><a href="MyPage.jsp">MyPage</a>
 					<ul>
 						<li><a href="#">mypage1</a></li>
 						<li><a href="#">mypage2</a></li>
@@ -57,7 +65,7 @@
 		</div>
 		<ul>
 			<li><img src="img/user.png" style="width:30px;"></li>
-			<li><a href="#">User</a></li>
+			<li><a href="MyPage.jsp"><%=userId%></a></li>
 		</ul>
 	</header>
 	
@@ -78,8 +86,8 @@
 	<nav>
 		<div>
 			<ul>
-				<li><a href="0_Baekjunior.jsp">ALL</a></li>
-				<li><a href="1_Baekjunior.jsp"><b>BOOKMARK</b></a></li>
+				<li><a href="0_Baekjunior.jsp"><b>ALL</b></a></li>
+				<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
 				<li><a href="#">CATEGORY</a>
 					<ul class="sub">
 						<li><a href="#"><img src="img/dot1.png">BFS</a></li>
@@ -108,11 +116,11 @@
 			<div id="page_bookmark">BOOKMARK</div>
 		</div>
 		<div id="main_bar">
-			<div id="sort" class="content_set">
+			<div id="sort"  class="content_set">
 				<div id="sort_select" class="content_set_b">
-					<button>sort</button>
+					<button>SORT</button>
 				</div>
-				<ul>
+				<ul style="top:205px;">
 					<li><a href="#">Latest</a></li>
 					<li><a href="#">Earliest</a></li>
 					<li><a href="#">Ascending number</a></li>
@@ -131,9 +139,8 @@
 					<input type="radio" name="search_range"></input><label>Note</label>
 				</div>
 			</div>
-			
 			<div id="btn_cretenote">
-				<button onclick="location.href='create_note.jsp'">create note</button>
+				<button onclick="location.href='create_note.jsp'">CREATE NOTE</button>
 			</div>
 		</div>
 		
@@ -143,426 +150,54 @@
 		
 		<div id="list_group">
 		<ul class="list">
-  		<li class="item">
- 				<div class="content_number"><a href="note_detail.jsp">1# 2557</a></div>
+ 			<li class="item">
+ 				<div class="content_number"><a href="note_detail.jsp">2557</a></div>
  				<div class="content_set">
 	    		<img class="content_set_a" src="img/pin.png">
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
 	    			<li><a href="#">Unpin / Pin to top</a></li>
-	    			<li><a href="#">Split screen</a></li>
+	    			<li><a href="splitscreen1.jsp">Split screen</a></li>
 	    			<li><a href="#">Setting</a></li>
 	    			<li><a href="#">Delete</a></li>
 	    		</ul>
 	    	</div>
  				<div class="content_title"><a href="note_detail.jsp">Hello World</a></div>
  			</li>
+ 		<%
+ 			if(userId != "none"){
+	 			try {
+					String sql = "SELECT * FROM problems WHERE user_id=?";
+	 				pstmt = con.prepareStatement(sql);
+	 				pstmt.setString(1, userId);
+	 				rs = pstmt.executeQuery();
+	 				while(rs.next()){
+ 		%>
  			<li class="item">
-    			<div class="content_number">2# 1000</div>
-    			<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-    			<div class="content_title">A+B</div>
+ 				<div class="content_number"><a href="note_detail.jsp"># <%=rs.getInt("problem_id") %></a></div>
+ 				<div class="content_set">
+	    		<img class="content_set_a" src="img/pin.png">
+	    		<button class="content_set_b"><img src="img/....png"></button>
+	    		<ul>
+	    			<li><a href="#">Unpin / Pin to top</a></li>
+	    			<li><a href="splitscreen.jsp">Split screen</a></li>
+	    			<li><a href="#">Setting</a></li>
+	    			<li><a href="#">Delete</a></li>
+	    		</ul>
+	    	</div>
+ 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>"><%=rs.getString("memo_title") %></a></div>
  			</li>
-		    <li class="item">
-		    	<div class="content_number">3# 18108</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title"><span>1998년생인 내가 태국에서는 2541년생?!</span></div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number">4# 15818</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">오버플로우와 모듈러</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number">5# 11653</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">소인수분해</div>
- 			</li>
-		    <li class="item">
-		    	<div class="content_number">6# 10831</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">오늘은 코딩하고 싶은 날</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number">7# 1541</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">잃어버린 괄호</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number">8# 1011</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">Fly me to the Alpha Centauri</div>
- 			</li>
-		    <li class="item">
-		    	<div class="content_number">9# 1022</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">소용돌이 예쁘게 출력하기</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 15803</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">PLAYERJINAH’S BOTTLEGROUNDS</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 10831</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">오늘은 코딩하고 싶은 날</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 1541</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">잃어버린 괄호</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 1011</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">Fly me to the Alpha Centauri</div>
- 			</li>
-		    <li class="item">
-		    	<div class="content_number"># 1022</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">소용돌이 예쁘게 출력하기</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 15803</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">PLAYERJINAH’S BOTTLEGROUNDS</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 10831</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">오늘은 코딩하고 싶은 날</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 1541</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">잃어버린 괄호</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 1011</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">Fly me to the Alpha Centauri</div>
- 			</li>
-		    <li class="item">
-		    	<div class="content_number"># 1022</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">소용돌이 예쁘게 출력하기</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 15803</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">PLAYERJINAH’S BOTTLEGROUNDS</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 10831</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">오늘은 코딩하고 싶은 날</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 1541</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">잃어버린 괄호</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 1011</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">Fly me to the Alpha Centauri</div>
- 			</li>
-		    <li class="item">
-		    	<div class="content_number"># 1022</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">소용돌이 예쁘게 출력하기</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 15803</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">PLAYERJINAH’S BOTTLEGROUNDS</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 10831</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">오늘은 코딩하고 싶은 날</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 1541</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">잃어버린 괄호</div>
-			</li>
-			<li class="item">
-		    	<div class="content_number"># 1011</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">Fly me to the Alpha Centauri</div>
- 			</li>
-		    <li class="item">
-		    	<div class="content_number"># 1022</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">소용돌이 예쁘게 출력하기</div>
-		    </li>
-			<li class="item">
-		    	<div class="content_number"># 15803</div>
-		    	<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
-		    		<button class="content_set_b"><img src="img/....png"></button>
-		    		<ul>
-		    			<li><a href="#">Unpin / Pin to top</a></li>
-		    			<li><a href="#">Split screen</a></li>
-		    			<li><a href="#">Setting</a></li>
-		    			<li><a href="#">Delete</a></li>
-		    		</ul>
-		    	</div>
-		    	<div class="content_title">PLAYERJINAH’S BOTTLEGROUNDS</div>
-			</li>
+ 		<%
+ 					con.close();
+ 					pstmt.close();
+ 					rs.close();
+	 			}
+	 		} catch(SQLException e) {
+	 			out.print(e);
+	 			return;
+	 		}
+ 		}
+		%>
 		</ul>
 			
 		</div>
