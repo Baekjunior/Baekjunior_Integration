@@ -171,7 +171,7 @@ ResultSet rs = null;
 	 				while(rs.next()){
  		%>
  			<li class="item">
- 				<div class="content_number"><a href="note_detail.jsp"># <%=rs.getInt("problem_id") %></a></div>
+ 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>"># <%=rs.getInt("problem_id") %></a></div>
  				<div class="content_set">
 	    		<img class="content_set_a" src="img/pin.png">
 	    		<button class="content_set_b"><img src="img/....png"></button>
