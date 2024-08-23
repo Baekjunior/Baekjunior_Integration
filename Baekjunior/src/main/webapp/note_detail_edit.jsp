@@ -68,13 +68,34 @@
 		<a href="#" class="logo"></a>
 	</section>
 	
+	
+	<!-- bookmark_star에 대한 SCRIPT -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    const bookmarkStars = document.querySelectorAll('.bookmark_star');
+	
+		    bookmarkStars.forEach(function(star) {
+		        star.addEventListener('click', function() {
+		            const currentSrc = this.getAttribute('src');
+	
+		            if (currentSrc === 'img/star_on.png') {
+		                this.setAttribute('src', 'img/star_off.png');
+		            } else {
+		                this.setAttribute('src', 'img/star_on.png');
+		            }
+		        });
+		    });
+		});
+	</script>
+	
+	
 	<div style="margin-top:20px;">
 		<div style="width:80%; margin:0 auto;">
 			<div>
 				<div>
 					<div style="font-size:30px; font-weight:bold; margin-bottom:40px;">Edit Mode</div>
 					<div style="display:inline; width:80%; font-size:25px; font-weight:bold;">
-						#<span>15654</span> : <span>N과 M (5)</span> <span><img src="img/star_on.png" style="width:18px;"></span>
+						#<span>15654</span> : <span>N과 M (5)</span> <span><img class="bookmark_star" src="img/star_on.png" style="width:18px;"></span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
 						Submit Date : <span>2024-07-16</span>
