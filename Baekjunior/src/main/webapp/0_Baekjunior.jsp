@@ -182,7 +182,7 @@ ResultSet rs2 = null;
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
 	    				<li><a href="#">Unpin / Pin to top</a></li>
-	    				<li><a href="splitscreen.jsp">Split screen</a></li>
+	    				<li><a href="split_screen.jsp?problem_idx1=<%=rs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
 	    				<li><a href="#">Setting</a></li>
 	    				<li><a href="#">Delete</a></li>
 	    			</ul>
