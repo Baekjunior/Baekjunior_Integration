@@ -15,6 +15,10 @@ HttpSession session = request.getSession(false);
 if(session != null && session.getAttribute("login.id") != null) {
 	userId = (String) session.getAttribute("login.id");
 }
+else{
+	response.sendRedirect("information.jsp");
+    return;
+}
 Connection con = DsCon.getConnection();
 PreparedStatement pstmt = null;
 ResultSet rs = null;
