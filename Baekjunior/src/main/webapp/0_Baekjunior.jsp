@@ -21,7 +21,9 @@ else{
 }
 Connection con = DsCon.getConnection();
 PreparedStatement pstmt = null;
+PreparedStatement pstmt2 = null;
 ResultSet rs = null;
+ResultSet rs2 = null;
 %>
 <body>	
 	<header>
@@ -151,28 +153,27 @@ ResultSet rs = null;
 		
 		<div id="list_group">
 		<ul class="list">
- 			<li class="item">
- 				<div class="content_number"><a href="note_detail.jsp">2557</a></div>
- 				<div class="content_set">
-	    		<img class="content_set_a" src="img/pin.png">
-	    		<button class="content_set_b"><img src="img/....png"></button>
-	    		<ul>
-	    			<li><a href="#">Unpin / Pin to top</a></li>
-	    			<li><a href="splitscreen1.jsp">Split screen</a></li>
-	    			<li><a href="#">Setting</a></li>
-	    			<li><a href="#">Delete</a></li>
-	    		</ul>
-	    	</div>
- 				<div class="content_title"><a href="note_detail.jsp">Hello World</a></div>
- 			</li>
  		<%
- 			if(userId != "none"){
-	 			try {
-					String sql = "SELECT * FROM problems WHERE user_id=?";
-	 				pstmt = con.prepareStatement(sql);
-	 				pstmt.setString(1, userId);
-	 				rs = pstmt.executeQuery();
-	 				while(rs.next()){
+ 		if (!userId.equals("none")) {
+ 			try {
+				String sql = "SELECT * FROM problems WHERE user_id=?";
+ 				pstmt = con.prepareStatement(sql);
+ 				pstmt.setString(1, userId);
+ 				rs = pstmt.executeQuery();
+				
+				String sql2 = "SELECT COUNT(*) FROM problems WHERE user_id=?";
+ 				pstmt2 = con.prepareStatement(sql2);
+ 				pstmt2.setString(1, userId);
+ 				rs2 = pstmt2.executeQuery();
+ 				
+ 				if (rs2.next() && rs2.getInt(1) <= 0) {
+ 					%>
+ 					<div>
+ 						not exist
+ 					</div>
+ 					<%
+ 				} else {
+ 					while (rs.next()) {
  		%>
  			<li class="item">
  				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>"># <%=rs.getInt("problem_id") %></a></div>
@@ -180,27 +181,29 @@ ResultSet rs = null;
 	    		<img class="content_set_a" src="img/pin.png">
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
-	    			<li><a href="#">Unpin / Pin to top</a></li>
-	    			<li><a href="splitscreen.jsp">Split screen</a></li>
-	    			<li><a href="#">Setting</a></li>
-	    			<li><a href="#">Delete</a></li>
-	    		</ul>
+	    				<li><a href="#">Unpin / Pin to top</a></li>
+	    				<li><a href="splitscreen.jsp">Split screen</a></li>
+	    				<li><a href="#">Setting</a></li>
+	    				<li><a href="#">Delete</a></li>
+	    			</ul>
 	    	</div>
  				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>"><%=rs.getString("memo_title") %></a></div>
  			</li>
  		<%
- 					con.close();
- 					pstmt.close();
- 					rs.close();
-	 			}
-	 		} catch(SQLException e) {
-	 			out.print(e);
-	 			return;
-	 		}
+ 					}
+ 				}
+ 			} catch(SQLException e) {
+ 				out.print(e);
+ 			} finally {
+ 				con.close();
+				pstmt.close();
+				rs.close();
+				pstmt2.close();
+				rs2.close();
+ 			}
  		}
-		%>
+ 		%>
 		</ul>
-			
 		</div>
 	</div>
 	
