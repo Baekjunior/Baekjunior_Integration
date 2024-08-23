@@ -27,19 +27,20 @@ public class ProblemInfoDB {
 	}
 	
 	public void insertProblem(ProblemInfo pi) throws SQLException {
-		String sql = "INSERT INTO problems (user_id, problem_id, problem_title, problem_url, tier_name, tier_num, level, code, is_checked)" +
-					" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO problems (user_id, problem_id, problem_title, problem_url, problem_sort, tier_name, tier_num, level, code, is_checked)" +
+					" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, pi.getUser_id());
 		pstmt.setInt(2, pi.getProblem_id());
 		pstmt.setString(3, pi.getProblem_title());
 		pstmt.setString(4, pi.getProblem_url());
-		pstmt.setString(5, pi.getTier_name());
-		pstmt.setInt(6, pi.getTier_num());
-		pstmt.setInt(7, pi.getLevel());
-		pstmt.setString(8, pi.getCode());
-		pstmt.setInt(9, pi.getIs_checked());
+		pstmt.setString(5, pi.getProblem_sort());
+		pstmt.setString(6, pi.getTier_name());
+		pstmt.setInt(7, pi.getTier_num());
+		pstmt.setInt(8, pi.getLevel());
+		pstmt.setString(9, pi.getCode());
+		pstmt.setInt(10, pi.getIs_checked());
 		
 		pstmt.executeUpdate();
 		
@@ -58,6 +59,45 @@ public class ProblemInfoDB {
 		pstmt.setInt(2, problem_idx);
 		
 		pstmt.executeUpdate();
+	}
+	
+	public void updateProblem (ProblemInfo pi) throws SQLException {
+		String sql = "UPDATE problems SET code=?, main_memo=?, sub_memo=? WHERE problem_idx=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, pi.getCode());
+		pstmt.setString(2, pi.getMain_memo());
+		pstmt.setString(3, pi.getSub_memo());
+		pstmt.setInt(4, pi.getProblem_idx());
+		
+		pstmt.executeUpdate();
+	}
+	
+	public void updateBookmark(int problem_idx, int is_checked) throws SQLException {
+		String sql = "UPDATE problems SET is_checked=? WHERE problem_idx=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, is_checked);
+		pstmt.setInt(2, problem_idx);
+		
+		pstmt.executeUpdate();
+	}
+	
+	public void deleteProblem(int problem_idx) throws SQLException {
+		String sql = "DELETE FROM problems WHERE problem_idx=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, problem_idx);
+		
+		pstmt.executeUpdate();
+		pstmt.close();
+		
+		sql = "DELETE FROM algorithm_sort WHERE problem_idx=?";
+		pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, problem_idx);
+		
+		pstmt.executeUpdate();
+		pstmt.close();
 	}
 	
 	public void close() throws SQLException {

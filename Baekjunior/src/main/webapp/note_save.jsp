@@ -7,6 +7,7 @@
 	String problemIdStr = request.getParameter("problemId");
 	String problemTitle = request.getParameter("title");
 	String problemUrl = request.getParameter("problem_url");
+	String problemSort = request.getParameter("problem_sort");
 	String tier_name = request.getParameter("tier_name");
 	int tier_num = Integer.parseInt(request.getParameter("tier_num"));
 	int level = Integer.parseInt(request.getParameter("level"));
@@ -30,6 +31,7 @@
 		pi.setProblem_id(problemId);
 		pi.setProblem_title(problemTitle);
 		pi.setProblem_url(problemUrl);
+		pi.setProblem_sort(problemSort);
 		pi.setTier_name(tier_name);
 		pi.setTier_num(tier_num);
 		pi.setLevel(level);
@@ -57,7 +59,7 @@
 			}
 			amdb.close();
 			if(openNote.equals("true")){
-				response.sendRedirect("note.jsp");
+				response.sendRedirect("note_detail_edit.jsp?problem_idx=" + pi.getProblem_idx());
 			}
 			else {
 				response.sendRedirect("0_Baekjunior.jsp");

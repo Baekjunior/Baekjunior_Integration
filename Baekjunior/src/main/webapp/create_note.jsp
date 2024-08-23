@@ -164,6 +164,7 @@ if(session != null) {
 					<input type="hidden" name="level" id="level" value="<%=level%>">
 					<input type="hidden" name="tier_name" id="tier_name" value="<%=tier_name%>">
 					<input type="hidden" name="tier_num" id="tier_num" value="<%=tier_num%>">
+					<input type="hidden" name="problem_sort" id="problem_sort" value="<%=algorithms %>">
 					<input type="hidden" name="importCheck" id="importCheck" value="0">
 					<div>
 						Problem Number :

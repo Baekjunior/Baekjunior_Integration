@@ -20,6 +20,16 @@ Connection con = DsCon.getConnection();
 PreparedStatement pstmt = null;
 ResultSet rs = null;
 %>
+<script type="text/javascript">
+    function confirmDeletion(problemIdx) {
+        var result = confirm("정말 삭제하시겠습니까?");
+        if (result) {
+            window.location.href = "note_delete_do.jsp?problem_idx=" + problemIdx;
+        } else {
+            return false;
+        }
+    }
+</script>
 <body>	
 	<header>
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
@@ -123,24 +133,40 @@ ResultSet rs = null;
 				
 				<div style="font-weight:bold; font-size:20px; margin-top:15px; margin-left:30px;">
 					<div style="display:inline; width:80%;">
-						<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;">DFS</span>
+						<span><img src="img/dot1.png" style="width:15px;"></span> 
+					<%
+						String problemSortStr = rs.getString("problem_sort");
+						String[] algorithmList = problemSortStr.split(",");
+                    	if(problemSortStr != null && !problemSortStr.trim().isEmpty()) {
+                    		for (String algo : algorithmList) {
+                            	if (!algo.isEmpty()) {
+					%>
+						<span style="margin-right:50px;"><%=algo %></span>
+					<%
+                            	}
+                    		}
+                    	}
+					%>
 						<span style="margin-right:50px;"><%=rs.getString("language") %></span>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dodam</span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dam</span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
-						<a href="note_detail_edit.jsp" style="color:black;">Edit</a>
-						<a href="#" style="color:black;">Delete</a>
+						<a href="note_detail_edit.jsp?problem_idx=<%=rs.getInt("problem_idx") %>" style="color:black;">Edit</a>
+						<a onclick="confirmDeletion('<%=rs.getInt("problem_idx") %>')" style="color:black;">Delete</a>
 					</div>
 				</div>
 			</div>	
 			
 			<div style="font-weight:bold; font-size:20px; border:3px solid black; background:#5F99EB; padding:30px; margin-top:50px; vertical-align:middle; ">
-				<div style="padding:5px;">
-					<img src="img/star_red.png" style="width:13px;"> <span>재귀함수를 통해 문제를 풀이한다.</span>
-				</div>
-				<div style="padding:5px;">
-					<img src="img/star_red.png" style="width:13px;"> <span>그리고 안러 ㅣㄴㅇ러 ㅣ나얼 ㅣㅓ리아ㅓ라ㅣㅇ  ㅣ아러ㅣ얼</span>
-				</div>
+				<%
+					String subMemoStr = rs.getString("sub_memo");
+					String[] subMemos = subMemoStr != null ? subMemoStr.split("\n") : new String[]{};
+				%>
+				<% for (String memo : subMemos) { %>
+					<div style="padding:5px;">
+						<img src="img/star_red.png" style="width:13px;"> <span><%=memo %></span>
+					</div>
+		        <% } %>
 			</div>
 			
 			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px;">
