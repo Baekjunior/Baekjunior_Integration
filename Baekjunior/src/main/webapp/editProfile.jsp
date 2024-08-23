@@ -82,10 +82,27 @@ try {
 				</li>
 			</ul>
 		</div>
-		<ul>
-			<li><img src="img/user.png" style="width:30px;"></li>
-			<li><a href="#"><%=userId %></a></li>
-		</ul>
+		<div>
+			<ul onmouseover="opendiv()">
+				<li><img src="img/user.png" style="width:30px;"></li>
+				<li><a href="#"><%=userId %></a></li>
+			</ul>
+			<div id="myprodiv" onmouseover="opendiv()" onmouseout="closediv()" style="display:none;position:fixed;top: 100px;background: white;padding: 17px;border: 3px solid black;margin-right: 20px;width: 200px;">
+				<img src="./upload/<%=rs.getString("savedFileName") %>" alt="profileimg" style="border-radius:70%;width:70px;">
+				<a href="#" style="position:absolute;top:30px;margin-left:20px;"><%=userId %></a>
+				<a href="information.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;">로그아웃</a>
+			</div>
+		</div>
+		<!-- 프로필, 로그아웃 div 띄우기 -->
+		<script>
+		function opendiv() {
+			document.getElementById("myprodiv").style.display = "block";
+		}
+		function closediv() {
+			document.getElementById("myprodiv").style.display = "none";
+		}
+		</script>
+		
 	</header>
 	
 	<script type="text/javascript">
@@ -104,25 +121,28 @@ try {
 				<ul>
 					<li><a href="#">내 활동</a></li>
 					<li><a href="#">프로필 수정</a></li>
+					<li><a href="#">친구 관리</a></li>
 				</ul>
 			</div>
 		</div>
 		<div class="inner_contents">
 			<div class="myinfo">
 				<form action="modify_profileImage.jsp?user_id=<%=userId %>" method="POST" enctype="multipart/form-data">
-				<div class="img_box">
-					<img src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg">
-					<input type="file" accept="image/jpg,image/gif" name="fileName" class="imgUpload">사진 업로드	
-					<button type="submit" class="imgUpload">사진 업로드</button>
-				</div>
-				</form>
 				<div class="info_box">
+					<img src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg" style="border-radius:70%;">
+					<input type="file" accept="image/jpg,image/gif" name="fileName" class="imgUpload" id="imgUpload">
+					<button onclick="onClickUpload();" style="margin-top:10px;">프로필 사진 업로드</button>
 					<h1><%=rs.getString("user_id") %></h1>
-					<form name="mytext" action="modify_intro.jsp?user_id=<%=userId %>" method="POST">
-						<textarea name="intro"><%=Util.nullChk(rs.getString("intro"), "") %></textarea>
-						<input type="submit">
-					</form>
+					<textarea name="intro"><%=Util.nullChk(rs.getString("intro"), "") %></textarea>
+					<input type="submit">
 				</div>
+				<script>
+					function onClickUpload() {
+						let myupload = document.getElementById("imgUpload");
+						myupload.click();
+					}
+				</script>
+				</form>
 			</div>
 			<div>
 				<table>
