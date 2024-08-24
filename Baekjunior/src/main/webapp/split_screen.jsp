@@ -272,7 +272,6 @@ ResultSet rs6 = null;
 		 				pstmt3.setInt(2, problemIdx1);
 		 				pstmt3.setInt(3, problemIdx2);
 		 				rs3 = pstmt3.executeQuery();
-						log("SSSSSSSS: " + rs3);
 						
 						String sql4 = "SELECT COUNT(*) FROM problems WHERE user_id=? AND problem_idx!=? AND problem_idx!=?";
 		 				pstmt4 = con.prepareStatement(sql4);
@@ -482,7 +481,6 @@ ResultSet rs6 = null;
 	 				pstmt5.setInt(2, problemIdx1);
 	 				pstmt5.setInt(3, problemIdx2);
 	 				rs5 = pstmt5.executeQuery();
-					log("TSSSSSSSS: " + rs5);
 					
 					String sql6 = "SELECT COUNT(*) FROM problems WHERE user_id=? AND problem_idx!=? AND problem_idx!=?";
 	 				pstmt6 = con.prepareStatement(sql6);
