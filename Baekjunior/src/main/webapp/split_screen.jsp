@@ -92,7 +92,7 @@ ResultSet rs6 = null;
 		</div>
 		<ul>
 			<li><img src="img/user.png" style="width:30px;"></li>
-			<li><a href="#">User</a></li>
+			<li><a href="MyPage.jsp"><%=userId%></a></li>
 		</ul>
 	</header>
 	
@@ -127,7 +127,7 @@ ResultSet rs6 = null;
 				if(rs.next()){
 		%>
 		
-		<div style="margin-top:20px; border-right:3px solid black; overflow-y:auto;">
+		<div style="margin-top:20px; border-right:3px solid black; height:500px; overflow-y:scroll;">
 			<div style=" width:80%; margin:0 auto;">
 				<div style="float:right;">
 					<button onclick="location.href='split_screen.jsp?problem_idx1=-1&problem_idx2=<%=problemIdx2 %>'" style="font-size:15px; font-weight:bold; border:3px solid black; padding:0 5px;">X</button>
@@ -338,7 +338,7 @@ ResultSet rs6 = null;
 				if(rs2.next()){
 		%>
 	
-	<div style="margin-top:20px; border-left:3px solid black; overflow-y: auto;">
+	<div style="margin-top:20px; border-left:3px solid black;  height:500px; overflow-y:scroll;">
 		<div style=" width:80%; margin:0 auto;">
 			<div style="float:right;">
 				<button onclick="location.href='split_screen.jsp?problem_idx1=<%=problemIdx1%>&problem_idx2=-1'" style="font-size:15px; font-weight:bold; border:3px solid black; padding:0 5px;">X</button>
@@ -540,8 +540,6 @@ ResultSet rs6 = null;
 	
 	</div>
 		
-	
-	<br><br><br><br>
 	
 	<footer></footer>
 	
