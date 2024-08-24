@@ -112,13 +112,17 @@ function centerfix(elementID) {
 	<div class="introduce_back">
 		<div class="introduce">
 			<img src="images/introduce.png" class="intro1" alt="intro">
-			<img src="images/cat.jpg" class="cat" alt="cat">
-			<h3 class="name1">Dodam</h3>
 			<img src="images/introduce.png" class="intro2" alt="intro">
-			<img src="images/pome.jpg" class="pome" alt="pome">
-			<h3 class="name2">Yumin</h3>
 			<img src="images/introduce.png" class="intro3" alt="intro">
+		</div>
+		<div class="photos">
+			<img src="images/cat.jpg" class="cat" alt="cat">
+			<img src="images/pome.jpg" class="pome" alt="pome">
 			<img src="images/teddy.jpg" class="teddy" alt="teddy">
+		</div>
+		<div class="names">
+			<h3 class="name1">Dodam</h3>
+			<h3 class="name2">Yumin</h3>
 			<h3 class="name3">Doyeon</h3>
 		</div>
 	</div>
