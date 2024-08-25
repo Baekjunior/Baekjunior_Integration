@@ -111,20 +111,37 @@ ResultSet rs = null;
 	
 		            if (currentSrc === 'img/star_on.png') {
 		                this.setAttribute('src', 'img/star_off.png');
+		                isChecked = 0;
 		            } else {
 		                this.setAttribute('src', 'img/star_on.png');
+		                isChecked = 1;
 		            }
+		            
+		            const xhr = new XMLHttpRequest();
+	                xhr.open("POST", "updateBookmark.jsp", true);
+	                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	                xhr.onreadystatechange = function () {
+	                    if (xhr.readyState === 4 && xhr.status === 200) {
+	                        console.log(xhr.responseText);  
+	                    }
+	                };
+	                xhr.send("problem_idx=<%=problemIdx%>&is_checked=" + isChecked);
 		        });
 		    });
 		});
 	</script>
-	
+
 	<div style="margin-top:20px;">
 		<div style="width:80%; margin:0 auto;">
 			<div>
 				<div>
 					<div style="display:inline; width:80%; font-size:30px; font-weight:bold;">
-						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> <span><img class="bookmark_star" src="img/star_on.png" style="width:25px;"></span>
+						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> 
+						<% if(rs.getInt("is_checked") == 1) { %> 
+						<span><img class="bookmark_star" src="img/star_on.png" style="width:25px;"></span>
+						<% } else { %>
+						<span><img class="bookmark_star" src="img/star_off.png" style="width:25px;"></span>
+						<% } %>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
 						Submit Date : <span><%=rs.getDate("submitDate") %></span>
