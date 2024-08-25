@@ -167,11 +167,13 @@ ResultSet rs = null;
                             	}
                     		}
                     	}
-					%>
+                    	else {
+					%> <span style="margin-right:50px;">default sort</span>
+					<% } %>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dodam</a></span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dam</a></span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
-						<a onclick="confirmDeletion('<%=rs.getInt("problem_idx") %>')" style="color:black;">Delete</a>
+						<a onclick="confirmDeletion('<%=rs.getInt("problem_idx") %>')" href="#" style="color:black;">Delete</a>
 					</div>
 				</div>
 			</div>	
@@ -303,7 +305,7 @@ ResultSet rs = null;
         textarea.addEventListener('scroll', () => {
             lineNumbers.scrollTop = textarea.scrollTop;
         });
-
+z
         function submitCppCode() {
             const code = textarea.value;
             console.log("Submitted C++ Code:", code);

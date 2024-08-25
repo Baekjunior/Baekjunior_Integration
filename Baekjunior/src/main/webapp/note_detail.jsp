@@ -152,7 +152,7 @@ ResultSet rs = null;
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
 						<a href="note_detail_edit.jsp?problem_idx=<%=rs.getInt("problem_idx") %>" style="color:black;">Edit</a>
-						<a onclick="confirmDeletion('<%=rs.getInt("problem_idx") %>')" style="color:black;">Delete</a>
+						<a onclick="confirmDeletion('<%=rs.getInt("problem_idx") %>')" href="#" style="color:black;">Delete</a>
 					</div>
 				</div>
 			</div>	
