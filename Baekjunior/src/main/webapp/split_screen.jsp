@@ -9,6 +9,16 @@
 </head>
 
 <script>
+window.onload = function() {
+	var docHeight = document.documentElement.scrollHeight;
+	var h = document.getElementById('split');
+	
+	h.style.height = docHeight - 150 + 'px';
+	console.log("Document height: " + docHeight + "px");
+};
+</script>
+
+<script>
 <%
 request.setCharacterEncoding("utf-8");
 String userId = "none";
@@ -48,7 +58,7 @@ ResultSet rs6 = null;
 </script>
 
 <body>	
-	<header>
+	<header style="padding:5px 100px;">
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
 		<div id="main_menu">
 			<ul>
@@ -92,18 +102,11 @@ ResultSet rs6 = null;
 		</div>
 		<ul>
 			<li><img src="img/user.png" style="width:30px;"></li>
-			<li><a href="#">User</a></li>
+			<li><a href="MyPage.jsp"><%=userId%></a></li>
 		</ul>
 	</header>
 	
-	<script type="text/javascript">
-		window.addEventListener("scroll", function(){
-			var header= document.querySelector("header");
-			header.classList.toggle("sticky", window.scrollY > 0);
-		});
-	</script>
-	
-	<section class="banner">
+	<section class="banner" style="padding:40px 100px;">
 		<a href="#" class="logo"></a>
 	</section>
 	
@@ -127,7 +130,7 @@ ResultSet rs6 = null;
 				if(rs.next()){
 		%>
 		
-		<div style="margin-top:20px; border-right:3px solid black; overflow-y:auto;">
+		<div id="split" style="margin-top:20px; border-right:3px solid black; height:500px; overflow-y:scroll;">
 			<div style=" width:80%; margin:0 auto;">
 				<div style="float:right;">
 					<button onclick="location.href='split_screen.jsp?problem_idx1=-1&problem_idx2=<%=problemIdx2 %>'" style="font-size:15px; font-weight:bold; border:3px solid black; padding:0 5px;">X</button>
@@ -338,7 +341,7 @@ ResultSet rs6 = null;
 				if(rs2.next()){
 		%>
 	
-	<div style="margin-top:20px; border-left:3px solid black; overflow-y: auto;">
+	<div id="split" style="margin-top:20px; border-left:3px solid black;  height:500px; overflow-y:scroll;">
 		<div style=" width:80%; margin:0 auto;">
 			<div style="float:right;">
 				<button onclick="location.href='split_screen.jsp?problem_idx1=<%=problemIdx1%>&problem_idx2=-1'" style="font-size:15px; font-weight:bold; border:3px solid black; padding:0 5px;">X</button>
@@ -536,14 +539,10 @@ ResultSet rs6 = null;
 			
 		</div>
 		
-	
-	
 	</div>
-		
 	
-	<br><br><br><br>
-	
-	<footer></footer>
+	<footer>
+	</footer>
 	
 <%con.close(); %>
 

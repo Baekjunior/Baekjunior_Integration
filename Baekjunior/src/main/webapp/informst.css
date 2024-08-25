@@ -228,59 +228,61 @@ a:hover {
 }
 .introduce_back {
 	height: 1000px;
-	background: #5a9cf2;
-	text-align: center;
-	line-height: 11.5;
-	position: relative;
+    background: #5a9cf2;
+    /* text-align: center; */
+    /* line-height: 11.5; */
+    position: relative;
+    
 }
 .introduce {
 	height: 1000px;
-	text-align: center;
-	line-height: 11.5;
-	position: relative;
-	margin: 0 auto;
-	width: 1500px;
+    /* text-align: center; */
+    /* line-height: 11.5; */
+    position: absolute;
+    /* margin: 0 auto; */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
 }
 .intro1, .intro2, .intro3 {
 	height: 500px;
-	position: absolute;
-	top: 250px;
+	position: relative;
+	margin: 35px;
 }
-.intro1 {
-	left: 230px;
-}
-.intro2 {
-	left: 600px;
-}
-.intro3{
-	left: 970px;
-}
-.introduce > h3 {
-	display: inline;
-	position: absolute;
-	top: 310px;
-	font-size: xx-large;
-}
-.name1 {
-	left: 260px;
-}
-.name2 {
-	left: 635px;
-}
-.name3 {
-	left: 1005px;
+
+.photos {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    top: 290px;
 }
 .cat, .pome, .teddy {
 	width: 200px;
-	position: absolute;
-	top: 290px;
+    height: 200px;
+    border-radius: 70%;
+    margin: 92px;
 }
-.cat {
-	left: 286px;
+
+.names {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    top: 370px;
 }
-.pome {
-	left: 656px;
+.name1, .name2, .name3 {
+	margin: 145px;
+	font-size: 30px;
 }
-.teddy {
-	left: 1028px;
-} 
+.name1 {
+	margin-left: 20px;
+}

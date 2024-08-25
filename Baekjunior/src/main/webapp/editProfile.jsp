@@ -127,7 +127,7 @@ try {
 		</div>
 		<div class="inner_contents">
 			<div class="myinfo">
-				<form action="modify_profileImage.jsp?user_id=<%=userId %>" method="POST" enctype="multipart/form-data">
+				<form action="modify_profileimage.jsp?user_id=<%=userId %>" method="POST" enctype="multipart/form-data">
 				<div class="info_box">
 					<img src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg" style="border-radius:70%;">
 					<input type="file" accept="image/jpg,image/gif" name="fileName" class="imgUpload" id="imgUpload">

@@ -123,17 +123,16 @@ ResultSet rs = null;
 		<div style="width:80%; margin:0 auto;">
 			<div>
 				<div>
-					<div style="display:inline; width:80%; font-size:25px; font-weight:bold;">
-						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> <span><img class="bookmark_star" src="img/star_on.png" style="width:18px;"></span>
+					<div style="display:inline; width:80%; font-size:30px; font-weight:bold;">
+						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> <span><img class="bookmark_star" src="img/star_on.png" style="width:25px;"></span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
 						Submit Date : <span><%=rs.getDate("submitDate") %></span>
 					</div>
 				</div>
 				
-				<div style="font-weight:bold; font-size:20px; margin-top:15px; margin-left:30px;">
-					<div style="display:inline; width:80%;">
-						<span><img src="img/dot1.png" style="width:15px;"></span> 
+				<div style="font-weight:bold; font-size:18px; margin-top:15px; margin-left:20px;">
+					<div style="display:inline;">
 					<%
 						String problemSortStr = rs.getString("problem_sort");
 						String[] algorithmList = problemSortStr.split(",");
@@ -141,12 +140,13 @@ ResultSet rs = null;
                     		for (String algo : algorithmList) {
                             	if (!algo.isEmpty()) {
 					%>
-						<span style="margin-right:50px;"><%=algo %></span>
+						<span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span><%=algo %></span>
 					<%
                             	}
                     		}
                     	}
 					%>
+						<span style="margin-right:50px;"></span>
 						<span style="margin-right:50px;"><%=rs.getString("language") %></span>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dodam</span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dam</span>
 					</div>
@@ -161,28 +161,32 @@ ResultSet rs = null;
 				<%
 					String subMemoStr = rs.getString("sub_memo");
 					String[] subMemos = subMemoStr != null ? subMemoStr.split("\n") : new String[]{};
+					
+					if(subMemoStr == null){
+						%>
+						<div>not exist</div><%
+					}
+					else{
 				%>
 				<% for (String memo : subMemos) { %>
 					<div style="padding:5px;">
 						<img src="img/star_red.png" style="width:13px;"> <span><%=memo %></span>
 					</div>
-		        <% } %>
+		        <% }} %>
 			</div>
 			
 			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px;">
 		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="font-size:15px; overflow:auto; text-align:center; padding-bottom:0px;" readonly></textarea>
-		                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly>
-<%=rs.getString("code") %>
-						</textarea>
+		                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("code") %></textarea>
 		            </div>
 		        </div>
         
 
         <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
             <div id="code-editor" style="border: none;">
-                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly></textarea>
+                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your note here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("main_memo") %></textarea>
             </div>
         </div>
     	</div>
@@ -200,20 +204,16 @@ ResultSet rs = null;
 		<script>
 	        const textarea = document.getElementById('cppCode');
 	        const lineNumbers = document.getElementById('lineNumbers');
-	        const noteDetail = document.getElementById('note_detail');
 					
 	        function updateLineNumbers() {
 	            const numberOfLines = textarea.value.split('\n').length;
 	            let lineNumberString = '';
-	            let noteDetailString = '';
 	
 	            for (let i = 1; i <= numberOfLines; i++) {
-	                lineNumberString += i + '\n';
-	                noteDetailString += "_" + '\n';
+	                lineNumberString += i + '\n'
 	            }
 	
 	            lineNumbers.value = lineNumberString;
-	            noteDetail.value = noteDetailString;
 	        }
 	
 	        function adjustHeight(element) {
@@ -223,10 +223,9 @@ ResultSet rs = null;
 	
 	        // Function to sync heights between textareas
 	        function syncHeights() {
-	            const maxScrollHeight = Math.max(textarea.scrollHeight, lineNumbers.scrollHeight, noteDetail.scrollHeight);
+	            const maxScrollHeight = Math.max(textarea.scrollHeight, lineNumbers.scrollHeight);
 	            textarea.style.height = maxScrollHeight + 'px';
 	            lineNumbers.style.height = maxScrollHeight + 'px';
-	            noteDetail.style.height = maxScrollHeight + 'px';
 	        }
 	
 	        // 초기 라인 번호 및 높이 업데이트
@@ -254,7 +253,8 @@ ResultSet rs = null;
 		</div>
 			
 	</div>
-		
+	
+	<br><br>
 
 	<footer></footer>
 

@@ -171,12 +171,18 @@ if(session != null) {
 						<span style="border-bottom:3px solid black;">
 							<input type="text" id="problemId" name="problemId" value="<%=Util.nullChk(problemId, "") %>" oninput="resetImportCheck()" style="background:transparent; outline:none; border:none;">
 						</span>
-						<span><button type="button" style="font-size:15px; font-weight:bold; padding:5px 20px; background:white; border:3px soild black;"
+						<span><button type="button" style="font-size:15px; font-weight:bold; padding:5px 20px; background:white; border:3px soild black; margin-left:20px;"
 								onclick="importClick()">import</button>
 						</span>
 					</div>
 					<div>
 						Problem Title :
+						<span style="border-bottom:3px solid black;">
+							<input type="text" id="title" name="title" value="<%=title%>" style="background:transparent; outline:none; border:none; width:50%;">
+						</span>
+					</div>
+					<div>
+						Note Title :
 						<span style="border-bottom:3px solid black;">
 							<input type="text" id="title" name="title" value="<%=title%>" style="background:transparent; outline:none; border:none; width:50%;">
 						</span>
@@ -216,9 +222,26 @@ if(session != null) {
 					</div>	
 				</div>
 				
+				
 			<div id="note">
 				<div style="margin-top:20px;">
 					Bookmark <input type="checkbox" name="check_btn" id="check_btn" value="1">
+				</div>
+				<div>
+				Code Language :
+				<span>
+				<select style="width:140px; text-align:center; font-size:18px; height:35px;">
+				    <option value="C++">C++</option>
+				    <option value="python">Python</option>
+				    <option value="c#">C#</option>
+				    <option value="java">Java</option>
+					<option value="javascript">JavaScript</option>
+				    <option value="other">other...</option>
+				</select>
+				</span>
+				<span>
+				<input type="text" style="font-size:18px; height:35px;">
+				</span>
 				</div>
 				<div>Code</div>
 				<div id="code-editor">
@@ -277,6 +300,7 @@ if(session != null) {
 		}
 	</script>
 	
+	<br><br><br><br>
 
 	<footer></footer>
 
