@@ -162,13 +162,13 @@ ResultSet rs = null;
                     		for (String algo : algorithmList) {
                             	if (!algo.isEmpty()) {
 					%>
-						<span style="margin-right:50px;"><%=algo %></span>
+						<span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span><%=algo %></span>
 					<%
                             	}
                     		}
                     	}
                     	else {
-					%> <span style="margin-right:50px;">default sort</span>
+					%> <span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span>default sort</span>
 					<% } %>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dodam</a></span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dam</a></span>
 					</div>

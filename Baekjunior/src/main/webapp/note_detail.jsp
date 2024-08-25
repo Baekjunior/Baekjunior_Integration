@@ -145,7 +145,9 @@ ResultSet rs = null;
                             	}
                     		}
                     	}
-					%>
+						else {
+					%> <span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span>default sort</span>
+					<% } %>
 						<span style="margin-right:50px;"></span>
 						<span style="margin-right:50px;"><%=rs.getString("language") %></span>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dodam</span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dam</span>
