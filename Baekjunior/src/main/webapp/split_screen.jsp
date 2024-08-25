@@ -539,9 +539,9 @@ ResultSet rs6 = null;
 	
 	
 	</div>
-		
 	
-	<footer></footer>
+	<footer>
+	</footer>
 	
 <%con.close(); %>
 
