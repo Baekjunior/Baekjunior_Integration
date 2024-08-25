@@ -124,7 +124,7 @@ ResultSet rs = null;
 			<div>
 				<div>
 					<div style="display:inline; width:80%; font-size:30px; font-weight:bold;">
-						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> <span><img class="bookmark_star" src="img/star_on.png" style="width:18px;"></span>
+						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> <span><img class="bookmark_star" src="img/star_on.png" style="width:25px;"></span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
 						Submit Date : <span><%=rs.getDate("submitDate") %></span>
@@ -161,12 +161,18 @@ ResultSet rs = null;
 				<%
 					String subMemoStr = rs.getString("sub_memo");
 					String[] subMemos = subMemoStr != null ? subMemoStr.split("\n") : new String[]{};
+					
+					if(subMemoStr == null){
+						%>
+						<div>not exist</div><%
+					}
+					else{
 				%>
 				<% for (String memo : subMemos) { %>
 					<div style="padding:5px;">
 						<img src="img/star_red.png" style="width:13px;"> <span><%=memo %></span>
 					</div>
-		        <% } %>
+		        <% }} %>
 			</div>
 			
 			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px;">
