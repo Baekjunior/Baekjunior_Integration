@@ -536,8 +536,6 @@ ResultSet rs6 = null;
 			
 		</div>
 		
-	
-	
 	</div>
 	
 	<footer>
