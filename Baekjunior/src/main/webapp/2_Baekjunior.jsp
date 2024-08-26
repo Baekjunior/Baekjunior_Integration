@@ -188,6 +188,7 @@ ResultSet levelRs = null;
 					</ul>
 				</li>
 			</ul>
+			<br><br><br>
 		</div>
 	</nav>
 	
@@ -293,7 +294,7 @@ ResultSet levelRs = null;
 		</div>
 	</div>
 	
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<br><br><br>
 
 	<footer></footer>
 

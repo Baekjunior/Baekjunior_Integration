@@ -183,6 +183,7 @@ ResultSet levelRs = null;
 					</ul>
 				</li>
 			</ul>
+			<br><br><br>
 		</div>
 	</nav>
 	
