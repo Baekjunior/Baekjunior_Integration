@@ -14,18 +14,15 @@ public class ProblemInfoDB {
 	}
 	
 	// 
-	public int problemExistCheck(String title) throws SQLException {
-		String sql = "SELECT * FROM problems WHERE title=?";
-		
-		pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, title);
-		rs = pstmt.executeQuery();
-		if(rs.next()) {
-			return 1;
-		}
-		return 0;
-	}
+	/*
+	 * public int problemExistCheck(String title) throws SQLException { String sql =
+	 * "SELECT * FROM problems WHERE title=?";
+	 * 
+	 * pstmt = con.prepareStatement(sql); pstmt.setString(1, title); rs =
+	 * pstmt.executeQuery(); if(rs.next()) { return 1; } return 0; }
+	 */
 	
+	// 문제 정보 db에 추가하는 함수
 	public void insertProblem(ProblemInfo pi) throws SQLException {
 		String sql = "INSERT INTO problems (user_id, problem_id, problem_title, problem_url, problem_sort, tier_name, tier_num, level, code, is_checked)" +
 					" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -51,6 +48,7 @@ public class ProblemInfoDB {
 		}
 	}
 	
+	// 한 문제에 대한 필기를 여러개 할 경우를 대비해, memo_title을 따로 지정해주는 함수
 	public void insertMemoTitle(int problem_idx, String problem_title) throws SQLException {
 		String sql = "UPDATE problems SET memo_title=? WHERE problem_idx=?";
 		
@@ -61,6 +59,7 @@ public class ProblemInfoDB {
 		pstmt.executeUpdate();
 	}
 	
+	// 문제 필기 정보를 수정하는 함수
 	public void updateProblem (ProblemInfo pi) throws SQLException {
 		String sql = "UPDATE problems SET code=?, main_memo=?, sub_memo=? WHERE problem_idx=?";
 		
@@ -73,6 +72,7 @@ public class ProblemInfoDB {
 		pstmt.executeUpdate();
 	}
 	
+	// 북마크 여부를 업데이트 하는 함수
 	public void updateBookmark(int problem_idx, int is_checked) throws SQLException {
 		String sql = "UPDATE problems SET is_checked=? WHERE problem_idx=?";
 		
@@ -83,6 +83,18 @@ public class ProblemInfoDB {
 		pstmt.executeUpdate();
 	}
 	
+	// 고정 여부를 업데이트 하는 함수
+	public void updatePin(int problem_idx, int is_fixed) throws SQLException {
+		String sql = "UPDATE problems SET is_fixed=? WHERE problem_idx=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, is_fixed);
+		pstmt.setInt(2, problem_idx);
+		
+		pstmt.executeUpdate();
+	}
+	
+	// 문제 필기를 삭제하는 함수
 	public void deleteProblem(int problem_idx) throws SQLException {
 		String sql = "DELETE FROM problems WHERE problem_idx=?";
 		
@@ -92,6 +104,7 @@ public class ProblemInfoDB {
 		pstmt.executeUpdate();
 		pstmt.close();
 		
+		// 해당 문제가 분류된 알고리즘도 삭제
 		sql = "DELETE FROM algorithm_sort WHERE problem_idx=?";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, problem_idx);
