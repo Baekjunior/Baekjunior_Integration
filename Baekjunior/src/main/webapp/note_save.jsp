@@ -11,7 +11,7 @@
 	String tier_name = request.getParameter("tier_name");
 	int tier_num = Integer.parseInt(request.getParameter("tier_num"));
 	int level = Integer.parseInt(request.getParameter("level"));
-	String code = request.getParameter("cppCode");
+	String code = request.getParameter("code_note");
 	
 	String isCheckedStr = request.getParameter("check_btn");
 	int isChecked = 0; // 기본값을 0(체크되지 않음)으로 설정
