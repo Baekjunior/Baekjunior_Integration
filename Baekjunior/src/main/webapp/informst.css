@@ -9,12 +9,13 @@ header > i {
 	position: absolute;
 	top: 35px;
 	right: 35px;
+	background: white;
 }
 header > i:hover {
 	cursor:pointer;
 }
 body {
-	margin: 0;
+	margin: 0px;
 }
 #x {
 	display: none;
@@ -29,9 +30,11 @@ ul, li {
 	position: fixed;
 	right: 0px;
 	top: 80px;
-	border-left: ridge;
+	border-left: double;
 	display: none;
 	z-index: 2;
+	background: white;
+
 }
 a {
 	text-decoration: none;
