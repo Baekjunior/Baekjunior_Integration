@@ -24,8 +24,8 @@ public class ProblemInfoDB {
 	
 	// 문제 정보 db에 추가하는 함수
 	public void insertProblem(ProblemInfo pi) throws SQLException {
-		String sql = "INSERT INTO problems (user_id, problem_id, problem_title, problem_url, problem_sort, tier_name, tier_num, level, code, is_checked)" +
-					" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO problems (user_id, problem_id, problem_title, problem_url, problem_sort, tier_name, tier_num, level, code, language, is_checked)" +
+					" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, pi.getUser_id());
@@ -37,7 +37,8 @@ public class ProblemInfoDB {
 		pstmt.setInt(7, pi.getTier_num());
 		pstmt.setInt(8, pi.getLevel());
 		pstmt.setString(9, pi.getCode());
-		pstmt.setInt(10, pi.getIs_checked());
+		pstmt.setString(10, pi.getLanguage());
+		pstmt.setInt(11, pi.getIs_checked());
 		
 		pstmt.executeUpdate();
 		
@@ -48,8 +49,19 @@ public class ProblemInfoDB {
 		}
 	}
 	
+	// 노트 제목을 사용자가 직접 지정할 경우
+	public void insertMemoTitle(int problem_idx, String memo_title) throws SQLException {
+		String sql = "UPDATE problems SET memo_title=? WHERE problem_idx=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, memo_title);
+		pstmt.setInt(2, problem_idx);
+		
+		pstmt.executeUpdate();
+	}
+	
 	// 한 문제에 대한 필기를 여러개 할 경우를 대비해, memo_title을 따로 지정해주는 함수
-	public void insertMemoTitle(int problem_idx, String problem_title) throws SQLException {
+	public void updateMemoTitle(int problem_idx, String problem_title) throws SQLException {
 		String sql = "UPDATE problems SET memo_title=? WHERE problem_idx=?";
 		
 		pstmt = con.prepareStatement(sql);
