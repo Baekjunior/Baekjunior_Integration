@@ -8,10 +8,12 @@
 	String problemTitle = request.getParameter("title");
 	String problemUrl = request.getParameter("problem_url");
 	String problemSort = request.getParameter("problem_sort");
+	String memoTitle = request.getParameter("memo_title");
 	String tier_name = request.getParameter("tier_name");
 	int tier_num = Integer.parseInt(request.getParameter("tier_num"));
 	int level = Integer.parseInt(request.getParameter("level"));
 	String code = request.getParameter("code_note");
+	String language = request.getParameter("language");
 	
 	String isCheckedStr = request.getParameter("check_btn");
 	int isChecked = 0; // 기본값을 0(체크되지 않음)으로 설정
@@ -36,12 +38,17 @@
 		pi.setTier_num(tier_num);
 		pi.setLevel(level);
 		pi.setCode(code);
+		pi.setLanguage(language);
 		pi.setIs_checked(isChecked);
 		try {
 			// 필기할 문제 등록
 			ProblemInfoDB pdb = new ProblemInfoDB();
 			pdb.insertProblem(pi);
-			pdb.insertMemoTitle(pi.getProblem_idx(), problemTitle);
+			if(memoTitle.equals(problemTitle)) {
+				pdb.updateMemoTitle(pi.getProblem_idx(), problemTitle);
+			} else {
+				pdb.insertMemoTitle(pi.getProblem_idx(), memoTitle);
+			}
 			pdb.close();
 			
 			// 해당 필기의 알고리즘 분류 저장

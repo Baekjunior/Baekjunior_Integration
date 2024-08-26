@@ -184,7 +184,7 @@ if(session != null) {
 					<div>
 						Note Title :
 						<span style="border-bottom:3px solid black;">
-							<input type="text" id="title" name="title" value="<%=title%>" style="background:transparent; outline:none; border:none; width:50%;">
+							<input type="text" id="title" name="memo_title" value="<%=title%>" style="background:transparent; outline:none; border:none; width:50%;">
 						</span>
 					</div>
 					<div>
@@ -230,7 +230,7 @@ if(session != null) {
 				<div>
 				Code Language :
 				<span>
-				<select style="width:140px; text-align:center; font-size:18px; height:35px;">
+				<select name="language" style="width:140px; text-align:center; font-size:18px; height:35px;">
 				    <option value="C++">C++</option>
 				    <option value="python">Python</option>
 				    <option value="c#">C#</option>
