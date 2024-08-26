@@ -154,7 +154,6 @@ ResultSet rs = null;
 				
 				<div style="font-weight:bold; font-size:20px; margin-top:15px; margin-left:30px;">
 					<div style="display:inline; width:80%;">
-						<span><img src="img/dot1.png" style="width:15px;"></span> 
 					<%
 						String problemSortStr = rs.getString("problem_sort");
 						String[] algorithmList = problemSortStr.split(",");
@@ -260,64 +259,55 @@ ResultSet rs = null;
     	</div>		
 		
 	<script>
-        const textarea = document.getElementById('code_note');
-        const lineNumbers = document.getElementById('lineNumbers');
-        const noteDetail = document.getElementById('note_detail');
+    const textarea = document.getElementById('code_note');
+    const lineNumbers = document.getElementById('lineNumbers');
+			
+    function updateLineNumbers() {
+        const numberOfLines = textarea.value.split('\n').length;
+        let lineNumberString = '';
 
-        function updateLineNumbers() {
-            const numberOfLines = textarea.value.split('\n').length;
-            let lineNumberString = '';
-            let noteDetailString = '';
-
-            for (let i = 1; i <= numberOfLines; i++) {
-                lineNumberString += i + '\n';
-                noteDetailString += "_" + '\n';
-            }
-
-            lineNumbers.value = lineNumberString;
-            noteDetail.value = noteDetailString;
+        for (let i = 1; i <= numberOfLines; i++) {
+            lineNumberString += i + '\n'
+            console.log("DDD: " + i);
         }
 
-        function adjustHeight(element) {
-            element.style.height = 'auto'; // Reset height to auto to measure scrollHeight
-            element.style.height = element.scrollHeight + 'px'; // Adjust height to fit content
-        }
+        lineNumbers.value = lineNumberString;
+    }
 
-        // Function to sync heights between textareas
-        function syncHeights() {
-            const maxScrollHeight = Math.max(textarea.scrollHeight, lineNumbers.scrollHeight, noteDetail.scrollHeight);
-            textarea.style.height = maxScrollHeight + 'px';
-            lineNumbers.style.height = maxScrollHeight + 'px';
-            noteDetail.style.height = maxScrollHeight + 'px';
-        }
+    function adjustHeight(element) {
+        element.style.height = 'auto'; // Reset height to auto to measure scrollHeight
+        element.style.height = element.scrollHeight + 'px'; // Adjust height to fit content
+    }
 
-        // 초기 라인 번호 및 높이 업데이트
+    // Function to sync heights between textareas
+    function syncHeights() {
+        const maxScrollHeight = Math.max(textarea.scrollHeight, lineNumbers.scrollHeight);
+        textarea.style.height = maxScrollHeight + 'px';
+        lineNumbers.style.height = maxScrollHeight + 'px';
+    }
+
+    // 초기 라인 번호 및 높이 업데이트
+    updateLineNumbers();
+    syncHeights();
+
+    // 사용자가 텍스트를 입력하거나 줄을 변경할 때 라인 번호 및 높이 업데이트
+    textarea.addEventListener('input', () => {
         updateLineNumbers();
         syncHeights();
+    });
 
-        // 사용자가 텍스트를 입력하거나 줄을 변경할 때 라인 번호 및 높이 업데이트
-        textarea.addEventListener('input', () => {
-            updateLineNumbers();
-            syncHeights();
-        });
+    // Scroll the line numbers to match the code textarea
+    textarea.addEventListener('scroll', () => {
+        lineNumbers.scrollTop = textarea.scrollTop;
+    });
 
-        // Scroll the line numbers to match the code textarea
-        textarea.addEventListener('scroll', () => {
-            lineNumbers.scrollTop = textarea.scrollTop;
-        });
-<<<<<<< HEAD
+    function submitcode_note() {
+        const code = textarea.value;
+        console.log("Submitted C++ Code:", code);
 
-        function submitcode_note() {
-=======
-z
-        function submitCppCode() {
->>>>>>> branch 'main' of https://github.com/Baekjunior/Baekjunior_Integration.git
-            const code = textarea.value;
-            console.log("Submitted C++ Code:", code);
-
-            // 서버에 코드를 전송하거나 WebAssembly로 처리하는 로직을 여기에 추가합니다.
-        }
-    	</script>
+        // 서버에 코드를 전송하거나 WebAssembly로 처리하는 로직을 여기에 추가합니다.
+    }
+</script>
     	
     	<div style="float:right; margin-top:50px">
     		<button type="submit" style="font-size:15px; font-weight:bold;  background:white; border:3px solid black; padding:5px 20px;">Save</button>
