@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Baekjunior</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
-
+<!-- 난이도별로 모아보는 페이지 -->
 </head>
 <%
 request.setCharacterEncoding("utf-8");
@@ -19,6 +19,8 @@ else{
 	response.sendRedirect("information.jsp");
     return;
 }
+
+int levelSort = Integer.parseInt(request.getParameter("level"));
 
 // 정렬 순서 정하기
 String sortClause = "problem_idx DESC"; // 기본 최신순
@@ -194,10 +196,10 @@ ResultSet levelRs = null;
 					<button>SORT</button>
 				</div>
 				<ul style="top:205px;">
-					<li><a href="1_Baekjunior.jsp?latest=true">Latest</a></li>
-					<li><a href="1_Baekjunior.jsp?earliest=true">Earliest</a></li>
-					<li><a href="1_Baekjunior.jsp?ascending=true">Ascending number</a></li>
-					<li><a href="1_Baekjunior.jsp?descending=true">Descending number</a></li>
+					<li><a href="3_Baekjunior.jsp?latest=true&level=<%=levelSort%>">Latest</a></li>
+					<li><a href="3_Baekjunior.jsp?earliest=true&level=<%=levelSort%>">Earliest</a></li>
+					<li><a href="3_Baekjunior.jsp?ascending=true&level=<%=levelSort%>">Ascending number</a></li>
+					<li><a href="3_Baekjunior.jsp?descending=true&level=<%=levelSort%>">Descending number</a></li>
 				</ul>
 			</div>
 			
@@ -228,13 +230,14 @@ ResultSet levelRs = null;
  			try {
  				
  				// 문제 선택
- 				String problemQuery = "SELECT * FROM problems WHERE user_id=? and is_checked=1 ORDER BY is_fixed DESC, " + sortClause;
+ 				String problemQuery = "SELECT * FROM problems WHERE user_id=? and level=? ORDER BY is_fixed DESC, " + sortClause;
  				problemPstmt = con.prepareStatement(problemQuery);
  				problemPstmt.setString(1, userId);
+ 				problemPstmt.setInt(2, levelSort);
  				problemRs = problemPstmt.executeQuery();
 				
  				// 등록된 문제 수 세기
-				String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=? and is_checked=1";
+				String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=?";
 				problemCountPstmt = con.prepareStatement(problemCountQuery);
 				problemCountPstmt.setString(1, userId);
 				countRs = problemCountPstmt.executeQuery();

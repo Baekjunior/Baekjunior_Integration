@@ -19,12 +19,66 @@ else{
 	response.sendRedirect("information.jsp");
     return;
 }
+
+// 정렬 순서 정하기
+String sortClause = "problem_idx DESC"; // 기본 최신순
+if (request.getParameter("latest") != null) {
+	sortClause = "problem_idx DESC";	// 최신순
+} else if (request.getParameter("earliest") != null) {
+	sortClause = "problem_idx";	// 오래된 순
+} else if (request.getParameter("ascending") != null) {
+	sortClause = "problem_id";	// 문제번호 오름차순
+} else if (request.getParameter("descending") != null) {
+	sortClause = "problem_id DESC";	// 문제번호 내림차순
+}
 Connection con = DsCon.getConnection();
-PreparedStatement pstmt = null;
-PreparedStatement pstmt2 = null;
-ResultSet rs = null;
-ResultSet rs2 = null;
+PreparedStatement problemPstmt = null;
+ResultSet problemRs = null;
+PreparedStatement problemCountPstmt = null;
+ResultSet countRs = null;
+PreparedStatement categoryPstmt = null;
+ResultSet categoryRs = null;
+PreparedStatement levelPstmt = null;
+ResultSet levelRs = null;
 %>
+
+<script type="text/javascript">
+    function confirmDeletion(problemIdx) {
+        var result = confirm("정말 삭제하시겠습니까?");
+        if (result) {
+            window.location.href = "note_delete_do.jsp?problem_idx=" + problemIdx;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<script>
+	// 고정 여부 업데이트하는 함수
+	function updatePin(problemIdx) {
+	    var pinIcon = document.getElementById('content_set_a_' + problemIdx);
+	    let fix = 0;
+	    
+		if(pinIcon.offsetWidth > 0 && pinIcon.offsetHeight > 0) {
+			pinIcon.style.display = 'none';
+			fix = 0;
+		} else {
+			pinIcon.style.display = 'inline-block';
+			fix = 1;
+		}
+	  
+		const xhr = new XMLHttpRequest();
+	    xhr.open("POST", "updatePin.jsp", true);
+	    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	    xhr.onreadystatechange = function () {
+	        if (xhr.readyState === 4 && xhr.status === 200) {
+	            console.log(xhr.responseText);  
+	        }
+	    };
+	    xhr.send("problem_idx=" + problemIdx +"&is_fixed=" + fix);
+	}
+</script>
+
 <body>	
 	<header>
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
@@ -96,21 +150,37 @@ ResultSet rs2 = null;
 				<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
 				<li><a href="#">CATEGORY</a>
 					<ul class="sub">
-						<li><a href="#"><img src="img/dot1.png">BFS</a></li>
-						<li><a href="#"><img src="img/dot2.png">DFS</a></li>
-						<li><a href="#"><img src="img/dot3.png">Graph</a></li>
-						<li><a href="#"><img src="img/dot4.png">DP</a></li>
+					<%
+						String categoryQuery = "SELECT * FROM algorithm_memo WHERE user_id=?";
+						categoryPstmt = con.prepareStatement(categoryQuery);
+						categoryPstmt.setString(1, userId);
+						categoryRs = categoryPstmt.executeQuery();
+						while(categoryRs.next()) {
+					%>
+						<li><a href="2_Baekjunior.jsp?sort=<%=categoryRs.getString("algorithm_name")%>"><img src="img/dot1.png">
+								<%=categoryRs.getString("algorithm_name") %></a></li>
+					<%
+						}
+					%>
 					</ul>
 				</li>
 				<li><a href="#">LEVEL</a>
 					<ul class="sub">
-						<li><a href="#"><img src="img/star_silver.png">SILVER4</a></li>
-						<li><a href="#"><img src="img/star_silver.png">SILVER3</a></li>
-						<li><a href="#"><img src="img/star_silver.png">SILVER2</a></li>
-						<li><a href="#"><img src="img/star_silver.png">SILVER1</a></li>
-						<li><a href="#"><img src="img/star_gold.png">GOLD5</a></li>
-						<li><a href="#"><img src="img/star_gold.png">GOLD4</a></li>
-						<li><a href="#"><img src="img/star_gold.png">GOLD3</a></li>
+					<%
+						String levelQuery = "SELECT DISTINCT tier_name, tier_num, level FROM problems WHERE user_id=? ORDER BY level";
+						levelPstmt = con.prepareStatement(levelQuery);
+						levelPstmt.setString(1, userId);
+						levelRs = levelPstmt.executeQuery();
+						while(levelRs.next()){
+							String tierName = levelRs.getString("tier_name");
+							int tierNum = levelRs.getInt("tier_num");
+							int level = levelRs.getInt("level");
+					%>
+						<li><a href="3_Baekjunior.jsp?level=<%=level%>"><img src="img/star_<%=tierName.toLowerCase()%>.png">
+								<%=tierName.toUpperCase()%><%=tierNum %></a></li>
+					<%
+						}
+					%>
 					</ul>
 				</li>
 			</ul>
@@ -124,10 +194,10 @@ ResultSet rs2 = null;
 					<button>SORT</button>
 				</div>
 				<ul style="top:205px;">
-					<li><a href="#">Latest</a></li>
-					<li><a href="#">Earliest</a></li>
-					<li><a href="#">Ascending number</a></li>
-					<li><a href="#">Descending number</a></li>
+					<li><a href="0_Baekjunior.jsp?latest=true">Latest</a></li>
+					<li><a href="0_Baekjunior.jsp?earliest=true">Earliest</a></li>
+					<li><a href="0_Baekjunior.jsp?ascending=true">Ascending number</a></li>
+					<li><a href="0_Baekjunior.jsp?descending=true">Descending number</a></li>
 				</ul>
 			</div>
 			
@@ -156,50 +226,60 @@ ResultSet rs2 = null;
  		<%
  		if (!userId.equals("none")) {
  			try {
-				String sql = "SELECT * FROM problems WHERE user_id=?";
- 				pstmt = con.prepareStatement(sql);
- 				pstmt.setString(1, userId);
- 				rs = pstmt.executeQuery();
-				
-				String sql2 = "SELECT COUNT(*) FROM problems WHERE user_id=?";
- 				pstmt2 = con.prepareStatement(sql2);
- 				pstmt2.setString(1, userId);
- 				rs2 = pstmt2.executeQuery();
  				
- 				if (rs2.next() && rs2.getInt(1) <= 0) {
+ 				// 문제 선택
+ 				String problemQuery = "SELECT * FROM problems WHERE user_id=? ORDER BY is_fixed DESC, " + sortClause;
+ 				problemPstmt = con.prepareStatement(problemQuery);
+ 				problemPstmt.setString(1, userId);
+ 				problemRs = problemPstmt.executeQuery();
+				
+ 				// 등록된 문제 수 세기
+				String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=?";
+				problemCountPstmt = con.prepareStatement(problemCountQuery);
+				problemCountPstmt.setString(1, userId);
+				countRs = problemCountPstmt.executeQuery();
+ 			
+ 				if (countRs.next() && countRs.getInt(1) <= 0) {
  					%>
  					<div>
  						not exist
  					</div>
  					<%
  				} else {
- 					while (rs.next()) {
+ 					// 고정된 문제 먼저 출력
+ 					while (problemRs.next()) {
  		%>
  			<li class="item">
- 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>"># <%=rs.getInt("problem_id") %></a></div>
+ 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getInt("problem_id") %></a></div>
  				<div class="content_set">
-	    		<img class="content_set_a" src="img/pin.png">
+ 				<% if(problemRs.getInt("is_fixed") == 1) { %>
+	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
+	    		<% } else { %>
+	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
+	    			<% } %>
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
-	    				<li><a href="#">Unpin / Pin to top</a></li>
-	    				<li><a href="split_screen.jsp?problem_idx1=<%=rs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
-	    				<li><a href="#">Setting</a></li>
-	    				<li><a href="#">Delete</a></li>
-	    			</ul>
+	    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
+	    			<li><a href="split_screen.jsp?problem_idx1=<%=problemRs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
+	    			<li><a href="#">Setting</a></li>
+	    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
+	    		</ul>
 	    	</div>
- 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>"><%=rs.getString("memo_title") %></a></div>
+ 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
  			</li>
  		<%
- 					}
+ 					}			
  				}
  			} catch(SQLException e) {
  				out.print(e);
  			} finally {
- 				con.close();
-				pstmt.close();
-				rs.close();
-				pstmt2.close();
-				rs2.close();
+ 				if (con != null) con.close();
+				if(problemPstmt != null) problemPstmt.close();
+				if(problemRs != null) problemRs.close();
+				if(problemCountPstmt != null) problemCountPstmt.close();
+				if(countRs != null) countRs.close();
+				if(levelPstmt != null) levelPstmt.close();
+				if(levelRs != null) levelRs.close();
  			}
  		}
  		%>

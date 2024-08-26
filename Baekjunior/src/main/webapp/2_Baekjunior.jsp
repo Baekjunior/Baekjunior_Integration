@@ -7,6 +7,7 @@
 <title>Baekjunior</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
 
+<!-- 알고리즘 분류별로 모아보는 페이지 -->
 </head>
 <%
 request.setCharacterEncoding("utf-8");
@@ -20,16 +21,19 @@ else{
     return;
 }
 
+//모아볼(선택한) 알고리즘 분류
+String algorithmSort = request.getParameter("sort");
+
 // 정렬 순서 정하기
-String sortClause = "problem_idx DESC"; // 기본 최신순
+String sortClause = "p.problem_idx DESC"; // 기본 최신순
 if (request.getParameter("latest") != null) {
-	sortClause = "problem_idx DESC";	// 최신순
+	sortClause = "p.problem_idx DESC";	// 최신순
 } else if (request.getParameter("earliest") != null) {
-	sortClause = "problem_idx";	// 오래된 순
+	sortClause = "p.problem_idx";	// 오래된 순
 } else if (request.getParameter("ascending") != null) {
-	sortClause = "problem_id";	// 문제번호 오름차순
+	sortClause = "p.problem_id";	// 문제번호 오름차순
 } else if (request.getParameter("descending") != null) {
-	sortClause = "problem_id DESC";	// 문제번호 내림차순
+	sortClause = "p.problem_id DESC";	// 문제번호 내림차순
 }
 Connection con = DsCon.getConnection();
 PreparedStatement problemPstmt = null;
@@ -194,10 +198,10 @@ ResultSet levelRs = null;
 					<button>SORT</button>
 				</div>
 				<ul style="top:205px;">
-					<li><a href="1_Baekjunior.jsp?latest=true">Latest</a></li>
-					<li><a href="1_Baekjunior.jsp?earliest=true">Earliest</a></li>
-					<li><a href="1_Baekjunior.jsp?ascending=true">Ascending number</a></li>
-					<li><a href="1_Baekjunior.jsp?descending=true">Descending number</a></li>
+					<li><a href="2_Baekjunior.jsp?latest=true&sort=<%=algorithmSort%>">Latest</a></li>
+					<li><a href="2_Baekjunior.jsp?earliest=true&sort=<%=algorithmSort%>">Earliest</a></li>
+					<li><a href="2_Baekjunior.jsp?ascending=true&sort=<%=algorithmSort%>">Ascending number</a></li>
+					<li><a href="2_Baekjunior.jsp?descending=true&sort=<%=algorithmSort%>">Descending number</a></li>
 				</ul>
 			</div>
 			
@@ -227,14 +231,16 @@ ResultSet levelRs = null;
  		if (!userId.equals("none")) {
  			try {
  				
- 				// 문제 선택
- 				String problemQuery = "SELECT * FROM problems WHERE user_id=? and is_checked=1 ORDER BY is_fixed DESC, " + sortClause;
+ 				// 고정된 문제 선택
+ 				String problemQuery = "SELECT * FROM problems p JOIN algorithm_sort a ON p.problem_idx=a.problem_idx " 
+ 										+ "WHERE a.user_id=? AND a.sort=? ORDER BY p.is_fixed DESC, " + sortClause;
  				problemPstmt = con.prepareStatement(problemQuery);
  				problemPstmt.setString(1, userId);
+ 				problemPstmt.setString(2, algorithmSort);
  				problemRs = problemPstmt.executeQuery();
 				
  				// 등록된 문제 수 세기
-				String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=? and is_checked=1";
+				String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=?";
 				problemCountPstmt = con.prepareStatement(problemCountQuery);
 				problemCountPstmt.setString(1, userId);
 				countRs = problemCountPstmt.executeQuery();
