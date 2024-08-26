@@ -172,7 +172,7 @@ ResultSet rs6 = null;
 			        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 			            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 			                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="text-align:center; padding-bottom:0px;" readonly></textarea>
-			                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("code") %></textarea>
+			                <textarea class="notes" id="code_note" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("code") %></textarea>
 			            </div>
 			        </div>
 			        
@@ -189,7 +189,7 @@ ResultSet rs6 = null;
 	
 			
 				<script>
-	        const textarea = document.getElementById('cppCode');
+	        const textarea = document.getElementById('code_note');
 	        const lineNumbers = document.getElementById('lineNumbers');
 	        const noteDetail = document.getElementById('note_detail');
 					
@@ -235,7 +235,7 @@ ResultSet rs6 = null;
 	            lineNumbers.scrollTop = textarea.scrollTop;
 	        });
 	
-	        function submitCppCode() {
+	        function submitcode_note() {
 	            const code = textarea.value;
 	            console.log("Submitted C++ Code:", code);
 	
@@ -383,7 +383,7 @@ ResultSet rs6 = null;
 		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="text-align:center; padding-bottom:0px;" readonly></textarea>
-		                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs2.getString("code") %></textarea>
+		                <textarea class="notes" id="code_note" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs2.getString("code") %></textarea>
 		            </div>
 		        </div>
 		        
@@ -397,7 +397,7 @@ ResultSet rs6 = null;
     	</div>
     	
     	<script>
-        const textarea = document.getElementById('cppCode');
+        const textarea = document.getElementById('code_note');
         const lineNumbers = document.getElementById('lineNumbers');
         const noteDetail = document.getElementById('note_detail');
 				
@@ -443,7 +443,7 @@ ResultSet rs6 = null;
             lineNumbers.scrollTop = textarea.scrollTop;
         });
 
-        function submitCppCode() {
+        function submitcode_note() {
             const code = textarea.value;
             console.log("Submitted C++ Code:", code);
 

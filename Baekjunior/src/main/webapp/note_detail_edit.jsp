@@ -241,7 +241,7 @@ ResultSet rs = null;
 		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="font-size:15px; overflow:auto; text-align:center; padding-bottom:0px;" readonly></textarea>
-		                <textarea class="notes" name="cppCode" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;">
+		                <textarea class="notes" name="code_note" id="code_note" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;">
 <%=rs.getString("code") %>		                	                      
 </textarea>
             </div>
@@ -258,7 +258,7 @@ ResultSet rs = null;
     	</div>		
 		
 	<script>
-        const textarea = document.getElementById('cppCode');
+        const textarea = document.getElementById('code_note');
         const lineNumbers = document.getElementById('lineNumbers');
         const noteDetail = document.getElementById('note_detail');
 
@@ -304,7 +304,7 @@ ResultSet rs = null;
             lineNumbers.scrollTop = textarea.scrollTop;
         });
 
-        function submitCppCode() {
+        function submitcode_note() {
             const code = textarea.value;
             console.log("Submitted C++ Code:", code);
 

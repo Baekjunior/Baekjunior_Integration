@@ -13,7 +13,7 @@ request.setCharacterEncoding("utf-8");
 <script>
 function fnCheck(btn) {
     var problemId = document.getElementById("problemId");
-    var cppCode = document.getElementById("cppCode");
+    var code_note = document.getElementById("code_note");
     var importCheck = document.getElementById("importCheck");
     var problemTitle = document.getElementById("title");
     var form = document.querySelector('form');
@@ -30,7 +30,7 @@ function fnCheck(btn) {
     	alert("존재하지 않는 문제 번호입니다.");
     	return false;
     }
-    else if(cppCode.value == "") {
+    else if(code_note.value == "") {
         alert("코드를 입력하세요.");
         return false;
     }
@@ -246,7 +246,7 @@ if(session != null) {
 				<div>Code</div>
 				<div id="code-editor">
 			        <div id="lineNumbers"></div>
-			        	<textarea id="cppCode" name="cppCode" rows="10" placeholder="Enter your C++ code here..."></textarea>
+			        	<textarea id="code_note" name="code_note" rows="10" placeholder="Enter your C++ code here..."></textarea>
 			    </div>
 			</div>
 			</div>
@@ -267,7 +267,7 @@ if(session != null) {
 	<!-- 역시 chatgpt -->
 	<!-- 코드 입력창 -->
 	<script>
-		const textarea = document.getElementById('cppCode');
+		const textarea = document.getElementById('code_note');
 		const lineNumbers = document.getElementById('lineNumbers');
 		
 		function updateLineNumbers() {
@@ -292,7 +292,7 @@ if(session != null) {
             	document.getElementById('importCheck').value = '1';
         	});
     	<% } %>
-		function submitCppCode() {
+		function submitcode_note() {
 		    const code = textarea.value;
 		    console.log("Submitted C++ Code:", code);
 		
