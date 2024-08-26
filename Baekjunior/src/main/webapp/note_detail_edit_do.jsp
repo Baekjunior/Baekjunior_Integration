@@ -3,7 +3,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 int problemIdx = Integer.parseInt(request.getParameter("problem_idx"));
-String code = request.getParameter("cppCode");
+String code = request.getParameter("code_note");
 String mainMemo = request.getParameter("main_memo");
 String[] subMemos = request.getParameterValues("sub_memo");
 

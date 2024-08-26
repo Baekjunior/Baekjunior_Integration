@@ -86,11 +86,10 @@ ResultSet levelRs = null;
 			<ul>
 				<li class="main_menu_Storage"><a href="#">Storage</a>
 					<ul>
-						<li><a href="#">storage1</a></li>
-						<li><a href="#">storage2</a></li>
-						<li><a href="#">storage3</a></li>
-						<li><a href="#">storage4</a></li>
-						<li><a href="#">storage5</a></li>
+						<li><a href="0_Baekjunior.jsp">ALL</a></li>
+						<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
+						<li><a href="#">CATEGORY</a></li>
+						<li><a href="#">LEVEL</a></li>
 					</ul>
 				</li>				
 				<li class="main_menu_Friend"><a href="#">Friend</a>

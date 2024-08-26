@@ -64,10 +64,10 @@ ResultSet rs6 = null;
 			<ul>
 				<li class="main_menu_Storage"><a href="#">Storage</a>
 					<ul>
-						<li><a href="#">storage1</a></li>
-						<li><a href="#">storage2</a></li>
-						<li><a href="#">storage3</a></li>
-						<li><a href="#">storage4</a></li>
+						<li><a href="0_Baekjunior.jsp">ALL</a></li>
+						<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
+						<li><a href="#">CATEGORY</a></li>
+						<li><a href="#">LEVEL</a></li>
 					</ul>
 				</li>				
 				<li class="main_menu_Friend"><a href="#">Friend</a>
@@ -130,7 +130,7 @@ ResultSet rs6 = null;
 				if(rs.next()){
 		%>
 		
-		<div id="split" style="margin-top:20px; border-right:3px solid black; height:500px; overflow-y:scroll;">
+		<div id="split" style="margin-top:20px; border-right:3px solid black; overflow-y:scroll;">
 			<div style=" width:80%; margin:0 auto;">
 				<div style="float:right;">
 					<button onclick="location.href='split_screen.jsp?problem_idx1=-1&problem_idx2=<%=problemIdx2 %>'" style="font-size:15px; font-weight:bold; border:3px solid black; padding:0 5px;">X</button>
@@ -172,7 +172,7 @@ ResultSet rs6 = null;
 			        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 			            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 			                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="text-align:center; padding-bottom:0px;" readonly></textarea>
-			                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("code") %></textarea>
+			                <textarea class="notes" id="code_note" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("code") %></textarea>
 			            </div>
 			        </div>
 			        
@@ -189,7 +189,7 @@ ResultSet rs6 = null;
 	
 			
 				<script>
-	        const textarea = document.getElementById('cppCode');
+	        const textarea = document.getElementById('code_note');
 	        const lineNumbers = document.getElementById('lineNumbers');
 	        const noteDetail = document.getElementById('note_detail');
 					
@@ -235,7 +235,7 @@ ResultSet rs6 = null;
 	            lineNumbers.scrollTop = textarea.scrollTop;
 	        });
 	
-	        function submitCppCode() {
+	        function submitcode_note() {
 	            const code = textarea.value;
 	            console.log("Submitted C++ Code:", code);
 	
@@ -341,7 +341,7 @@ ResultSet rs6 = null;
 				if(rs2.next()){
 		%>
 	
-	<div id="split" style="margin-top:20px; border-left:3px solid black;  height:500px; overflow-y:scroll;">
+	<div id="split" style="margin-top:20px; border-left:3px solid black; overflow-y:scroll;">
 		<div style=" width:80%; margin:0 auto;">
 			<div style="float:right;">
 				<button onclick="location.href='split_screen.jsp?problem_idx1=<%=problemIdx1%>&problem_idx2=-1'" style="font-size:15px; font-weight:bold; border:3px solid black; padding:0 5px;">X</button>
@@ -383,7 +383,7 @@ ResultSet rs6 = null;
 		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="text-align:center; padding-bottom:0px;" readonly></textarea>
-		                <textarea class="notes" id="cppCode" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs2.getString("code") %></textarea>
+		                <textarea class="notes" id="code_note" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs2.getString("code") %></textarea>
 		            </div>
 		        </div>
 		        
@@ -397,7 +397,7 @@ ResultSet rs6 = null;
     	</div>
     	
     	<script>
-        const textarea = document.getElementById('cppCode');
+        const textarea = document.getElementById('code_note');
         const lineNumbers = document.getElementById('lineNumbers');
         const noteDetail = document.getElementById('note_detail');
 				
@@ -443,7 +443,7 @@ ResultSet rs6 = null;
             lineNumbers.scrollTop = textarea.scrollTop;
         });
 
-        function submitCppCode() {
+        function submitcode_note() {
             const code = textarea.value;
             console.log("Submitted C++ Code:", code);
 
