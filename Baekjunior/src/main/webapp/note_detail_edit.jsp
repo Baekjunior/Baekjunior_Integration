@@ -162,16 +162,18 @@ ResultSet rs = null;
                     		for (String algo : algorithmList) {
                             	if (!algo.isEmpty()) {
 					%>
-						<span style="margin-right:50px;"><%=algo %></span>
+						<span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span><%=algo %></span>
 					<%
                             	}
                     		}
                     	}
-					%>
+                    	else {
+					%> <span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span>default sort</span>
+					<% } %>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dodam</a></span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;"><a href="#">Dam</a></span>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">
-						<a onclick="confirmDeletion('<%=rs.getInt("problem_idx") %>')" style="color:black;">Delete</a>
+						<a onclick="confirmDeletion('<%=rs.getInt("problem_idx") %>')" href="#" style="color:black;">Delete</a>
 					</div>
 				</div>
 			</div>	
@@ -303,8 +305,13 @@ ResultSet rs = null;
         textarea.addEventListener('scroll', () => {
             lineNumbers.scrollTop = textarea.scrollTop;
         });
+<<<<<<< HEAD
 
         function submitcode_note() {
+=======
+z
+        function submitCppCode() {
+>>>>>>> branch 'main' of https://github.com/Baekjunior/Baekjunior_Integration.git
             const code = textarea.value;
             console.log("Submitted C++ Code:", code);
 
