@@ -138,9 +138,9 @@ ResultSet rs = null;
 					<div style="display:inline; width:80%; font-size:30px; font-weight:bold;">
 						#<span><%=rs.getInt("problem_id") %></span> : <span><%=rs.getString("problem_title") %></span> 
 						<% if(rs.getInt("is_checked") == 1) { %> 
-						<span><img class="bookmark_star" src="img/star_on.png" style="width:25px;"></span>
+							<span><img class="bookmark_star" src="img/star_on.png" style="width:25px;"></span>
 						<% } else { %>
-						<span><img class="bookmark_star" src="img/star_off.png" style="width:25px;"></span>
+							<span><img class="bookmark_star" src="img/star_off.png" style="width:25px;"></span>
 						<% } %>
 					</div>
 					<div style="float:right; font-size:15px; padding:10px;">

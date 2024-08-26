@@ -62,7 +62,7 @@
 				response.sendRedirect("note_detail_edit.jsp?problem_idx=" + pi.getProblem_idx());
 			}
 			else {
-				response.sendRedirect("0_Baekjunior.jsp");
+				response.sendRedirect("note_detail.jsp?problem_idx=" + pi.getProblem_idx());
 			}
 		} catch(SQLException e){
 			out.print(e);
