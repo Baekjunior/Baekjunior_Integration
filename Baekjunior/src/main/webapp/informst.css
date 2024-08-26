@@ -13,6 +13,9 @@ header > i {
 header > i:hover {
 	cursor:pointer;
 }
+body {
+	margin: 0;
+}
 #x {
 	display: none;
 }
