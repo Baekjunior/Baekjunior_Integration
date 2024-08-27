@@ -14,6 +14,9 @@ String userId = "none";
 HttpSession session = request.getSession(false);
 if(session != null && session.getAttribute("login.id") != null) {
 	userId = (String) session.getAttribute("login.id");
+} else{
+	response.sendRedirect("information.jsp");
+    return;
 }
 
 Connection con = DsCon.getConnection();
@@ -37,6 +40,16 @@ try {
         } else {
             return false;
         }
+    }
+    
+    // 이미지 미리보기 함수
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('profilePreview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
     }
 </script>
 <body>
@@ -90,7 +103,7 @@ try {
 			<div id="myprodiv" onmouseover="opendiv()" onmouseout="closediv()" style="display:none;position:fixed;top: 100px;background: white;padding: 17px;border: 3px solid black;margin-right: 20px;width: 200px;">
 				<img src="./upload/<%=rs.getString("savedFileName") %>" alt="profileimg" style="border-radius:70%;width:70px;">
 				<a href="#" style="position:absolute;top:30px;margin-left:20px;"><%=userId %></a>
-				<a href="information.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;">로그아웃</a>
+				<a href="logout_do.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;">로그아웃</a>
 			</div>
 		</div>
 		<!-- 프로필, 로그아웃 div 띄우기 -->
@@ -127,22 +140,24 @@ try {
 		</div>
 		<div class="inner_contents">
 			<div class="myinfo">
-				<form action="modify_profileimage.jsp?user_id=<%=userId %>" method="POST" enctype="multipart/form-data">
+				<form action="editProfile_do.jsp" method="POST" enctype="multipart/form-data">
 				<div class="info_box">
-					<img src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg" style="border-radius:70%;">
-					<input type="file" accept="image/jpg,image/gif" name="fileName" class="imgUpload" id="imgUpload">
+					<input type="hidden" name="user_id" value="<%=userId%>">
+					<img id="profilePreview" src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg" style="border-radius:70%;">
+					<input type="file" accept="image/jpg,image/gif" name="fileName" class="imgUpload" id="imgUpload" onchange="previewImage(event)">
 					<button onclick="onClickUpload();" style="margin-top:10px;">프로필 사진 업로드</button>
 					<h1><%=rs.getString("user_id") %></h1>
 					<textarea name="intro"><%=Util.nullChk(rs.getString("intro"), "") %></textarea>
 					<input type="submit">
 				</div>
+				</form>
 				<script>
 					function onClickUpload() {
 						let myupload = document.getElementById("imgUpload");
 						myupload.click();
+						event.preventDefault();
 					}
 				</script>
-				</form>
 			</div>
 			<div>
 				<table>
@@ -153,7 +168,7 @@ try {
 						<td><a href="">이메일 변경 ></a></td>
 					</tr>
 					<tr>
-						<td><a href="information.jsp">로그아웃 ></a></td>
+						<td><a href="logout_do.jsp">로그아웃 ></a></td>
 					</tr>
 					<tr>
 						<td><a href="#" onclick="confirmDeletion('<%=userId %>')">회원 탈퇴 ></a></td>
