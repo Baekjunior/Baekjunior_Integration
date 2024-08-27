@@ -37,10 +37,10 @@ ResultSet rs = null;
 			<ul>
 				<li class="main_menu_Storage"><a href="#">Storage</a>
 					<ul>
-						<li><a href="#">storage1</a></li>
-						<li><a href="#">storage2</a></li>
-						<li><a href="#">storage3</a></li>
-						<li><a href="#">storage4</a></li>
+						<li><a href="0_Baekjunior.jsp">ALL</a></li>
+						<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
+						<li><a href="2_Baekjunior.jsp">CATEGORY</a></li>
+						<li><a href="3_Baekjunior.jsp">LEVEL</a></li>
 					</ul>
 				</li>				
 				<li class="main_menu_Friend"><a href="#">Friend</a>

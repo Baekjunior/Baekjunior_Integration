@@ -66,8 +66,8 @@ ResultSet rs6 = null;
 					<ul>
 						<li><a href="0_Baekjunior.jsp">ALL</a></li>
 						<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
-						<li><a href="#">CATEGORY</a></li>
-						<li><a href="#">LEVEL</a></li>
+						<li><a href="2_Baekjunior.jsp">CATEGORY</a></li>
+						<li><a href="3_Baekjunior.jsp">LEVEL</a></li>
 					</ul>
 				</li>				
 				<li class="main_menu_Friend"><a href="#">Friend</a>
