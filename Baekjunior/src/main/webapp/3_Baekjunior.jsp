@@ -150,7 +150,7 @@ ResultSet levelRs = null;
 				<li><a href="0_Baekjunior.jsp">ALL</a></li>
 				<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
 				<li><a href="#">CATEGORY</a>
-					<ul class="sub">
+					<ul class="sub" style="font-size:17px;">
 					<%
 						String categoryQuery = "SELECT * FROM algorithm_memo WHERE user_id=?";
 						categoryPstmt = con.prepareStatement(categoryQuery);
@@ -166,7 +166,7 @@ ResultSet levelRs = null;
 					</ul>
 				</li>
 				<li><a href="#"><b>LEVEL</b></a>
-					<ul class="sub">
+					<ul class="sub" style="font-size:17px;">
 					<%
 						String levelQuery = "SELECT DISTINCT tier_name, tier_num, level FROM problems WHERE user_id=? ORDER BY level";
 						levelPstmt = con.prepareStatement(levelQuery);

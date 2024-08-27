@@ -144,7 +144,7 @@ ResultSet levelRs = null;
 	<!-- menu -->
 	<nav>
 		<div>
-			<ul style="scroll-x:auto;">
+			<ul>
 				<li><a href="0_Baekjunior.jsp"><b>ALL</b></a></li>
 				<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
 				<li><a href="#">CATEGORY</a>
