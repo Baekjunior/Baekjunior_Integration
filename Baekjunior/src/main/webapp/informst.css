@@ -1,15 +1,17 @@
 @charset "UTF-8";
 header {
+	background: white;
 	height: 70px;
     position: fixed;
     width: 100%;
-    z-index: 2;
+    z-index: 3;
+  
 }
 header > i {
 	position: absolute;
 	top: 35px;
 	right: 35px;
-	background: white;
+	
 }
 header > i:hover {
 	cursor:pointer;
@@ -29,7 +31,7 @@ ul, li {
 	width: 300px;
 	position: fixed;
 	right: 0px;
-	top: 80px;
+	top: 70px;
 	border-left: double;
 	display: none;
 	z-index: 2;
