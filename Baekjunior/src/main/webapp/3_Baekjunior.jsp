@@ -199,10 +199,10 @@ ResultSet levelRs = null;
 					<button>SORT</button>
 				</div>
 				<ul style="top:205px;">
-					<li><a href="3_Baekjunior.jsp?latest=true&level=<%=levelSort%>">Latest</a></li>
-					<li><a href="3_Baekjunior.jsp?earliest=true&level=<%=levelSort%>">Earliest</a></li>
-					<li><a href="3_Baekjunior.jsp?ascending=true&level=<%=levelSort%>">Ascending number</a></li>
-					<li><a href="3_Baekjunior.jsp?descending=true&level=<%=levelSort%>">Descending number</a></li>
+					<li><a href="3_Baekjunior.jsp?latest=true&level=<%=levelSort%>&tier_name=<%=tierNameSort%>&tier_num=<%=tierNumSort%>">Latest</a></li>
+					<li><a href="3_Baekjunior.jsp?earliest=true&level=<%=levelSort%>&tier_name=<%=tierNameSort%>&tier_num=<%=tierNumSort%>">Earliest</a></li>
+					<li><a href="3_Baekjunior.jsp?ascending=true&level=<%=levelSort%>&tier_name=<%=tierNameSort%>&tier_num=<%=tierNumSort%>">Ascending number</a></li>
+					<li><a href="3_Baekjunior.jsp?descending=true&level=<%=levelSort%>&tier_name=<%=tierNameSort%>&tier_num=<%=tierNumSort%>">Descending number</a></li>
 				</ul>
 			</div>
 			
