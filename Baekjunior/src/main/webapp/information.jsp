@@ -39,11 +39,11 @@ function centerfix(elementID) {
 </head>
 <body>
 <div>
-	<header>
+	<header style="background:white;">
 		<i class="fa-solid fa-bars fa-2xl" id="menub" style="color: #000000;" onclick="openmenu()"></i>
 		<i class="fa-solid fa-xmark fa-2xl" id="x" onclick="closemenu()"></i>
 	</header>
-	<div class="menu" id="menu">
+	<div class="menu" id="menu" style="top:70px;z-index:3;">
 		<div class="menu_box">
 			<ul>
 				<li><a href="information.jsp">INFORMATION</a></li>
