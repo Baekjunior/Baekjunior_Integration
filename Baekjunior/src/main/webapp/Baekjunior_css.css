@@ -110,8 +110,12 @@ header [class ^= "main_menu_"] > ul > li:hover{
 nav{
 	float:left;
 	width:17%;
-	height:100px;
+	white-space:nowrap;
 	/* background:yellow; */
+}
+
+nav{
+	overflow-x:auto;
 }
 
 nav ul li{
