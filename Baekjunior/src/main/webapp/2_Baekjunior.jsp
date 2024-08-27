@@ -149,9 +149,9 @@ ResultSet levelRs = null;
 	<nav>
 		<div>
 			<ul>
-				<li><a href="0_Baekjunior.jsp"><b>ALL</b></a></li>
+				<li><a href="0_Baekjunior.jsp">ALL</a></li>
 				<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
-				<li><a href="#">CATEGORY</a>
+				<li><a href="#"><b>CATEGORY</b></a>
 					<ul class="sub">
 					<%
 						String categoryQuery = "SELECT * FROM algorithm_memo WHERE user_id=?";
@@ -193,6 +193,7 @@ ResultSet levelRs = null;
 	
 	<div id="main">
 		<div id="main_bar">
+			<div style="font-size:30px; font-weight:bold; margin-bottom:50px;">CATEGORY : <%=algorithmSort %></div>
 			<div id="sort"  class="content_set">
 				<div id="sort_select" class="content_set_b">
 					<button>SORT</button>

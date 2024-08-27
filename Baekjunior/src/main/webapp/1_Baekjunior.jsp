@@ -145,8 +145,8 @@ ResultSet levelRs = null;
 	<nav>
 		<div>
 			<ul>
-				<li><a href="0_Baekjunior.jsp"><b>ALL</b></a></li>
-				<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
+				<li><a href="0_Baekjunior.jsp">ALL</a></li>
+				<li><a href="1_Baekjunior.jsp"><b>BOOKMARK</b></a></li>
 				<li><a href="#">CATEGORY</a>
 					<ul class="sub">
 					<%
@@ -189,6 +189,7 @@ ResultSet levelRs = null;
 	
 	<div id="main">
 		<div id="main_bar">
+			<div style="font-size:30px; font-weight:bold; margin-bottom:50px;">BOOKMARK</div>
 			<div id="sort"  class="content_set">
 				<div id="sort_select" class="content_set_b">
 					<button>SORT</button>
