@@ -179,7 +179,7 @@ ResultSet levelRs = null;
 							int tierNum = levelRs.getInt("tier_num");
 							int level = levelRs.getInt("level");
 					%>
-						<li><a href="3_Baekjunior.jsp?level=<%=level%>"><img src="img/star_<%=tierName.toLowerCase()%>.png">
+						<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><img src="img/star_<%=tierName.toLowerCase()%>.png">
 								<%=tierName.toUpperCase()%><%=tierNum %></a></li>
 					<%
 						}

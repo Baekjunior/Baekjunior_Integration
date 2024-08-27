@@ -21,6 +21,8 @@ else{
 }
 
 int levelSort = Integer.parseInt(request.getParameter("level"));
+String tierNameSort = request.getParameter("tier_name");
+int tierNumSort = Integer.parseInt(request.getParameter("tier_num"));
 
 // 정렬 순서 정하기
 String sortClause = "problem_idx DESC"; // 기본 최신순
@@ -177,7 +179,7 @@ ResultSet levelRs = null;
 							int tierNum = levelRs.getInt("tier_num");
 							int level = levelRs.getInt("level");
 					%>
-						<li><a href="3_Baekjunior.jsp?level=<%=level%>"><img src="img/star_<%=tierName.toLowerCase()%>.png">
+						<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><img src="img/star_<%=tierName.toLowerCase()%>.png">
 								<%=tierName.toUpperCase()%><%=tierNum %></a></li>
 					<%
 						}
@@ -191,7 +193,7 @@ ResultSet levelRs = null;
 	
 	<div id="main">
 		<div id="main_bar">
-			<div style="font-size:30px; font-weight:bold; margin-bottom:50px;">LEVEL : </div>
+			<div style="font-size:30px; font-weight:bold; margin-bottom:50px;">LEVEL : <%=tierNameSort.toUpperCase()%><%=tierNumSort %></div>
 			<div id="sort"  class="content_set">
 				<div id="sort_select" class="content_set_b">
 					<button>SORT</button>
