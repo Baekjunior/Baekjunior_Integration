@@ -1,12 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+   import="java.sql.*, javax.naming.*, Baekjunior.db.*" session="false"%>
+<%
+request.setCharacterEncoding("utf-8");
 
-</body>
-</html>
+String userId = request.getParameter("user_id");
+String algorithmName = request.getParameter("algorithm_name");
+String algorithmMemo = request.getParameter("algorithm_memo");
+
+AlgorithmMemo am = new AlgorithmMemo();
+am.setUser_id(userId);
+am.setAlgorithm_name(algorithmName);
+am.setAlgorithm_memo(algorithmMemo);
+try {
+	AlgorithmMemoDB amdb = new AlgorithmMemoDB();
+	amdb.updateAlgorithmMemo(am);
+	amdb.close();
+} catch(SQLException e) {
+	out.print(e);
+	return;
+}
+%>

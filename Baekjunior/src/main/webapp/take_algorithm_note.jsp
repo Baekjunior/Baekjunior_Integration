@@ -54,6 +54,7 @@ if(session != null && session.getAttribute("login.id") != null) {
    userId = (String) session.getAttribute("login.id");
 }
 int problemIdx = Integer.parseInt(request.getParameter("problem_idx"));
+String algorithmSort = request.getParameter("algoname");
 
 Connection con = DsCon.getConnection();
 PreparedStatement pstmt = null;
@@ -144,7 +145,7 @@ ResultSet rs = null;
             <div class="algorithm_name" style="display: flex;align-items: center;justify-content: space-between;">
                <div>
                   <img src="img/dot1.png" style="width: 15px;height:15px;">
-                  <h1 style="display: inline;font-size: 30px;margin-left: 10px;">BFS</h1>
+                  <h1 style="display: inline;font-size: 30px;margin-left: 10px;"><%=algorithmSort %></h1>
                </div>
                <i class="fa-solid fa-xmark fa-xl" id="x" onclick="closealgont()" style="margin-right:4"></i>
             </div>
@@ -169,11 +170,26 @@ ResultSet rs = null;
                      const editedtext = this.innerText;
                      console.log('변경된 텍스트: ', editedtext);
                   })
-                  editableDiv.addEventListener('blur', function() {
+                  editableDiv.addEventListener('focusout', function() {
                       console.log('포커스를 잃었습니다.');
                       // 사용자가 메모box를 벗어나면 db에 저장
-                      location.href="algorithm_note_modify.jsp"; //이렇게 하는거 맞나...??
-                    });
+                      
+	                  const xhr = new XMLHttpRequest();
+	                  const userId = '<%= userId %>'; // 세션에서 가져온 사용자 ID
+	                  const algorithmSort = '<%= algorithmSort %>'; // 문제의 알고리즘 분류
+	                  const editedtext = editablememo.innerText	; // 현재 수정된 텍스트
+	
+	                  xhr.open("POST", "algorithm_note_modify.jsp", true);
+	                  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	                  xhr.onreadystatechange = function () {
+	                      if (xhr.readyState === 4 && xhr.status === 200) {
+	                          console.log("Response from server: ", xhr.responseText);
+	                       }
+	                  };
+	
+	                  // 파라미터로 userId, algorithmSort, 수정된 메모를 전송
+	                  xhr.send("user_id=" + encodeURIComponent(userId) + "&algorithm_name=" + encodeURIComponent(algorithmSort) + "&algorithm_memo=" + encodeURIComponent(editedtext));
+	                  });
                   
                </script>
             </div>
