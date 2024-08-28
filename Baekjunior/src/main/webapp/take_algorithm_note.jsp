@@ -6,6 +6,16 @@
 <meta charset="UTF-8">
 <title>create_note</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
+<style>
+	@-webkit-keyframes takent {
+		0% {
+			flex: 0;
+		}
+		100% {
+			flex: 3;
+		}
+	}
+</style>
 </head>
 <%
 request.setCharacterEncoding("utf-8");
@@ -99,6 +109,37 @@ ResultSet rs = null;
 		<a href="#" class="logo"></a>
 	</section>
 	
+	<div style="display:flex;">
+	<div style="margin-top: 20px;flex:3;animation-name:takent;animation-duration:2s;">
+			<div style="width: 80%; margin-left:auto;">
+				<div class="algorithm_name" style="display: flex;align-items: center;">
+					<img src="img/dot1.png" style="width: 15px;height:15px;">
+					<h1 style="display: inline;font-size: 30px;margin-left: 15px;">BFS</h1>
+				</div>
+				<div class="memo" style="margin-top:20px;">
+					<div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
+						
+					</div>
+					<!-- editablememo 내용 수정할때마다 받아오기 -->
+					<script>
+						const editablememo = document.getElementById('editablememo');
+						
+						// 텍스트가 수정될 때마다 발생하는 이벤트 리스너 추가
+						editablememo.addEventListener('input', function() {
+							//변경된 텍스트 받아오기
+							const editedtext = this.innerText;
+							console.log('변경된 텍스트: ', editedtext);
+						})
+						editableDiv.addEventListener('blur', function() {
+					    	console.log('포커스를 잃었습니다.');
+					    	// 사용자가 메모box를 벗어나면 db에 저장
+					    	location.href="algorithm_note_modify.jsp"; //이렇게 하는거 맞나...??
+					  	});
+						
+					</script>
+				</div>
+			</div>
+	</div>		
 	
 	<!-- bookmark_star에 대한 SCRIPT -->
 	<script>
@@ -131,7 +172,7 @@ ResultSet rs = null;
 		});
 	</script>
 
-	<div style="margin-top:20px;">
+	<div style="margin-top:20px;width:70%;flex:7;">
 		<div style="width:80%; margin:0 auto;">
 			<div>
 				<div>
@@ -157,7 +198,7 @@ ResultSet rs = null;
                     		for (String algo : algorithmList) {
                             	if (!algo.isEmpty()) {
 					%>
-						<span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span OnClick="location.href='take_algorithm_note.jsp?problem_idx=<%=rs.getInt("problem_idx")%>&algoname=<%=algo %>'"><%=algo %></span>
+						<span><img src="img/dot1.png" style="width:15px; margin-left:25px;"></span> <span><%=algo %></span>
 					<%
                             	}
                     		}
@@ -272,7 +313,7 @@ ResultSet rs = null;
 		</div>
 			
 	</div>
-	
+	</div>
 	<br><br>
 
 	<footer></footer>
