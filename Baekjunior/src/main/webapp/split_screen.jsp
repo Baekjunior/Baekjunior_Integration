@@ -188,7 +188,7 @@ ResultSet rs6 = null;
 			
 	
 			
-				<script>
+			<script>
 	        const textarea = document.getElementById('code_note');
 	        const lineNumbers = document.getElementById('lineNumbers');
 	        const noteDetail = document.getElementById('note_detail');

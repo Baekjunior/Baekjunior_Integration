@@ -244,7 +244,7 @@ ResultSet rs = null;
 		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="font-size:15px; overflow:auto; text-align:center; padding-bottom:0px;" readonly></textarea>
-		                <textarea class="notes" name="code_note" id="code_note" rows="10" placeholder="Enter your code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;"><%=rs.getString("code") %></textarea>
+		                <textarea class="notes" name="code_note" id="code_note" rows="10" placeholder="Enter your code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;"><%=Util.nullChk(rs.getString("code"), "") %></textarea>
             </div>
         </div>
         
