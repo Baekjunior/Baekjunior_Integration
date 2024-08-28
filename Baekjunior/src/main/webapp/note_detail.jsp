@@ -198,14 +198,14 @@ ResultSet rs = null;
 		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 		            <div id="code-editor" style="display: grid; grid-template-columns: 1fr 17fr; border: none;">
 		                <textarea class="notes" id="lineNumbers" rows="10" wrap="off" style="font-size:15px; overflow:auto; text-align:center; padding-bottom:0px;" readonly></textarea>
-		                <textarea class="notes" id="code_note" rows="10" placeholder="Enter your code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("code") %></textarea>
+		                <textarea class="notes" id="code_note" rows="10" placeholder="Enter your code here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly><%=Util.nullChk(rs.getString("code"), "") %></textarea>
 		            </div>
 		        </div>
         
 
         <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
             <div id="code-editor" style="border: none;">
-                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your note here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly><%=rs.getString("main_memo") %></textarea>
+                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your note here..." wrap="off" style="font-size:15px; overflow-x:auto; padding-bottom:60px;" readonly><%=Util.nullChk(rs.getString("main_memo"), "") %></textarea>
             </div>
         </div>
     	</div>
