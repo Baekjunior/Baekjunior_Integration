@@ -36,7 +36,7 @@ try {
     function confirmDeletion(userId) {
         var result = confirm("정말 탈퇴하시겠습니까?");
         if (result) {
-            window.location.href = "user_delete_do.jsp?user_id=" + userId;
+            window.location.href = "ask_real_delete_user.jsp";
         } else {
             return false;
         }
