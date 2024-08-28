@@ -292,7 +292,7 @@ ResultSet levelRs = null;
 	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
 	    		<% } else { %>
 	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
-	    			<% } %>
+	    		<% } %>
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
 	    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>

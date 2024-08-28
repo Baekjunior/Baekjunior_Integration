@@ -23,8 +23,12 @@ String userId = "none";
 HttpSession session = request.getSession(false);
 if(session != null && session.getAttribute("login.id") != null) {
 	userId = (String) session.getAttribute("login.id");
+} else {
+	response.sendRedirect("information.jsp");
+    return;
 }
 int problemIdx = Integer.parseInt(request.getParameter("problem_idx"));
+String algorithmSort = request.getParameter("algoname");
 
 Connection con = DsCon.getConnection();
 PreparedStatement pstmt = null;
@@ -114,7 +118,7 @@ ResultSet rs = null;
 			<div style="width: 80%; margin-left:auto;">
 				<div class="algorithm_name" style="display: flex;align-items: center;">
 					<img src="img/dot1.png" style="width: 15px;height:15px;">
-					<h1 style="display: inline;font-size: 30px;margin-left: 15px;">BFS</h1>
+					<h1 style="display: inline;font-size: 30px;margin-left: 15px;"><%=algorithmSort %></h1>
 				</div>
 				<div class="memo" style="margin-top:20px;">
 					<div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
@@ -132,14 +136,14 @@ ResultSet rs = null;
 						})
 						editableDiv.addEventListener('blur', function() {
 					    	console.log('포커스를 잃었습니다.');
-					    	// 사용자가 메모box를 벗어나면 db에 저장
+					    	// 사용자가 메모box를 벗어나면 db에 저장	
 					    	location.href="algorithm_note_modify.jsp"; //이렇게 하는거 맞나...??
 					  	});
 						
 					</script>
 				</div>
 			</div>
-	</div>		
+	</div>			
 	
 	<!-- bookmark_star에 대한 SCRIPT -->
 	<script>

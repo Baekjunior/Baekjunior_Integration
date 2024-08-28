@@ -3,8 +3,8 @@ package Baekjunior.db;
 public class AlgorithmMemo {
 	private int idx;
 	private String user_id;
-	private int problem_idx;
-	private String sort;
+	private String algorithm_name;
+	private String algorithm_memo;
 	
 	public int getIdx() {
 		return idx;
@@ -18,17 +18,18 @@ public class AlgorithmMemo {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public int getProblem_idx() {
-		return problem_idx;
+	public String getAlgorithm_name() {
+		return algorithm_name;
 	}
-	public void setProblem_idx(int problem_idx) {
-		this.problem_idx = problem_idx;
+	public void setAlgorithm_name(String algorithm_name) {
+		this.algorithm_name = algorithm_name;
 	}
-	public String getSort() {
-		return sort;
+	public String getAlgorithm_memo() {
+		return algorithm_memo;
 	}
-	public void setSort(String sort) {
-		this.sort = sort;
+	public void setAlgorithm_memo(String algorithm_memo) {
+		this.algorithm_memo = algorithm_memo;
 	}
+	
 	
 }

@@ -35,6 +35,17 @@ public class AlgorithmMemoDB {
 		pstmt.executeUpdate();
 	}
 	
+	public void updateAlgorithmMemo(AlgorithmMemo am) throws SQLException {
+		String sql = "UPDATE algorithm_memo SET algorithm_memo=? WHERE user_id=? AND algorithm_name=?";
+		
+		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, am.getAlgorithm_memo());
+		pstmt.setString(2, am.getUser_id());
+		pstmt.setString(3, am.getAlgorithm_name());
+		
+		pstmt.executeUpdate();
+	}
+	
 	public void close() throws SQLException {
 		if(rs != null) rs.close();
 		if(pstmt != null) pstmt.close();
