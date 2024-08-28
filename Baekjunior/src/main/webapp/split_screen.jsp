@@ -8,6 +8,43 @@
 <link rel="stylesheet" href="Baekjunior_css.css">
 </head>
 
+<script type="text/javascript">
+    function confirmDeletion(problemIdx) {
+        var result = confirm("정말 삭제하시겠습니까?");
+        if (result) {
+            window.location.href = "note_delete_do.jsp?problem_idx=" + problemIdx;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<script>
+	// 고정 여부 업데이트하는 함수
+	function updatePin(problemIdx) {
+	    var pinIcon = document.getElementById('content_set_a_' + problemIdx);
+	    let fix = 0;
+	    
+		if(pinIcon.offsetWidth > 0 && pinIcon.offsetHeight > 0) {
+			pinIcon.style.display = 'none';
+			fix = 0;
+		} else {
+			pinIcon.style.display = 'inline-block';
+			fix = 1;
+		}
+	  
+		const xhr = new XMLHttpRequest();
+	    xhr.open("POST", "updatePin.jsp", true);
+	    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	    xhr.onreadystatechange = function () {
+	        if (xhr.readyState === 4 && xhr.status === 200) {
+	            console.log(xhr.responseText);  
+	        }
+	    };
+	    xhr.send("problem_idx=" + problemIdx +"&is_fixed=" + fix);
+	}
+</script>
+
 <script>
 window.onload = function() {
 	var docHeight = document.documentElement.scrollHeight;
@@ -148,7 +185,21 @@ ResultSet rs6 = null;
 					
 					<div style="font-weight:bold; font-size:20px; margin-top:15px; margin-left:30px;">
 						<div style="display:inline; width:80%;">
-							<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;">DFS</span>
+						<%
+							String problemSortStr = rs.getString("problem_sort");
+							String[] algorithmList = problemSortStr.split(",");
+	                    	if(problemSortStr != null && !problemSortStr.trim().isEmpty()) {
+	                    		for (String algo : algorithmList) {
+	                            	if (!algo.isEmpty()) {
+						%>
+							<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;" OnClick="location.href='take_algorithm_note.jsp?problem_idx=<%=rs.getInt("problem_idx")%>&algoname=<%=algo %>'"><%=algo %></span>
+						<%
+	                            	}
+	                    		}
+	                    	}
+							else {
+						%> <span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;">default sort</span>
+						<% } %>
 							<span style="margin-right:50px;"><%=rs.getString("language") %></span>
 							Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dodam</span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dam</span>
 						</div>
@@ -160,12 +211,23 @@ ResultSet rs6 = null;
 				</div>	
 				
 				<div style="font-weight:bold; font-size:20px; border:3px solid black; background:#5F99EB; padding:30px; margin-top:50px; vertical-align:middle; ">
+				<%
+					String subMemoStr = rs.getString("sub_memo");
+					String[] subMemos = subMemoStr != null ? subMemoStr.split("\n") : new String[]{};
+					
+					if(subMemoStr == null){
+				%>
+						<div>not exist</div>
+				<%
+					}
+					else{
+				%>
+				<% for (String memo : subMemos) { %>
 					<div style="padding:5px;">
-						<img src="img/star_red.png" style="width:13px;"> <span>재귀함수를 통해 문제를 풀이한다.</span>
+						<img src="img/star_red.png" style="width:13px;"> <span><%=memo %></span>
 					</div>
-					<div style="padding:5px;">
-						<img src="img/star_red.png" style="width:13px;"> <span>그리고 안러 ㅣㄴㅇ러 ㅣ나얼 ㅣㅓ리아ㅓ라ㅣㅇ  ㅣ아러ㅣ얼</span>
-					</div>
+		        <% }
+				} %>
 				</div>
 				
 				<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px; font-size: 20px;">
@@ -296,13 +358,17 @@ ResultSet rs6 = null;
 		 			<li class="item">
 		 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=rs3.getInt("problem_idx")%>"># <%=rs3.getInt("problem_id") %></a></div>
 		 				<div class="content_set">
-			    		<img class="content_set_a" src="img/pin.png">
+				    	<% if(rs3.getInt("is_fixed") == 1) { %>
+			    			<img class="content_set_a" id="content_set_a_<%= rs3.getInt("problem_idx") %>" src="img/pin.png">
+			    		<% } else { %>
+			    			<img class="content_set_a" id="content_set_a_<%= rs3.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
+			    		<% } %>
 			    		<button class="content_set_b"><img src="img/....png"></button>
 			    		<ul>
-		    				<li><a href="#">Unpin / Pin to top</a></li>
+		    				<li><a onclick="updatePin('<%=rs3.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
 		    				<li><a href="split_screen.jsp?problem_idx1=<%=rs3.getInt("problem_idx")%>&problem_idx2=<%=problemIdx2 %>">Split screen</a></li>
 		    				<li><a href="#">Setting</a></li>
-		    				<li><a href="#">Delete</a></li>
+		    				<li><a onclick="confirmDeletion('<%=rs3.getInt("problem_idx") %>')" href="#">Delete</a></li>
 		    			</ul>
 			    		</div>
 		 				<div class="content_title"><a href="#"><%=rs3.getString("memo_title") %></a></div>
@@ -359,7 +425,21 @@ ResultSet rs6 = null;
 				
 				<div style="font-weight:bold; font-size:20px; margin-top:15px; margin-left:30px;">
 					<div style="display:inline; width:80%;">
-						<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;">DFS</span>
+						<%
+							String problemSortStr = rs2.getString("problem_sort");
+							String[] algorithmList = problemSortStr.split(",");
+	                    	if(problemSortStr != null && !problemSortStr.trim().isEmpty()) {
+	                    		for (String algo : algorithmList) {
+	                            	if (!algo.isEmpty()) {
+						%>
+							<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;" OnClick="location.href='take_algorithm_note.jsp?problem_idx=<%=rs2.getInt("problem_idx")%>&algoname=<%=algo %>'"><%=algo %></span>
+						<%
+	                            	}
+	                    		}
+	                    	}
+							else {
+						%> <span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;">default sort</span>
+						<% } %>
 						<span style="margin-right:50px;"><%=rs2.getString("language") %></span>
 						Friends who solved : <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dodam</span> <span style="background:lightgray; font-size:15px; padding:3px 20px; border-radius:20px;">Dam</span>
 					</div>
@@ -371,12 +451,22 @@ ResultSet rs6 = null;
 			</div>	
 			
 			<div style="font-weight:bold; font-size:20px; border:3px solid black; background:#5F99EB; padding:30px; margin-top:50px; vertical-align:middle; ">
-				<div style="padding:5px;">
-					<img src="img/star_red.png" style="width:13px;"> <span>재귀함수를 통해 문제를 풀이한다.</span>
-				</div>
-				<div style="padding:5px;">
-					<img src="img/star_red.png" style="width:13px;"> <span>그리고 안러 ㅣㄴㅇ러 ㅣ나얼 ㅣㅓ리아ㅓ라ㅣㅇ  ㅣ아러ㅣ얼</span>
-				</div>
+				<%
+					String subMemoStr = rs2.getString("sub_memo");
+					String[] subMemos = subMemoStr != null ? subMemoStr.split("\n") : new String[]{};
+					
+					if(subMemoStr == null){
+				%>
+						<div>not exist</div>
+				<%
+					}
+					else{
+				%>
+				<% for (String memo : subMemos) { %>
+					<div style="padding:5px;">
+						<img src="img/star_red.png" style="width:13px;"> <span><%=memo %></span>
+					</div>
+		        <% }} %>
 			</div>
 			
 			<div style="display: grid; margin-top: 50px; grid-template-columns: 5fr 2fr; column-gap: 30px; font-size: 20px;">
@@ -390,7 +480,7 @@ ResultSet rs6 = null;
 		
 		        <div style="column-gap: 10px; border: 3px solid black; background: white; padding: 10px;">
 		            <div id="code-editor" style="border: none;">
-		                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs2.getString("main_note") %></textarea>
+		                <textarea class="notes" id="note_detail" rows="10" placeholder="Enter your C++ code here..." wrap="off" style="overflow-x:auto; padding-bottom:60px;" readonly><%=rs2.getString("main_memo") %></textarea>
 		            </div>
 		        </div>
 	    	</div>
@@ -507,13 +597,17 @@ ResultSet rs6 = null;
 	 			<li class="item">
 	 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=rs5.getInt("problem_idx")%>"># <%=rs5.getInt("problem_id") %></a></div>
 	 				<div class="content_set">
-		    		<img class="content_set_a" src="img/pin.png">
+			    	<% if(rs5.getInt("is_fixed") == 1) { %>
+		    			<img class="content_set_a" id="content_set_a_<%= rs5.getInt("problem_idx") %>" src="img/pin.png">
+		    		<% } else { %>
+		    			<img class="content_set_a" id="content_set_a_<%= rs5.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
+		    		<% } %>
 		    		<button class="content_set_b"><img src="img/....png"></button>
 		    		<ul>
-	    				<li><a href="#">Unpin / Pin to top</a></li>
+	    				<li><a onclick="updatePin('<%=rs5.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
 	    				<li><a href="split_screen.jsp?problem_idx1=<%=problemIdx1%>&problem_idx2=<%=rs5.getInt("problem_idx")%>">Split screen</a></li>
 	    				<li><a href="#">Setting</a></li>
-	    				<li><a href="#">Delete</a></li>
+	    				<li><a onclick="confirmDeletion('<%=rs5.getInt("problem_idx") %>')" href="#">Delete</a></li>
 	    			</ul>
 		    	</div>
 	 				<div class="content_title"><a href="#"><%=rs5.getString("memo_title") %></a></div>
