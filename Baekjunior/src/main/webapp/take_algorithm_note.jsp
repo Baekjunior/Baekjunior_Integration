@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>create_note</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
+<script src="https://kit.fontawesome.com/c9057320ee.js" crossorigin="anonymous"></script>
 <style>
 	@-webkit-keyframes takent {
 		0% {
@@ -14,6 +15,34 @@
 		100% {
 			flex: 3;
 		}
+	}
+	@keyframes takent {
+		0% {
+			flex: 0;
+		}
+		100% {
+			flex: 3;
+		}
+	}
+	@-webkit-keyframes outnt {
+		0% {
+			flex: 3;
+		}
+		100% {
+			flex: 0;
+		}
+	}
+	@keyframes outnt {
+		0% {
+			flex: 3;
+		}
+		100% {
+			flex: 0;
+		}
+	}
+	.outnote {
+		animation-name: outnt;
+		animation-duration: 2s;
 	}
 </style>
 </head>
@@ -110,12 +139,22 @@ ResultSet rs = null;
 	</section>
 	
 	<div style="display:flex;">
-	<div style="margin-top: 20px;flex:3;animation-name:takent;animation-duration:2s;">
+	<div id="algonote" style="margin-top: 20px;flex:3;animation-name:takent;animation-duration:2s;">
 			<div style="width: 80%; margin-left:auto;">
-				<div class="algorithm_name" style="display: flex;align-items: center;">
-					<img src="img/dot1.png" style="width: 15px;height:15px;">
-					<h1 style="display: inline;font-size: 30px;margin-left: 15px;">BFS</h1>
+				<div class="algorithm_name" style="display: flex;align-items: center;justify-content: space-between;">
+					<div>
+						<img src="img/dot1.png" style="width: 15px;height:15px;">
+						<h1 style="display: inline;font-size: 30px;margin-left: 10px;">BFS</h1>
+					</div>
+					<i class="fa-solid fa-xmark fa-xl" id="x" onclick="closealgont()" style="margin-right:4"></i>
 				</div>
+				<script>
+				function closealgont() {
+					document.getElementById("algonote").classList.remove("outnote");
+					document.getElementById("algonote").classList.add("outnote");
+					location.href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>";
+				}
+				</script>
 				<div class="memo" style="margin-top:20px;">
 					<div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
 						
