@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://kit.fontawesome.com/c9057320ee.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="editProfilest.css?v=1.2">
+<link rel="stylesheet" type="text/css" href="editProfilest.css?v=3">
 </head>
 <%
 request.setCharacterEncoding("utf-8");
@@ -103,7 +103,7 @@ try {
 			<div id="myprodiv" onmouseover="opendiv()" onmouseout="closediv()" style="display:none;position:fixed;top: 100px;background: white;padding: 17px;border: 3px solid black;margin-right: 20px;width: 200px;">
 				<img src="./upload/<%=rs.getString("savedFileName") %>" alt="profileimg" style="border-radius:70%;width:70px;">
 				<a href="#" style="position:absolute;top:30px;margin-left:20px;"><%=userId %></a>
-				<a href="logout_do.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;">로그아웃</a>
+				<a href="logout_do.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;margin-left:8px;">로그아웃</a>
 			</div>
 		</div>
 		<!-- 프로필, 로그아웃 div 띄우기 -->
