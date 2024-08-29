@@ -74,17 +74,6 @@ try {
 				</li>
 			</ul>
 		</div>
-		<%
-		try {
-			if(userId != "none") {
-				String sql = "SELECT * FROM users WHERE user_id=?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, userId);
-				rs = pstmt.executeQuery();
-				rs.next();
-			}
-
-		%>
 		<div>
 			<ul onmouseover="opendiv()" onmouseout="closediv()" style="height:130px;">
 				<li><img src="img/user.png" style="width:30px;"></li>
