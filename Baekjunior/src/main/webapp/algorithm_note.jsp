@@ -84,7 +84,7 @@
 							const editedtext = this.innerText;
 							console.log('변경된 텍스트: ', editedtext);
 						})
-						editableDiv.addEventListener('blur', function() {
+						editablememo.addEventListener('blur', function() {
 					    	console.log('포커스를 잃었습니다.');
 					    	// 사용자가 메모box를 벗어나면 db에 저장
 					    	location.href="algorithm_note_modify.jsp"; //이렇게 하는거 맞나...??

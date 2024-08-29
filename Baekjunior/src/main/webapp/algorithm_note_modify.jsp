@@ -15,6 +15,7 @@ try {
 	AlgorithmMemoDB amdb = new AlgorithmMemoDB();
 	amdb.updateAlgorithmMemo(am);
 	amdb.close();
+	response.sendRedirect("algorithm_note.jsp");
 } catch(SQLException e) {
 	out.print(e);
 	return;

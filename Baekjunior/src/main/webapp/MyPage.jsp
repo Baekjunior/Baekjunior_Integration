@@ -86,7 +86,7 @@ if(session != null && session.getAttribute("login.id") != null) {
 		</div>
 		<div class="inner_contents">
 			<div class="select_div">
-				<Button class="note_div" onclick="'">
+				<Button class="note_div" onclick="location.href='gather_note.jsp'">
 					<div>
 						<h3>노트</h3>
 						<p>35</p>

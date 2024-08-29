@@ -237,3 +237,11 @@ td > div > p:nth-child(2){
 	height: 40px;
 	margin: auto;
 }
+.inner_header {
+	display: flex;
+	justify-content: space-between;
+}
+#list_group {
+	height: 550px;
+	overflow: scroll;
+}
