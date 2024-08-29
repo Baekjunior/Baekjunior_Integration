@@ -190,7 +190,7 @@ ResultSet rs6 = null;
 							String[] algorithmList = problemSortStr.split(",");
 	                    	if(problemSortStr != null && !problemSortStr.trim().isEmpty()) {
 	                    		for (String algo : algorithmList) {
-	                            	if (!algo.isEmpty()) {
+	                            	if (!algo.isEmpty()) {   
 						%>
 							<span><img src="img/dot1.png" style="width:15px;"></span> <span style="margin-right:50px;" OnClick="location.href='take_algorithm_note.jsp?problem_idx=<%=rs.getInt("problem_idx")%>&algoname=<%=algo %>'"><%=algo %></span>
 						<%
