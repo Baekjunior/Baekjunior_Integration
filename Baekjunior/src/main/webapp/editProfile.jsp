@@ -53,7 +53,7 @@ try {
     }
 </script>
 <body>
-	<header>
+	<header style="padding:0 100px;">
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
 		<div id="main_menu">
 			<ul>
@@ -95,17 +95,36 @@ try {
 				</li>
 			</ul>
 		</div>
+		<%
+		try {
+			if(userId != "none") {
+				String sql = "SELECT * FROM users WHERE user_id=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, userId);
+				rs = pstmt.executeQuery();
+				rs.next();
+			}
+
+		%>
 		<div>
-			<ul onmouseover="opendiv()">
+			<ul onmouseover="opendiv()" onmouseout="closediv()" style="height:130px;">
 				<li><img src="img/user.png" style="width:30px;"></li>
 				<li><a href="#"><%=userId %></a></li>
 			</ul>
 			<div id="myprodiv" onmouseover="opendiv()" onmouseout="closediv()" style="display:none;position:fixed;top: 100px;background: white;padding: 17px;border: 3px solid black;margin-right: 20px;width: 200px;">
 				<img src="./upload/<%=rs.getString("savedFileName") %>" alt="profileimg" style="border-radius:70%;width:70px;">
-				<a href="#" style="position:absolute;top:30px;margin-left:20px;"><%=userId %></a>
-				<a href="logout_do.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;margin-left:8px;">로그아웃</a>
+				<a href="MyPage.jsp" style="position:absolute;top:30px;margin-left:20px;text-decoration: none;color: black;"><%=userId %></a>
+				<a href="logout_do.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;margin-left:8px;text-decoration: none;color: black;">로그아웃</a>
 			</div>
 		</div>
+		<%
+		pstmt.close();
+		rs.close();
+		} catch (SQLException e){
+			out.print(e);
+			return;
+		}	
+		%>
 		<!-- 프로필, 로그아웃 div 띄우기 -->
 		<script>
 		function opendiv() {

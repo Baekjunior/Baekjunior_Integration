@@ -95,7 +95,7 @@ ResultSet rs6 = null;
 </script>
 
 <body>	
-	<header style="padding:5px 100px;">
+	<header style="padding:0px 100px;">
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
 		<div id="main_menu">
 			<ul>
@@ -137,10 +137,45 @@ ResultSet rs6 = null;
 				</li>
 			</ul>
 		</div>
-		<ul>
-			<li><img src="img/user.png" style="width:30px;"></li>
-			<li><a href="MyPage.jsp"><%=userId%></a></li>
-		</ul>
+		<%
+		try {
+			if(userId != "none") {
+				String sql = "SELECT * FROM users WHERE user_id=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, userId);
+				rs = pstmt.executeQuery();
+				rs.next();
+			}
+
+		%>
+		<div>
+			<ul onmouseover="opendiv()" onmouseout="closediv()" style="height:100px;">
+				<li><img src="img/user.png" style="width:30px;"></li>
+				<li><a href="#"><%=userId %></a></li>
+			</ul>
+			<div id="myprodiv" onmouseover="opendiv()" onmouseout="closediv()" style="display:none;position:fixed;top: 100px;background: white;padding: 17px;border: 3px solid black;margin-right: 20px;width: 200px;">
+				<img src="./upload/<%=rs.getString("savedFileName") %>" alt="profileimg" style="border-radius:70%;width:70px;">
+				<a href="MyPage.jsp" style="position:absolute;top:30px;margin-left:20px;text-decoration: none;color: black;"><%=userId %></a>
+				<a href="logout_do.jsp" style="border: 1px solid;width: 90px;display:inline-block;text-align: center;height: 30px;position:absolute;top:60px;margin-left:8px;text-decoration: none;color: black;">로그아웃</a>
+			</div>
+		</div>
+		<%
+		pstmt.close();
+		rs.close();
+		} catch (SQLException e){
+			out.print(e);
+			return;
+		}	
+		%>
+		<!-- 프로필, 로그아웃 div 띄우기 -->
+		<script>
+		function opendiv() {
+			document.getElementById("myprodiv").style.display = "block";
+		}
+		function closediv() {
+			document.getElementById("myprodiv").style.display = "none";
+		}
+		</script>
 	</header>
 	
 	<section class="banner" style="padding:40px 100px;">
@@ -151,7 +186,7 @@ ResultSet rs6 = null;
 		<button onclick="location.href='split_screen.jsp?problem_idx1=<%=problemIdx2 %>&problem_idx2=<%=problemIdx1 %>'" style="border-right:3px solid black; font-size:15px; font-weight:bold; width:60px;">Switch Sides</button>
 	</div>
 	
-	<div style="display:grid; grid-template-columns: 1fr 1fr;">
+	<div style="display:grid; grid-template-columns: 1fr 1fr;margin-top:50px;">
 		<!-- 왼쪽 스크린 -->
 		
 		<!-- 문제 -->
