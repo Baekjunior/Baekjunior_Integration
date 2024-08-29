@@ -162,7 +162,9 @@ try {
 				<form action="editProfile_do.jsp" method="POST" enctype="multipart/form-data">
 				<div class="info_box">
 					<input type="hidden" name="user_id" value="<%=userId%>">
-					<img id="profilePreview" src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg" style="border-radius:70%;">
+					<div style="border-radius: 70%;width: 150px;height: 150px;overflow: hidden;">
+						<img id="profilePreview" src="./upload/<%=rs.getString("savedFileName") %>" class="profileimg" alt="profileimg" style="width: 100%;height: 100%;object-fit: cover;">
+					</div>
 					<input type="file" accept="image/jpg,image/gif" name="fileName" class="imgUpload" id="imgUpload" onchange="previewImage(event)">
 					<button onclick="onClickUpload();" style="margin-top:10px;">프로필 사진 업로드</button>
 					<h1><%=rs.getString("user_id") %></h1>
