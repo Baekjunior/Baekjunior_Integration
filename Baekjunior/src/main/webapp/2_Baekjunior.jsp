@@ -84,7 +84,7 @@ ResultSet levelRs = null;
 </script>
 
 <body>	
-	<header>
+	<header style="padding:0 100px;">
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
 		<div id="main_menu">
 			<ul>
