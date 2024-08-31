@@ -7,6 +7,16 @@
 <title>Baekjunior</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
 
+<style>
+	.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+</style>
+
 </head>
 <%
 request.setCharacterEncoding("utf-8");
@@ -307,7 +317,7 @@ ResultSet levelRs = null;
 	    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
 	    		</ul>
 	    	</div>
- 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
+ 				<div class="content_title area ellipsis"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
  			</li>
  		<%
  					}			
