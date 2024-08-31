@@ -243,7 +243,7 @@ try {
                                 	if(algorithms == null || algorithms.trim().isEmpty()) {
                                 %>
 	                                <li>
-	                                    <input type="checkbox" name="sorts" id="check_btn" value="unrated" checked onclick="return false"> unrated
+	                                    <input type="checkbox" name="sorts" id="check_btn" value="unsorted" checked onclick="return false"> unsorted
 	                                </li>
                                 <%	
                                 	} else {
