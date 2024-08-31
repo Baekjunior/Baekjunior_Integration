@@ -215,10 +215,15 @@ ResultSet levelRs = null;
 							String tierName = levelRs.getString("tier_name");
 							int tierNum = levelRs.getInt("tier_num");
 							int level = levelRs.getInt("level");
+					if(tierName.equals("unrated")) {
 					%>
-						<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><img src="img/star_<%=tierName.toLowerCase()%>.png">
-								<%=tierName.toUpperCase()%><%=tierNum %></a></li>
+						<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><span><img src="img/star_<%=tierName.toLowerCase()%>.png"></span><span><%=tierName.toUpperCase()%></span></a></li>
 					<%
+							} else {
+					%>
+						<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><span><img src="img/star_<%=tierName.toLowerCase()%>.png"></span><span><%=tierName.toUpperCase()%><%=tierNum %></span></a></li>
+					<%
+							}
 						}
 					%>
 					</ul>
@@ -230,7 +235,12 @@ ResultSet levelRs = null;
 	
 	<div id="main">
 		<div id="main_bar">
-			<div style="font-size:30px; font-weight:bold; margin-bottom:50px;">LEVEL : <%=tierNameSort.toUpperCase()%><%=tierNumSort %></div>
+			<div style="font-size:30px; font-weight:bold; margin-bottom:50px;">
+			<% if(tierNameSort.equals("unrated")) { %>
+				LEVEL : <%=tierNameSort.toUpperCase()%></div>
+			<% } else { %>
+				LEVEL : <%=tierNameSort.toUpperCase()%><%=tierNumSort %></div>
+			<% } %>
 			<div id="sort"  class="content_set">
 				<div id="sort_select" class="content_set_b">
 					<button>SORT</button>

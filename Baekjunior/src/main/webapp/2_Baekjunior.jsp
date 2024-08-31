@@ -215,12 +215,17 @@ ResultSet levelRs = null;
 							String tierName = levelRs.getString("tier_name");
 							int tierNum = levelRs.getInt("tier_num");
 							int level = levelRs.getInt("level");
-					%>
-						<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><img src="img/star_<%=tierName.toLowerCase()%>.png">
-								<%=tierName.toUpperCase()%><%=tierNum %></a></li>
-					<%
-						}
-					%>
+							if(tierName.equals("unrated")) {
+						%>
+							<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><span><img src="img/star_<%=tierName.toLowerCase()%>.png"></span><span><%=tierName.toUpperCase()%></span></a></li>
+						<%
+								} else {
+						%>
+							<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><span><img src="img/star_<%=tierName.toLowerCase()%>.png"></span><span><%=tierName.toUpperCase()%><%=tierNum %></span></a></li>
+						<%
+								}
+							}
+						%>
 					</ul>
 				</li>
 			</ul>
