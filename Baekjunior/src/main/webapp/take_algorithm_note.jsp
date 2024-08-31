@@ -58,7 +58,9 @@ String algorithmSort = request.getParameter("algoname");
 
 Connection con = DsCon.getConnection();
 PreparedStatement pstmt = null;
+PreparedStatement memoPstmt = null;
 ResultSet rs = null;
+ResultSet memoRs = null;
 %>
 <script type="text/javascript">
     function confirmDeletion(problemIdx) {
@@ -193,7 +195,18 @@ ResultSet rs = null;
             </script>
             <div class="memo" style="margin-top:20px;">
                <div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
-                  
+                  <%
+                  	String memoSql = "SELECT * FROM algorithm_memo WHERE user_id=? AND algorithm_name=?";
+                  	
+                  	memoPstmt = con.prepareStatement(memoSql);
+                  	memoPstmt.setString(1, userId);
+                  	memoPstmt.setString(2, algorithmSort);
+                  	
+                  	memoRs = memoPstmt.executeQuery();
+                  	if(memoRs.next()) {
+                  %>
+                  <%=Util.nullChk(memoRs.getString("algorithm_memo"), "not exist")%>
+                  <% } %>
                </div>
                <!-- editablememo 내용 수정할때마다 받아오기 -->
                <script>
@@ -344,7 +357,9 @@ ResultSet rs = null;
          }
          con.close();
          pstmt.close();
+         memoPstmt.close();
          rs.close();
+         memoRs.close();
       } catch(SQLException e) {
           out.print(e);
           return;
