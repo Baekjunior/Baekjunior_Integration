@@ -195,21 +195,6 @@ ResultSet levelRs = null;
 			<ul>
 				<li><a href="0_Baekjunior.jsp"><b>ALL</b></a></li>
 				<li><a href="1_Baekjunior.jsp">BOOKMARK</a></li>
-				<li><a href="#">CATEGORY</a>
-					<ul class="sub" style="font-size:17px;">
-					<%
-						String categoryQuery = "SELECT * FROM algorithm_memo WHERE user_id=?";
-						categoryPstmt = con.prepareStatement(categoryQuery);
-						categoryPstmt.setString(1, userId);
-						categoryRs = categoryPstmt.executeQuery();
-						while(categoryRs.next()) {
-					%>
-						<li><a href="2_Baekjunior.jsp?sort=<%=categoryRs.getString("algorithm_name")%>"><span><img src="img/dot1.png"></span><span><%=categoryRs.getString("algorithm_name") %></span></a></li>
-					<%
-						}
-					%>
-					</ul>
-				</li>
 				<li><a href="#">LEVEL</a>
 					<ul class="sub" style="font-size:17px;">
 					<%
@@ -230,6 +215,21 @@ ResultSet levelRs = null;
 						<li><a href="3_Baekjunior.jsp?level=<%=level%>&tier_name=<%=tierName%>&tier_num=<%=tierNum%>"><span><img src="img/star_<%=tierName.toLowerCase()%>.png"></span><span><%=tierName.toUpperCase()%><%=tierNum %></span></a></li>
 					<%
 							}
+						}
+					%>
+					</ul>
+				</li>
+				<li><a href="#">CATEGORY</a>
+					<ul class="sub" style="font-size:17px;">
+					<%
+						String categoryQuery = "SELECT * FROM algorithm_memo WHERE user_id=?";
+						categoryPstmt = con.prepareStatement(categoryQuery);
+						categoryPstmt.setString(1, userId);
+						categoryRs = categoryPstmt.executeQuery();
+						while(categoryRs.next()) {
+					%>
+						<li><a href="2_Baekjunior.jsp?sort=<%=categoryRs.getString("algorithm_name")%>"><span><img src="img/dot1.png"></span><span><%=categoryRs.getString("algorithm_name") %></span></a></li>
+					<%
 						}
 					%>
 					</ul>

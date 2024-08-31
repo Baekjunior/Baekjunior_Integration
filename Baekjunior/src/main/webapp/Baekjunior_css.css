@@ -114,10 +114,6 @@ nav{
 	/* background:yellow; */
 }
 
-nav{
-	overflow-x:auto;
-}
-
 nav ul li{
 	position:relative;
 	list-style:none;
@@ -143,6 +139,7 @@ nav .sub{
 	letter-spacing:2px;
 	font-weight:500px;
 	transition:0.6s;
+	overflow-x:auto;
 }
 
 nav .sub li{ 
