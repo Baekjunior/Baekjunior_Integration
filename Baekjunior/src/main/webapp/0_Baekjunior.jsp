@@ -255,7 +255,7 @@ ResultSet levelRs = null;
 			
 			<div id="search">
 				<div id="search_frame" style="float:right;">
-					<input id="search_input" type="text" placeholder="Search...">
+					<input id="search_input" type="text" placeholder="Search..."><span><img src="img/search.png" style="width:15px;" onclick=""></span>
 				</div>
 				
 				<div id="search_selection" style="float:right;">
