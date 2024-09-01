@@ -266,6 +266,20 @@ nav a:hover{
 	background:#ebebeb;
 }
 
+.memobutton {
+	background-color:white;
+	height: 40px;
+	width: 90px;
+	margin-left: 20px;
+	border-radius:20px;
+	line-height:0.5;
+	border:3px solid black;
+}
+.memobutton:hover {
+	background:#ebebeb;
+	cursor: pointer;
+}
+
 #list_group{
 	padding:0 50px;
 }
