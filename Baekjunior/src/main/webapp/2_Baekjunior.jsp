@@ -238,7 +238,7 @@ ResultSet levelRs = null;
 			<div style="margin-bottom:50px;display:flex;" >
 				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp'">CATEGORY : <%=algorithmSort %></a>
 				<!-- 해당 알고리즘 노트 리스트는 오른쪽으로 밀리고 왼쪽에 알고리즘노트 나오는 버튼 -->
-				<button class="memobutton" onclick="location.href='memobuttonclick.jsp?sort=<%=algorithmSort %>'">memo</button>
+				<button class="memobutton">memo</button>
 			</div>
 			
 			<div id="sort"  class="content_set">
