@@ -7,6 +7,45 @@
 <title>Baekjunior</title>
 <link rel="stylesheet" href="Baekjunior_css.css">
 
+<style>
+   @-webkit-keyframes takent {
+      0% {
+         flex: 0;
+      }
+      100% {
+         flex: 3;
+      }
+   }
+   @keyframes takent {
+      0% {
+         flex: 0;
+      }
+      100% {
+         flex: 3;
+      }
+   }
+   @-webkit-keyframes outnt {
+      0% {
+         flex: 3;
+      }
+      100% {
+         flex: 0;
+      }
+   }
+   @keyframes outnt {
+      0% {
+         flex: 3;
+      }
+      100% {
+         flex: 0;
+      }
+   }
+   .outnote {
+      animation-name: outnt;
+      animation-duration: 2s;
+   }
+</style>
+
 <!-- 알고리즘 분류별로 모아보는 페이지 -->
 </head>
 <%
@@ -44,6 +83,7 @@ PreparedStatement categoryPstmt = null;
 ResultSet categoryRs = null;
 PreparedStatement levelPstmt = null;
 ResultSet levelRs = null;
+
 %>
 
 <script type="text/javascript">
@@ -238,7 +278,7 @@ ResultSet levelRs = null;
 			<div style="margin-bottom:50px;display:flex;" >
 				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp'">CATEGORY : <%=algorithmSort %></a>
 				<!-- 해당 알고리즘 노트 리스트는 오른쪽으로 밀리고 왼쪽에 알고리즘노트 나오는 버튼 -->
-				<button class="memobutton" onclick="location.href='memobuttonclick.jsp?sort=<%=algorithmSort %>'">memo</button>
+				<button class="memobutton">memo</button>
 			</div>
 			
 			<div id="sort"  class="content_set">
@@ -272,6 +312,74 @@ ResultSet levelRs = null;
 		
 		<br><br><br>
 		
+		<div id="algonote" style="margin-top: 20px;flex:3;animation-name:takent;animation-duration:2s;">
+         <div style="width: 80%; margin-left:auto;">
+            <div class="algorithm_name" style="display: flex;align-items: center;justify-content: space-between;">
+               <div>
+                  <img src="img/dot1.png" style="width: 15px;height:15px;">
+                  <h1 style="display: inline;font-size: 30px;margin-left: 10px;"><%=algorithmSort %></h1>
+               </div>
+               <i class="fa-solid fa-xmark fa-xl" id="x" onclick="closealgont()" style="margin-right:4"></i>
+            </div>
+            <script>
+            function closealgont() {
+               document.getElementById("algonote").classList.remove("outnote");
+               document.getElementById("algonote").classList.add("outnote");
+               location.href="note_detail.jsp?problem_idx=<%=rs.getInt("problem_idx")%>";
+            }
+            </script>
+            <div class="memo" style="margin-top:20px;">
+	               <div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
+	                  <%
+	                  	PreparedStatement memoPstmt = null;
+	                 	ResultSet memoRs = null;
+	                  	String memoSql = "SELECT * FROM algorithm_memo WHERE user_id=? AND algorithm_name=?";
+	                  	
+	                  	memoPstmt = con.prepareStatement(memoSql);
+	                  	memoPstmt.setString(1, userId);
+	                  	memoPstmt.setString(2, algorithmSort);
+	                  	
+	                  	memoRs = memoPstmt.executeQuery();
+	                  	if(memoRs.next()) {
+	                  %>
+	                  <%=Util.nullChk(memoRs.getString("algorithm_memo"), "not exist")%>
+	                  <% } %>
+	               </div>
+	               <!-- editablememo 내용 수정할때마다 받아오기 -->
+	               <script>
+	                  const editablememo = document.getElementById('editablememo');
+	                  
+	                  // 텍스트가 수정될 때마다 발생하는 이벤트 리스너 추가
+	                  editablememo.addEventListener('input', function() {
+	                     //변경된 텍스트 받아오기
+	                     const editedtext = this.innerText;
+	                     console.log('변경된 텍스트: ', editedtext);
+	                  })
+	                  editablememo.addEventListener('focusout', function() {
+	                      console.log('포커스를 잃었습니다.');
+	                      // 사용자가 메모box를 벗어나면 db에 저장
+	                      
+		                  const xhr = new XMLHttpRequest();
+		                  const userId = '<%= userId %>'; // 세션에서 가져온 사용자 ID
+		                  const algorithmSort = '<%= algorithmSort %>'; // 문제의 알고리즘 분류
+		                  const editedtext = editablememo.innerText	; // 현재 수정된 텍스트
+		
+		                  xhr.open("POST", "algorithm_note_modify.jsp", true);
+		                  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		                  xhr.onreadystatechange = function () {
+		                      if (xhr.readyState === 4 && xhr.status === 200) {
+		                          console.log("Response from server: ", xhr.responseText);
+		                       }
+		                  };
+		
+		                  // 파라미터로 userId, algorithmSort, 수정된 메모를 전송
+		                  xhr.send("user_id=" + encodeURIComponent(userId) + "&algorithm_name=" + encodeURIComponent(algorithmSort) + "&algorithm_memo=" + encodeURIComponent(editedtext));
+		                  });
+	                  
+	               </script>
+	            </div>
+	         </div>
+  		 </div>   
 		
 		<div id="list_group">
 		<ul class="list">
