@@ -235,7 +235,12 @@ ResultSet levelRs = null;
 	
 	<div id="main">
 		<div id="main_bar">
-			<div style="font-size:30px; font-weight:bold; margin-bottom:50px;">CATEGORY : <%=algorithmSort %></div>
+			<div style="margin-bottom:50px;display:flex;" >
+				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp'">CATEGORY : <%=algorithmSort %></a>
+				<!-- 해당 알고리즘 노트 리스트는 오른쪽으로 밀리고 왼쪽에 알고리즘노트 나오는 버튼 -->
+				<button class="memobutton">memo</button>
+			</div>
+			
 			<div id="sort"  class="content_set">
 				<div id="sort_select" class="content_set_b">
 					<button>SORT</button>
