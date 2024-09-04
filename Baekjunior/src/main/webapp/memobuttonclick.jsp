@@ -278,7 +278,20 @@ ResultSet levelRs = null;
 			<div style="margin-bottom:50px;display:flex;" >
 				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp'">CATEGORY : <%=algorithmSort %></a>
 				<!-- 해당 알고리즘 노트 리스트는 오른쪽으로 밀리고 왼쪽에 알고리즘노트 나오는 버튼 -->
-				<button class="memobutton" onclick="history.back()">close</button>
+				<button class="memobutton" id="openmemo" onclick="openmemo()">memo</button>
+				<button class="memobutton" id="closememo" onclick="closememo()" style="display:none;">close</button>
+				<script>
+				function openmemo() {
+					document.getElementById("memo").style.display = "block";
+					document.getElementById("openmemo").style.display = "none";
+					document.getElementById("closememo").style.display = "block";
+				}
+				function closememo() {
+					document.getElementById("memo").style.display = "none";
+					document.getElementById("openmemo").style.display = "block";
+					document.getElementById("closememo").style.display = "none";
+				}
+				</script>
 			</div>
 			
 			<div id="sort"  class="content_set">
@@ -313,7 +326,7 @@ ResultSet levelRs = null;
 		<br><br><br>
 		
 		<div style="display:flex;margin-left:55px;">
-			 <div class="memo" style="margin-top:20px;flex:4;animation-name:takent;animation-duration:2s;">
+			 <div class="memo" id="memo" style="margin-top:20px;flex:4;animation-name:takent;animation-duration:2s;display:none;">
                <div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
                   <%
                   	String memoSql = "SELECT * FROM algorithm_memo WHERE user_id=? AND algorithm_name=?";
