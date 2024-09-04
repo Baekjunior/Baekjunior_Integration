@@ -31,6 +31,30 @@ if (request.getParameter("latest") != null) {
 } else if (request.getParameter("descending") != null) {
 	sortClause = "problem_id DESC";	// 문제번호 내림차순
 }
+
+String searchRange = request.getParameter("search_range");
+String searchKeyword = request.getParameter("search_keyword");
+
+// 기본 SQL 쿼리 (검색어가 없을 경우 전체 검색)
+String problemQuery = "SELECT * FROM problems WHERE user_id=? AND is_checked=1";
+
+if (searchKeyword != null && !searchKeyword.isEmpty()) {
+    searchKeyword = searchKeyword.replace(" ", ""); // 검색어에서 공백 제거
+
+    if ("number".equals(searchRange)) {
+        // 문제 번호로 검색
+        problemQuery += " AND REPLACE(problem_id, ' ', '') LIKE ?";
+    } else if ("title".equals(searchRange)) {
+        // 제목으로 검색
+        problemQuery += " AND REPLACE(memo_title, ' ', '') LIKE ?";
+    } else if ("note".equals(searchRange)) {
+        // 메모 내용으로 검색
+        problemQuery += " AND REPLACE(main_memo, ' ', '') LIKE ?";
+    }
+}
+
+problemQuery += " ORDER BY is_fixed DESC, " + sortClause;
+
 Connection con = DsCon.getConnection();
 PreparedStatement problemPstmt = null;
 ResultSet problemRs = null;
@@ -237,22 +261,44 @@ ResultSet levelRs = null;
 					<button>SORT</button>
 				</div>
 				<ul style="top:205px;">
-					<li><a href="1_Baekjunior.jsp?latest=true">Latest</a></li>
-					<li><a href="1_Baekjunior.jsp?earliest=true">Earliest</a></li>
-					<li><a href="1_Baekjunior.jsp?ascending=true">Ascending number</a></li>
-					<li><a href="1_Baekjunior.jsp?descending=true">Descending number</a></li>
+					<li><a href="1_Baekjunior.jsp?latest=true&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Latest</a></li>
+					<li><a href="1_Baekjunior.jsp?earliest=true&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Earliest</a></li>
+					<li><a href="1_Baekjunior.jsp?ascending=true&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Ascending number</a></li>
+					<li><a href="1_Baekjunior.jsp?descending=true&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Descending number</a></li>
 				</ul>
 			</div>
 			
 			<div id="search">
 				<div id="search_frame" style="float:right;">
 					<input id="search_input" type="text" placeholder="Search...">
+					<span><img src="img/search.png" style="width:15px;" onclick="searchNotes()"></span>
 				</div>
 				
 				<div id="search_selection" style="float:right;">
-					<input type="radio" name="search_range" checked></input><label>Number</label>
-					<input type="radio" name="search_range"></input><label>Title</label>
-					<input type="radio" name="search_range"></input><label>Note</label>
+					<input type="radio" name="search_range" value="number" 
+					<%
+				    if (request.getParameter("search_range") == null || "number".equals(request.getParameter("search_range"))) {
+				    %> 
+				    	checked 
+				    <%
+				    }
+				    %>></input><label>Number</label>
+					<input type="radio" name="search_range" value="title"
+					<%
+				    if ("title".equals(request.getParameter("search_range"))) {
+				    %> 
+				    	checked 
+				    <%
+				    }
+				    %>></input><label>Title</label>
+					<input type="radio" name="search_range" value="note"
+					<%
+				    if ("note".equals(request.getParameter("search_range"))) {
+				    %> 
+				    	checked 
+				    <%
+				    }
+				    %>></input><label>Note</label>
 				</div>
 			</div>
 			<div id="btn_cretenote">
@@ -260,6 +306,16 @@ ResultSet levelRs = null;
 			</div>
 		</div>
 		
+		<script>
+		function searchNotes() {
+			// 사용자가 입력한 검색어 받아옴. 불필요한 공백 제거
+	        var searchKeyword = document.getElementById("search_input").value.trim().replace(/\s+/g, '');
+	        // 라디오 버튼 중, checked 상태인 놈을 고름
+	        var searchRange = document.querySelector('input[name="search_range"]:checked').value;
+		
+	        window.location.href = '1_Baekjunior.jsp?search_range=' + searchRange + '&search_keyword=' + searchKeyword;
+	    }
+		</script>
 		
 		<br><br><br>
 		
@@ -271,25 +327,23 @@ ResultSet levelRs = null;
  			try {
  				
  				// 문제 선택
- 				String problemQuery = "SELECT * FROM problems WHERE user_id=? and is_checked=1 ORDER BY is_fixed DESC, " + sortClause;
  				problemPstmt = con.prepareStatement(problemQuery);
  				problemPstmt.setString(1, userId);
- 				problemRs = problemPstmt.executeQuery();
+ 				
+	 			// 검색어가 있을 경우 쿼리에 파라미터 설정
+	 			if (searchKeyword != null && !searchKeyword.isEmpty()) {
+ 				    problemPstmt.setString(2, "%" + searchKeyword + "%");
+ 				}
 				
- 				// 등록된 문제 수 세기
-				String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=? and is_checked=1";
-				problemCountPstmt = con.prepareStatement(problemCountQuery);
-				problemCountPstmt.setString(1, userId);
-				countRs = problemCountPstmt.executeQuery();
+	 			problemRs = problemPstmt.executeQuery();
+	 			
+	 			int resultCount = 0;
+ 				while (problemRs.next()) {
+ 				    resultCount++;
+ 				}
  			
- 				if (countRs.next() && countRs.getInt(1) <= 0) {
- 					%>
- 					<div>
- 						not exist
- 					</div>
- 					<%
- 				} else {
- 					// 고정된 문제 먼저 출력
+ 				if (resultCount > 0) {
+ 					problemRs.beforeFirst();
  					while (problemRs.next()) {
  		%>
  			<li class="item">
@@ -299,7 +353,7 @@ ResultSet levelRs = null;
 	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
 	    		<% } else { %>
 	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
-	    			<% } %>
+	    		<% } %>
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
 	    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
@@ -312,6 +366,12 @@ ResultSet levelRs = null;
  			</li>
  		<%
  					}			
+ 				} else  {
+ 		%>
+ 				<div>
+ 					not exist
+ 				</div>
+ 		<%
  				}
  			} catch(SQLException e) {
  				out.print(e);
