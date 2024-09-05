@@ -279,8 +279,8 @@ problemQuery += " ORDER BY is_fixed DESC, " + sortClause;
 			
 			<div id="search">
 				<div id="search_frame" style="float:right;">
-					<input id="search_input" type="text" placeholder="Search..."><span>
-					<img src="img/search.png" style="width:15px;" onclick="searchNotes()"></span>
+					<input id="search_input" type="text" placeholder="Search...">
+					<span><img src="img/search.png" style="width:15px;" onclick="searchNotes()"></span>
 				</div>
 				<!-- number로 검색하거나, 검색을 하지 않은 경우 number에 checked -->
 				<div id="search_selection" style="float:right;">
