@@ -379,55 +379,54 @@ ResultSet levelRs = null;
             <div id="list_group" style="flex:6;">
 				<ul class="list" style="margin: 20px 0 0 0;">
 		 		<%
-		 		if (!userId.equals("none")) {
-		 			try {
-		 				
-		 				// 고정된 문제 선택
-		 				String problemQuery = "SELECT * FROM problems p JOIN algorithm_sort a ON p.problem_idx=a.problem_idx " 
-		 										+ "WHERE a.user_id=? AND a.sort=? ORDER BY p.is_fixed DESC, " + sortClause;
-		 				problemPstmt = con.prepareStatement(problemQuery);
-		 				problemPstmt.setString(1, userId);
-		 				problemPstmt.setString(2, algorithmSort);
-		 				problemRs = problemPstmt.executeQuery();
-						
-		 				// 등록된 문제 수 세기
-						String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=?";
-						problemCountPstmt = con.prepareStatement(problemCountQuery);
-						problemCountPstmt.setString(1, userId);
-						countRs = problemCountPstmt.executeQuery();
-		 			
-		 				if (countRs.next() && countRs.getInt(1) <= 0) {
-		 					%>
-		 					<div>
-		 						not exist
-		 					</div>
-		 					<%
-		 				} else {
-		 					// 고정된 문제 먼저 출력
-		 					while (problemRs.next()) {
-		 		%>
-		 			<li class="item">
-		 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getInt("problem_id") %></a></div>
-		 				<div class="content_set">
-		 				<% if(problemRs.getInt("is_fixed") == 1) { %>
-			    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
-			    		<% } else { %>
-			    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
-			    			<% } %>
-			    		<button class="content_set_b"><img src="img/....png"></button>
-			    		<ul>
-			    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
-			    			<li><a href="split_screen.jsp?problem_idx1=<%=problemRs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
-			    			<li><a href="#">Setting</a></li>
-			    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
-			    		</ul>
-			    	</div>
-		 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
-		 			
-		
-		
+ 		if (!userId.equals("none")) {
+ 			try {
+ 				
+ 				problemPstmt = con.prepareStatement(problemQuery);
+ 				problemPstmt.setString(1, userId);
+ 				problemPstmt.setString(2, algorithmSort);
+ 				// 검색어가 있을 경우 쿼리에 파라미터 설정
+	 			if (searchKeyword != null && !searchKeyword.isEmpty()) {
+ 				    problemPstmt.setString(3, "%" + searchKeyword + "%");
+ 				}
+				
+	 			problemRs = problemPstmt.executeQuery();
+	 			
+	 			int resultCount = 0;
+ 				while (problemRs.next()) {
+ 				    resultCount++;
+ 				}
+ 			
+ 				if (resultCount > 0) {
+ 					problemRs.beforeFirst();
+ 					while (problemRs.next()) {
+ 		%>
+ 			<li class="item">
+ 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getInt("problem_id") %></a></div>
+ 				<div class="content_set">
+ 				<% if(problemRs.getInt("is_fixed") == 1) { %>
+	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
+	    		<% } else { %>
+	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
+	    		<% } %>
+	    		<button class="content_set_b"><img src="img/....png"></button>
+	    		<ul>
+	    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
+	    			<li><a href="split_screen.jsp?problem_idx1=<%=problemRs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
+	    			<li><a href="#">Setting</a></li>
+	    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
+	    		</ul>
+	    	</div>
+ 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
+ 			</li>
  		<%
  					}			
+ 				} else {
+ 		%>
+ 				<div>
+ 					not exist
+ 				</div>
+ 		<%
  				}
  			} catch(SQLException e) {
  				out.print(e);

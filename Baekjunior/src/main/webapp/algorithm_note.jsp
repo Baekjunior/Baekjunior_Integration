@@ -159,7 +159,7 @@ try {
 			<div style="width: 80%; margin: 0 auto;margin-right:50px;">
 				<div class="algorithm_name" style="display: flex;align-items: center;">
 					<img src="img/dot1.png" style="width: 20px;height:20px;">
-					<h1 style="display: inline;font-size: 40px;margin-left: 15px;"><%=algorithmSort %></h1>
+					<h1 style="display: inline;font-size: 40px;margin-left: 15px;" onclick="history.back()"><%=algorithmSort %></h1>
 				</div>
 				<div class="memo" style="margin-top:20px;">
 					<div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:60px;background:white;border-radius:10px;border:3px solid black;">
