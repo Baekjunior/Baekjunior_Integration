@@ -18,9 +18,15 @@ if(session != null && session.getAttribute("login.id") != null) {
     return;
 }
 
+String algorithmSort = request.getParameter("algorithm_sort");
+
 Connection con = DsCon.getConnection();
 PreparedStatement pstmt = null;
 ResultSet rs = null;
+PreparedStatement problemPstmt = null;
+ResultSet problemRs = null;
+PreparedStatement memoPstmt = null;
+ResultSet memoRs = null;
 try {
 	if(userId != "none") {
 		String sql = "SELECT * FROM users WHERE user_id=?";
@@ -30,6 +36,44 @@ try {
 		rs.next();
 	}
 %>
+
+<script type="text/javascript">
+    function confirmDeletion(problemIdx) {
+        var result = confirm("정말 삭제하시겠습니까?");
+        if (result) {
+            window.location.href = "note_delete_do.jsp?problem_idx=" + problemIdx;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<script>
+	// 고정 여부 업데이트하는 함수
+	function updatePin(problemIdx) {
+	    var pinIcon = document.getElementById('content_set_a_' + problemIdx);
+	    let fix = 0;
+	    
+		if(pinIcon.offsetWidth > 0 && pinIcon.offsetHeight > 0) {
+			pinIcon.style.display = 'none';
+			fix = 0;
+		} else {
+			pinIcon.style.display = 'inline-block';
+			fix = 1;
+		}
+	  
+		const xhr = new XMLHttpRequest();
+	    xhr.open("POST", "updatePin.jsp", true);
+	    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	    xhr.onreadystatechange = function () {
+	        if (xhr.readyState === 4 && xhr.status === 200) {
+	            console.log(xhr.responseText);  
+	        }
+	    };
+	    xhr.send("problem_idx=" + problemIdx +"&is_fixed=" + fix);
+	}
+</script>
+
 <body>
 	<header style="padding:0 100px;">
 		<a href="0_Baekjunior.jsp" class="logo">Baekjunior</a>
@@ -115,11 +159,22 @@ try {
 			<div style="width: 80%; margin: 0 auto;margin-right:50px;">
 				<div class="algorithm_name" style="display: flex;align-items: center;">
 					<img src="img/dot1.png" style="width: 20px;height:20px;">
-					<h1 style="display: inline;font-size: 40px;margin-left: 15px;">BFS</h1>
+					<h1 style="display: inline;font-size: 40px;margin-left: 15px;" onclick="history.back()"><%=algorithmSort %></h1>
 				</div>
 				<div class="memo" style="margin-top:20px;">
 					<div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:60px;background:white;border-radius:10px;border:3px solid black;">
-						
+						<%
+							String memoSql = "SELECT * FROM algorithm_memo WHERE user_id=? AND algorithm_name=?";
+		                  	
+		                  	memoPstmt = con.prepareStatement(memoSql);
+		                  	memoPstmt.setString(1, userId);
+		                  	memoPstmt.setString(2, algorithmSort);
+		                  	
+		                  	memoRs = memoPstmt.executeQuery();
+		                  	if(memoRs.next()) {
+						%>
+						<%=Util.nullChk(memoRs.getString("algorithm_memo"), "not exist")%>
+                 		<% } %>
 					</div>
 					<!-- editablememo 내용 수정할때마다 받아오기 -->
 					<script>
@@ -131,11 +186,26 @@ try {
 							const editedtext = this.innerText;
 							console.log('변경된 텍스트: ', editedtext);
 						})
-						editablememo.addEventListener('blur', function() {
+						editablememo.addEventListener('focusout', function() {
 					    	console.log('포커스를 잃었습니다.');
 					    	// 사용자가 메모box를 벗어나면 db에 저장
-					    	location.href="algorithm_note_modify.jsp"; //이렇게 하는거 맞나...??
-					  	});
+					    	
+					    	 const xhr = new XMLHttpRequest();
+			                 const userId = '<%= userId %>'; // 세션에서 가져온 사용자 ID
+			                 const algorithmSort = '<%= algorithmSort %>'; // 문제의 알고리즘 분류
+			                 const editedtext = editablememo.innerText	; // 현재 수정된 텍스트
+			
+			                 xhr.open("POST", "algorithm_note_modify.jsp", true);
+			                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			                 xhr.onreadystatechange = function () {
+			                     if (xhr.readyState === 4 && xhr.status === 200) {
+			                         console.log("Response from server: ", xhr.responseText);
+			                      }
+			                 };
+			
+			                 // 파라미터로 userId, algorithmSort, 수정된 메모를 전송
+			                 xhr.send("user_id=" + encodeURIComponent(userId) + "&algorithm_name=" + encodeURIComponent(algorithmSort) + "&algorithm_memo=" + encodeURIComponent(editedtext));
+			                 });
 						
 					</script>
 				</div>
@@ -144,175 +214,67 @@ try {
 		<div style="float: right;margin-top:70px;">
 			<div id="list_group" style="padding-left:0px;">
 				<ul class="list">
+					<% 
+					try {
+						String problemQuery = "SELECT * FROM problems p JOIN algorithm_sort a ON p.problem_idx=a.problem_idx " 
+											+ "WHERE a.user_id=? AND a.sort=? ORDER BY is_fixed DESC";
+						problemPstmt = con.prepareStatement(problemQuery);
+						problemPstmt.setString(1, userId);
+						problemPstmt.setString(2, algorithmSort);
+						
+						problemRs = problemPstmt.executeQuery();
+						if(!problemRs.next()) {
+				%>
+						<div>
+		 					not exist
+		 				</div>
+		 		<%
+						} else {
+							problemRs.beforeFirst();
+							while(problemRs.next()) {
+		 		%>
 					<li class="item">
 						<div class="content_number">
-							<a href="note_detail.jsp">1# 2557</a>
+							<a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getString("problem_id") %></a>
 						</div>
 						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
+		 				<% if(problemRs.getInt("is_fixed") == 1) { %>
+			    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
+			    		<% } else { %>
+			    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
+			    		<% } %>
+			    		<button class="content_set_b"><img src="img/....png"></button>
 							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="splitscreen3.jsp">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
+								<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
+				    			<li><a href="split_screen.jsp?problem_idx1=<%=problemRs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
+				    			<li><a href="#">Setting</a></li>
+				    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
 							</ul>
 						</div>
 						<div class="content_title">
-							<a href="note_detail.jsp">Hello World</a>
+							<a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a>
 						</div>
 					</li>
-					<li class="item">
-						<div class="content_number">2# 1000</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">A+B</div>
-					</li>
-					<li class="item">
-						<div class="content_number">6# 10831</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">오늘은 코딩하고 싶은 날</div>
-					</li>
-					<li class="item">
-						<div class="content_number">7# 1541</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">잃어버린 괄호</div>
-					</li>
-					<li class="item">
-						<div class="content_number">8# 1011</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">Fly me to the Alpha Centauri</div>
-					</li>
-					<li class="item">
-						<div class="content_number">9# 1022</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">소용돌이 예쁘게 출력하기</div>
-					</li>
-					<li class="item">
-						<div class="content_number"># 15803</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">PLAYERJINAH’S BOTTLEGROUNDS</div>
-					</li>
-					<li class="item">
-						<div class="content_number"># 10831</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">오늘은 코딩하고 싶은 날</div>
-					</li>
-					<li class="item">
-						<div class="content_number"># 1541</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">잃어버린 괄호</div>
-					</li>
-					<li class="item">
-						<div class="content_number"># 1011</div>
-						<div class="content_set">
-							<img class="content_set_a" src="img/pin.png">
-							<button class="content_set_b">
-								<img src="img/....png">
-							</button>
-							<ul>
-								<li><a href="#">Unpin / Pin to top</a></li>
-								<li><a href="#">Split screen</a></li>
-								<li><a href="#">Setting</a></li>
-								<li><a href="#">Delete</a></li>
-							</ul>
-						</div>
-						<div class="content_title">Fly me to the Alpha Centauri</div>
-					</li>
+				<%
+							}
+						}
+				%>
 				</ul>
 			</div>
 		</div>
 	</div>
 
+<%
+					con.close();
+					problemPstmt.close();
+					problemRs.close();
+					memoPstmt.close();
+					memoRs.close();
+					} catch(SQLException e){
+						out.print(e);
+						return;
+					}
+%>
 
 
 	<br>

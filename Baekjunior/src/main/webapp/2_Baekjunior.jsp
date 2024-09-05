@@ -35,6 +35,31 @@ if (request.getParameter("latest") != null) {
 } else if (request.getParameter("descending") != null) {
 	sortClause = "p.problem_id DESC";	// 문제번호 내림차순
 }
+
+String searchRange = request.getParameter("search_range");
+String searchKeyword = request.getParameter("search_keyword");
+
+// 기본 SQL 쿼리 (검색어가 없을 경우 전체 검색)
+String problemQuery = "SELECT * FROM problems p JOIN algorithm_sort a ON p.problem_idx=a.problem_idx " 
+					+ "WHERE a.user_id=? AND a.sort=?";
+
+if (searchKeyword != null && !searchKeyword.isEmpty()) {
+    searchKeyword = searchKeyword.replace(" ", ""); // 검색어에서 공백 제거
+
+    if ("number".equals(searchRange)) {
+        // 문제 번호로 검색
+        problemQuery += " AND REPLACE(problem_id, ' ', '') LIKE ?";
+    } else if ("title".equals(searchRange)) {
+        // 제목으로 검색
+        problemQuery += " AND REPLACE(memo_title, ' ', '') LIKE ?";
+    } else if ("note".equals(searchRange)) {
+        // 메모 내용으로 검색
+        problemQuery += " AND REPLACE(main_memo, ' ', '') LIKE ?";
+    }
+}
+
+problemQuery += " ORDER BY is_fixed DESC, " + sortClause;
+
 Connection con = DsCon.getConnection();
 PreparedStatement problemPstmt = null;
 ResultSet problemRs = null;
@@ -236,9 +261,23 @@ ResultSet levelRs = null;
 	<div id="main">
 		<div id="main_bar">
 			<div style="margin-bottom:50px;display:flex;" >
-				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp'">CATEGORY : <%=algorithmSort %></a>
+				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp?algorithm_sort=<%=algorithmSort%>'">
+				CATEGORY : <%=algorithmSort %></a>
 				<!-- 해당 알고리즘 노트 리스트는 오른쪽으로 밀리고 왼쪽에 알고리즘노트 나오는 버튼 -->
-				<button class="memobutton" onclick="location.href='memobuttonclick.jsp?sort=<%=algorithmSort %>'">memo</button>
+				<button class="memobutton" id="openmemo" onclick="openmemo()">memo</button>
+				<button class="memobutton" id="closememo" onclick="closememo()" style="display:none;">close</button>
+				<script>
+				function openmemo() {
+					document.getElementById("memo").style.display = "block";
+					document.getElementById("openmemo").style.display = "none";
+					document.getElementById("closememo").style.display = "block";
+				}
+				function closememo() {
+					document.getElementById("memo").style.display = "none";
+					document.getElementById("openmemo").style.display = "block";
+					document.getElementById("closememo").style.display = "none";
+				}
+				</script>
 			</div>
 			
 			<div id="sort"  class="content_set">
@@ -246,10 +285,10 @@ ResultSet levelRs = null;
 					<button>SORT</button>
 				</div>
 				<ul style="top:205px;">
-					<li><a href="2_Baekjunior.jsp?latest=true&sort=<%=algorithmSort%>">Latest</a></li>
-					<li><a href="2_Baekjunior.jsp?earliest=true&sort=<%=algorithmSort%>">Earliest</a></li>
-					<li><a href="2_Baekjunior.jsp?ascending=true&sort=<%=algorithmSort%>">Ascending number</a></li>
-					<li><a href="2_Baekjunior.jsp?descending=true&sort=<%=algorithmSort%>">Descending number</a></li>
+					<li><a href="2_Baekjunior.jsp?latest=true&sort=<%=algorithmSort%>&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Latest</a></li>
+					<li><a href="2_Baekjunior.jsp?earliest=true&sort=<%=algorithmSort%>&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Earliest</a></li>
+					<li><a href="2_Baekjunior.jsp?ascending=true&sort=<%=algorithmSort%>&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Ascending number</a></li>
+					<li><a href="2_Baekjunior.jsp?descending=true&sort=<%=algorithmSort%>&search_range=<%=searchRange%>&search_keyword=<%=searchKeyword%>">Descending number</a></li>
 				</ul>
 			</div>
 			
@@ -260,9 +299,31 @@ ResultSet levelRs = null;
 				</div>
 				
 				<div id="search_selection" style="float:right;">
-					<input type="radio" name="search_range" checked></input><label>Number</label>
-					<input type="radio" name="search_range"></input><label>Title</label>
-					<input type="radio" name="search_range"></input><label>Note</label>
+					<input type="hidden" id="algo_search" value="<%=algorithmSort %>">
+					<input type="radio" name="search_range" value="number" 
+					<%
+				    if (request.getParameter("search_range") == null || "number".equals(request.getParameter("search_range"))) {
+				    %> 
+				    	checked 
+				    <%
+				    }
+				    %>></input><label>Number</label>
+					<input type="radio" name="search_range" value="title"
+					<%
+				    if ("title".equals(request.getParameter("search_range"))) {
+				    %> 
+				    	checked 
+				    <%
+				    }
+				    %>></input><label>Title</label>
+					<input type="radio" name="search_range" value="note"
+					<%
+				    if ("note".equals(request.getParameter("search_range"))) {
+				    %> 
+				    	checked 
+				    <%
+				    }
+				    %>></input><label>Note</label>
 				</div>
 			</div>
 			<div id="btn_cretenote">
@@ -270,38 +331,95 @@ ResultSet levelRs = null;
 			</div>
 		</div>
 		
+		<script>
+		function searchNotes() {
+			// 사용자가 입력한 검색어 받아옴. 불필요한 공백 제거
+	        var searchKeyword = document.getElementById("search_input").value.trim().replace(/\s+/g, '');
+	        // 라디오 버튼 중, checked 상태인 놈을 고름
+	        var searchRange = document.querySelector('input[name="search_range"]:checked').value;
+	        var algoSearch = document.getElementById("algo_search").value;
+		
+	        window.location.href = '2_Baekjunior.jsp?sort=' + algoSearch + '&search_range=' + searchRange + '&search_keyword=' + searchKeyword;
+	    }
+		</script>
 		
 		<br><br><br>
 		
 		
-		<div id="list_group">
-		<ul class="list">
- 		<%
+		<div style="display:flex;margin-left:55px;">
+			 <div class="memo" id="memo" style="margin-top:20px;flex:4;animation-name:takent;animation-duration:2s;display:none;">
+               <div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
+                  <%
+                  	String memoSql = "SELECT * FROM algorithm_memo WHERE user_id=? AND algorithm_name=?";
+	                PreparedStatement memoPstmt = null;
+	                ResultSet memoRs = null;
+                  	memoPstmt = con.prepareStatement(memoSql);
+                  	memoPstmt.setString(1, userId);
+                  	memoPstmt.setString(2, algorithmSort);
+                  	
+                  	memoRs = memoPstmt.executeQuery();
+                  	if(memoRs.next()) {
+                  %>
+                  <%=Util.nullChk(memoRs.getString("algorithm_memo"), "not exist")%>
+                  <% } %>
+               </div>
+               <!-- editablememo 내용 수정할때마다 받아오기 -->
+               <script>
+                  const editablememo = document.getElementById('editablememo');
+                  
+                  // 텍스트가 수정될 때마다 발생하는 이벤트 리스너 추가
+                  editablememo.addEventListener('input', function() {
+                     //변경된 텍스트 받아오기
+                     const editedtext = this.innerText;
+                     console.log('변경된 텍스트: ', editedtext);
+                  })
+                  editablememo.addEventListener('focusout', function() {
+                      console.log('포커스를 잃었습니다.');
+                      // 사용자가 메모box를 벗어나면 db에 저장
+                      
+	                  const xhr = new XMLHttpRequest();
+	                  const userId = '<%= userId %>'; // 세션에서 가져온 사용자 ID
+	                  const algorithmSort = '<%= algorithmSort %>'; // 문제의 알고리즘 분류
+	                  const editedtext = editablememo.innerText	; // 현재 수정된 텍스트
+	
+	                  xhr.open("POST", "algorithm_note_modify.jsp", true);
+	                  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	                  xhr.onreadystatechange = function () {
+	                      if (xhr.readyState === 4 && xhr.status === 200) {
+	                          console.log("Response from server: ", xhr.responseText);
+	                       }
+	                  };
+	
+	                  // 파라미터로 userId, algorithmSort, 수정된 메모를 전송
+	                  xhr.send("user_id=" + encodeURIComponent(userId) + "&algorithm_name=" + encodeURIComponent(algorithmSort) + "&algorithm_memo=" + encodeURIComponent(editedtext));
+	                  });
+                  
+               </script>
+            </div>
+            
+            <div id="list_group" style="flex:6;">
+				<ul class="list" style="margin: 20px 0 0 0;">
+		 		<%
  		if (!userId.equals("none")) {
  			try {
  				
- 				// 고정된 문제 선택
- 				String problemQuery = "SELECT * FROM problems p JOIN algorithm_sort a ON p.problem_idx=a.problem_idx " 
- 										+ "WHERE a.user_id=? AND a.sort=? ORDER BY p.is_fixed DESC, " + sortClause;
  				problemPstmt = con.prepareStatement(problemQuery);
  				problemPstmt.setString(1, userId);
  				problemPstmt.setString(2, algorithmSort);
- 				problemRs = problemPstmt.executeQuery();
+ 				// 검색어가 있을 경우 쿼리에 파라미터 설정
+	 			if (searchKeyword != null && !searchKeyword.isEmpty()) {
+ 				    problemPstmt.setString(3, "%" + searchKeyword + "%");
+ 				}
 				
- 				// 등록된 문제 수 세기
-				String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=?";
-				problemCountPstmt = con.prepareStatement(problemCountQuery);
-				problemCountPstmt.setString(1, userId);
-				countRs = problemCountPstmt.executeQuery();
+	 			problemRs = problemPstmt.executeQuery();
+	 			
+	 			int resultCount = 0;
+ 				while (problemRs.next()) {
+ 				    resultCount++;
+ 				}
  			
- 				if (countRs.next() && countRs.getInt(1) <= 0) {
- 					%>
- 					<div>
- 						not exist
- 					</div>
- 					<%
- 				} else {
- 					// 고정된 문제 먼저 출력
+ 				if (resultCount > 0) {
+ 					problemRs.beforeFirst();
  					while (problemRs.next()) {
  		%>
  			<li class="item">
@@ -311,7 +429,7 @@ ResultSet levelRs = null;
 	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
 	    		<% } else { %>
 	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
-	    			<% } %>
+	    		<% } %>
 	    		<button class="content_set_b"><img src="img/....png"></button>
 	    		<ul>
 	    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
@@ -324,6 +442,12 @@ ResultSet levelRs = null;
  			</li>
  		<%
  					}			
+ 				} else {
+ 		%>
+ 				<div>
+ 					not exist
+ 				</div>
+ 		<%
  				}
  			} catch(SQLException e) {
  				out.print(e);
@@ -338,9 +462,10 @@ ResultSet levelRs = null;
  			}
  		}
  		%>
-		</ul>
+					</li>
+		 		</ul>
+		 	</div>
 		</div>
-	</div>
 	
 	<br><br><br>
 

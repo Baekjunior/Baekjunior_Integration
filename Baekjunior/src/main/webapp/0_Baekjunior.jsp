@@ -352,9 +352,7 @@ problemQuery += " ORDER BY is_fixed DESC, " + sortClause;
  				// 검색 결과에 따라 출력 내용 결정
  				if (resultCount > 0) {
  					problemRs.beforeFirst();
- 		%>
- 		<%
- 				while (problemRs.next()) {
+ 					while (problemRs.next()) {
  		%>
  			<li class="item">
  				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getInt("problem_id") %></a></div>
@@ -378,9 +376,9 @@ problemQuery += " ORDER BY is_fixed DESC, " + sortClause;
  					}			
  				} else {
  		%>
- 			 <div style="text-align:center;margin-top: 20px;">
-        		검색 결과가 없습니다.
-    		</div>
+ 			 <div>
+ 				not exist
+ 			</div>
  		<%		}
  			} catch(SQLException e) {
  				out.print(e);

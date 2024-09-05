@@ -278,7 +278,20 @@ ResultSet levelRs = null;
 			<div style="margin-bottom:50px;display:flex;" >
 				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp'">CATEGORY : <%=algorithmSort %></a>
 				<!-- 해당 알고리즘 노트 리스트는 오른쪽으로 밀리고 왼쪽에 알고리즘노트 나오는 버튼 -->
-				<button class="memobutton" onclick="history.back()">close</button>
+				<button class="memobutton" id="openmemo" onclick="openmemo()">memo</button>
+				<button class="memobutton" id="closememo" onclick="closememo()" style="display:none;">close</button>
+				<script>
+				function openmemo() {
+					document.getElementById("memo").style.display = "block";
+					document.getElementById("openmemo").style.display = "none";
+					document.getElementById("closememo").style.display = "block";
+				}
+				function closememo() {
+					document.getElementById("memo").style.display = "none";
+					document.getElementById("openmemo").style.display = "block";
+					document.getElementById("closememo").style.display = "none";
+				}
+				</script>
 			</div>
 			
 			<div id="sort"  class="content_set">
@@ -313,7 +326,7 @@ ResultSet levelRs = null;
 		<br><br><br>
 		
 		<div style="display:flex;margin-left:55px;">
-			 <div class="memo" style="margin-top:20px;flex:4;animation-name:takent;animation-duration:2s;">
+			 <div class="memo" id="memo" style="margin-top:20px;flex:4;animation-name:takent;animation-duration:2s;display:none;">
                <div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
                   <%
                   	String memoSql = "SELECT * FROM algorithm_memo WHERE user_id=? AND algorithm_name=?";
@@ -366,55 +379,54 @@ ResultSet levelRs = null;
             <div id="list_group" style="flex:6;">
 				<ul class="list" style="margin: 20px 0 0 0;">
 		 		<%
-		 		if (!userId.equals("none")) {
-		 			try {
-		 				
-		 				// 고정된 문제 선택
-		 				String problemQuery = "SELECT * FROM problems p JOIN algorithm_sort a ON p.problem_idx=a.problem_idx " 
-		 										+ "WHERE a.user_id=? AND a.sort=? ORDER BY p.is_fixed DESC, " + sortClause;
-		 				problemPstmt = con.prepareStatement(problemQuery);
-		 				problemPstmt.setString(1, userId);
-		 				problemPstmt.setString(2, algorithmSort);
-		 				problemRs = problemPstmt.executeQuery();
-						
-		 				// 등록된 문제 수 세기
-						String problemCountQuery = "SELECT COUNT(*) FROM problems WHERE user_id=?";
-						problemCountPstmt = con.prepareStatement(problemCountQuery);
-						problemCountPstmt.setString(1, userId);
-						countRs = problemCountPstmt.executeQuery();
-		 			
-		 				if (countRs.next() && countRs.getInt(1) <= 0) {
-		 					%>
-		 					<div>
-		 						not exist
-		 					</div>
-		 					<%
-		 				} else {
-		 					// 고정된 문제 먼저 출력
-		 					while (problemRs.next()) {
-		 		%>
-		 			<li class="item">
-		 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getInt("problem_id") %></a></div>
-		 				<div class="content_set">
-		 				<% if(problemRs.getInt("is_fixed") == 1) { %>
-			    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
-			    		<% } else { %>
-			    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
-			    			<% } %>
-			    		<button class="content_set_b"><img src="img/....png"></button>
-			    		<ul>
-			    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
-			    			<li><a href="split_screen.jsp?problem_idx1=<%=problemRs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
-			    			<li><a href="#">Setting</a></li>
-			    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
-			    		</ul>
-			    	</div>
-		 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
-		 			
-		
-		
+ 		if (!userId.equals("none")) {
+ 			try {
+ 				
+ 				problemPstmt = con.prepareStatement(problemQuery);
+ 				problemPstmt.setString(1, userId);
+ 				problemPstmt.setString(2, algorithmSort);
+ 				// 검색어가 있을 경우 쿼리에 파라미터 설정
+	 			if (searchKeyword != null && !searchKeyword.isEmpty()) {
+ 				    problemPstmt.setString(3, "%" + searchKeyword + "%");
+ 				}
+				
+	 			problemRs = problemPstmt.executeQuery();
+	 			
+	 			int resultCount = 0;
+ 				while (problemRs.next()) {
+ 				    resultCount++;
+ 				}
+ 			
+ 				if (resultCount > 0) {
+ 					problemRs.beforeFirst();
+ 					while (problemRs.next()) {
+ 		%>
+ 			<li class="item">
+ 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getInt("problem_id") %></a></div>
+ 				<div class="content_set">
+ 				<% if(problemRs.getInt("is_fixed") == 1) { %>
+	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
+	    		<% } else { %>
+	    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
+	    		<% } %>
+	    		<button class="content_set_b"><img src="img/....png"></button>
+	    		<ul>
+	    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
+	    			<li><a href="split_screen.jsp?problem_idx1=<%=problemRs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
+	    			<li><a href="#">Setting</a></li>
+	    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
+	    		</ul>
+	    	</div>
+ 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
+ 			</li>
  		<%
  					}			
+ 				} else {
+ 		%>
+ 				<div>
+ 					not exist
+ 				</div>
+ 		<%
  				}
  			} catch(SQLException e) {
  				out.print(e);
