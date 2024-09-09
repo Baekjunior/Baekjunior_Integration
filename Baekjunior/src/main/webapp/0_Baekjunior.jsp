@@ -126,7 +126,7 @@ problemQuery += " ORDER BY is_fixed DESC, " + sortClause;
 						<li><a href="3_Baekjunior.jsp">LEVEL</a></li>
 					</ul>
 				</li>				
-				<li class="main_menu_Friend"><a href="#">Friend</a>
+				<li class="main_menu_Friend"><a href="friend.jsp">Friend</a>
 					<ul>
 						<li><a href="#">friend1</a></li>
 						<li><a href="#">friend2</a></li>

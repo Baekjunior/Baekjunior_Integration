@@ -264,7 +264,20 @@ ResultSet levelRs = null;
 				<a style="font-size:30px; font-weight:bold;"" onclick="location.href='algorithm_note.jsp?algorithm_sort=<%=algorithmSort%>'">
 				CATEGORY : <%=algorithmSort %></a>
 				<!-- 해당 알고리즘 노트 리스트는 오른쪽으로 밀리고 왼쪽에 알고리즘노트 나오는 버튼 -->
-				<button class="memobutton" onclick="location.href='memobuttonclick.jsp?sort=<%=algorithmSort %>'">memo</button>
+				<button class="memobutton" id="openmemo" onclick="openmemo()">memo</button>
+				<button class="memobutton" id="closememo" onclick="closememo()" style="display:none;">close</button>
+				<script>
+				function openmemo() {
+					document.getElementById("memo").style.display = "block";
+					document.getElementById("openmemo").style.display = "none";
+					document.getElementById("closememo").style.display = "block";
+				}
+				function closememo() {
+					document.getElementById("memo").style.display = "none";
+					document.getElementById("openmemo").style.display = "block";
+					document.getElementById("closememo").style.display = "none";
+				}
+				</script>
 			</div>
 			
 			<div id="sort"  class="content_set">
@@ -333,9 +346,60 @@ ResultSet levelRs = null;
 		<br><br><br>
 		
 		
-		<div id="list_group">
-		<ul class="list">
- 		<%
+		<div style="display:flex;margin-left:55px;">
+			 <div class="memo" id="memo" style="margin-top:20px;flex:4;animation-name:takent;animation-duration:2s;display:none;">
+               <div class="memo_box" contenteditable="true" id="editablememo" style="min-height:600px;padding:30px;background:white;border-radius:10px;border:3px solid black;">
+                  <%
+                  	String memoSql = "SELECT * FROM algorithm_memo WHERE user_id=? AND algorithm_name=?";
+	                PreparedStatement memoPstmt = null;
+	                ResultSet memoRs = null;
+                  	memoPstmt = con.prepareStatement(memoSql);
+                  	memoPstmt.setString(1, userId);
+                  	memoPstmt.setString(2, algorithmSort);
+                  	
+                  	memoRs = memoPstmt.executeQuery();
+                  	if(memoRs.next()) {
+                  %>
+                  <%=Util.nullChk(memoRs.getString("algorithm_memo"), "not exist")%>
+                  <% } %>
+               </div>
+               <!-- editablememo 내용 수정할때마다 받아오기 -->
+               <script>
+                  const editablememo = document.getElementById('editablememo');
+                  
+                  // 텍스트가 수정될 때마다 발생하는 이벤트 리스너 추가
+                  editablememo.addEventListener('input', function() {
+                     //변경된 텍스트 받아오기
+                     const editedtext = this.innerText;
+                     console.log('변경된 텍스트: ', editedtext);
+                  })
+                  editablememo.addEventListener('focusout', function() {
+                      console.log('포커스를 잃었습니다.');
+                      // 사용자가 메모box를 벗어나면 db에 저장
+                      
+	                  const xhr = new XMLHttpRequest();
+	                  const userId = '<%= userId %>'; // 세션에서 가져온 사용자 ID
+	                  const algorithmSort = '<%= algorithmSort %>'; // 문제의 알고리즘 분류
+	                  const editedtext = editablememo.innerText	; // 현재 수정된 텍스트
+	
+	                  xhr.open("POST", "algorithm_note_modify.jsp", true);
+	                  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	                  xhr.onreadystatechange = function () {
+	                      if (xhr.readyState === 4 && xhr.status === 200) {
+	                          console.log("Response from server: ", xhr.responseText);
+	                       }
+	                  };
+	
+	                  // 파라미터로 userId, algorithmSort, 수정된 메모를 전송
+	                  xhr.send("user_id=" + encodeURIComponent(userId) + "&algorithm_name=" + encodeURIComponent(algorithmSort) + "&algorithm_memo=" + encodeURIComponent(editedtext));
+	                  });
+                  
+               </script>
+            </div>
+            
+            <div id="list_group" style="flex:6;">
+				<ul class="list" style="margin: 20px 0 0 0;">
+		 		<%
  		if (!userId.equals("none")) {
  			try {
  				
@@ -398,9 +462,10 @@ ResultSet levelRs = null;
  			}
  		}
  		%>
-		</ul>
+					</li>
+		 		</ul>
+		 	</div>
 		</div>
-	</div>
 	
 	<br><br><br>
 
