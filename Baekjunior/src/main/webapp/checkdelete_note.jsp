@@ -151,8 +151,8 @@ ResultSet levelRs = null;
 			<div class="inner_header">
 				<h1 style="font-size:30px;">노트</h1>
 				<div>
-					<button onclick="" style="width:100px;height:40px;border-radius:40px;">전체선택</button>
-					<button onclick="" style="width:100px;height:40px;border-radius:40px;">선택삭제</button>
+					<button name="allCheck" style="width:100px;height:40px;border-radius:40px;">전체선택</button>
+					<button onclick="deleteValue();" style="width:100px;height:40px;border-radius:40px;">선택삭제</button>
 				</div>
 			</div>
 			<div id="list_group" style="padding:0;margin-top:20px;">
@@ -184,23 +184,9 @@ ResultSet levelRs = null;
 		 					while (problemRs.next()) {
 		 		%>
 		 			<li class="item">
+		 				<input name="itemCheck" type="checkbox" value="$(list.no)" style="margin-right:10px;">
 		 				<div class="content_number"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"># <%=problemRs.getInt("problem_id") %></a></div>
-		 				<div class="content_set">
-			 				<% if(problemRs.getInt("is_fixed") == 1) { %>
-				    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png">
-				    		<% } else { %>
-				    			<img class="content_set_a" id="content_set_a_<%= problemRs.getInt("problem_idx") %>" src="img/pin.png" style="display:none">
-				    		<% } %>
-				    		<button class="content_set_b"><img src="img/....png"></button>
-				    		<ul>
-				    			<li><a onclick="updatePin('<%=problemRs.getInt("problem_idx") %>')" href="#">Unpin / Pin to top</a></li>
-				    			<li><a href="split_screen.jsp?problem_idx1=<%=problemRs.getInt("problem_idx")%>&problem_idx2=-1">Split screen</a></li>
-				    			<li><a href="#">Setting</a></li>
-				    			<li><a onclick="confirmDeletion('<%=problemRs.getInt("problem_idx") %>')" href="#">Delete</a></li>
-				    		</ul>
-				    	</div>
 		 				<div class="content_title"><a href="note_detail.jsp?problem_idx=<%=problemRs.getInt("problem_idx")%>"><%=problemRs.getString("memo_title") %></a></div>
-		 				<
 		 			</li>
 		 		<%
 		 					}			
